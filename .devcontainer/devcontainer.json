@@ -9,5 +9,8 @@
 				"ms-python.python"
 			]
 		}
-	}
+	},
+	"runArgs": [
+		"--network=host"
+	]
 }
