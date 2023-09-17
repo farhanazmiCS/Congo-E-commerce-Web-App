@@ -1,8 +1,6 @@
 import psycopg2
 from psycopg2 import pool
 
-PASSWORD = "inf2003-project"
-
 # Build a connection string from the variables
 CONNECTION_STRING = "host=c-inf2003-project.k5sswns2zd3kt5.postgres.cosmos.azure.com port=5432 dbname=citus user=citus password=inf2003-project sslmode=require"
 

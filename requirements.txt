@@ -1,0 +1,7 @@
+autopep8
+pymongo
+python-dotenv
+psycopg2-binary
+flask
+pandas
+SQLAlchemy

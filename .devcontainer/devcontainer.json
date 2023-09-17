@@ -10,7 +10,5 @@
 			]
 		}
 	},
-	"runArgs": [
-		"--network=host"
-	]
+	"postStartCommand": "pip3 install -r /workspaces/INF2003-Project/requirements.txt"
 }
