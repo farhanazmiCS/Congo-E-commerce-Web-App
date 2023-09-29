@@ -64,7 +64,7 @@ conn = postgreSQL_pool.getconn()
 cursor = conn.cursor()
 
 # Create a table
-# execute_values(conn, cursor, df, 'product')
+# execute_values(conn, cursor, df, 'product') # Uncomment this line to create a table
 
 # Show size of the table
 cursor.execute("SELECT COUNT(*) FROM product;")
