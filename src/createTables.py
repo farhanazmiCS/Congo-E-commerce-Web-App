@@ -15,70 +15,70 @@ Base = declarative_base()
 
 # Define the User table
 class User(Base):
-    __tablename__ = "User"
+    __tablename__ = "user"
 
-    UserID = Column(Integer, primary_key=True, autoincrement=True)
-    UserName = Column(String, nullable=False)
-    UserPassword = Column(String, nullable=False)
-    UserType = Column(String, nullable=False)
-    UserEmail = Column(String, nullable=False)
-    UserAddress = Column(String, nullable=False)
+    userid = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String, nullable=False)
+    userpasword = Column(String, nullable=False)
+    usertype = Column(String, nullable=False)
+    useremail = Column(String, nullable=False)
+    useraddress = Column(String, nullable=False)
 
 # Define the Order table
 class Order(Base):
-    __tablename__ = "Order"
+    __tablename__ = "order"
 
-    OrderID = Column(Integer, primary_key=True, autoincrement=True)
-    UserID = Column(Integer, ForeignKey("User.UserID"), nullable=False)
-    OrderDate = Column(Date, nullable=False)
-    OrderTotal = Column(Numeric(10, 2), nullable=False)
+    orderid = Column(Integer, primary_key=True, autoincrement=True)
+    userid = Column(Integer, ForeignKey("user.userid"), nullable=False)
+    orderdate = Column(Date, nullable=False)
+    ordertotal = Column(Numeric(10, 2), nullable=False)
 
 # Define the OrderStatus table
 class OrderStatus(Base):
-    __tablename__ = "OrderStatus"
+    __tablename__ = "orderstatus"
 
-    OrderStatusID = Column(Integer, primary_key=True, autoincrement=True)
-    OrderID = Column(Integer, ForeignKey("Order.OrderID"), nullable=False)
-    OrderStatusName = Column(String, nullable=False)
-    OrderStatusDescription = Column(String, nullable=False)
-    ShippedDate = Column(Date)
+    orderstatusid = Column(Integer, primary_key=True, autoincrement=True)
+    orderid = Column(Integer, ForeignKey("order.orderid"), nullable=False)
+    orderstatusname = Column(String, nullable=False)
+    orderstatusdescription = Column(String, nullable=False)
+    shippeddate = Column(Date)
 
 # Define the Supplier table
 class Supplier(Base):
-    __tablename__ = "Supplier"
+    __tablename__ = "supplier"
 
-    SupplierID = Column(Integer, primary_key=True, autoincrement=True)
-    SupplierName = Column(String, nullable=False)
-    ContactInfo = Column(String, nullable=False)
+    supplierid = Column(Integer, primary_key=True, autoincrement=True)
+    suppliername = Column(String, nullable=False)
+    contactinfo = Column(String, nullable=False)
 
 # Define the SubCategory table
 class SubCategory(Base):
-    __tablename__ = "SubCategory"
+    __tablename__ = "subcategory"
 
-    SubCategoryID = Column(Integer, primary_key=True, autoincrement=True)
-    CategoryID = Column(Integer, ForeignKey("Category.CategoryID"), nullable=False)
-    SubCategoryName = Column(String, nullable=False)
-    SubCategoryDescription = Column(String, nullable=False)
+    subcategoryid = Column(Integer, primary_key=True, autoincrement=True)
+    categoryid = Column(Integer, ForeignKey("category.categoryid"), nullable=False)
+    subcategoryname = Column(String, nullable=False)
+    subcategorydescription = Column(String, nullable=False)
 
 # Define the Category table
 class Category(Base):
-    __tablename__ = "Category"
+    __tablename__ = "category"
 
-    CategoryID = Column(Integer, primary_key=True, autoincrement=True)
-    CategoryName = Column(String, nullable=False)
-    CategoryDescription = Column(String, nullable=False)
+    categoryid = Column(Integer, primary_key=True, autoincrement=True)
+    categoryname = Column(String, nullable=False)
+    categorydescription = Column(String, nullable=False)
 
 # Define the Product_JX table
 class Product_JX(Base):
-    __tablename__ = "Product_JX"
+    __tablename__ = "product_jx"
 
-    ProductID = Column(Integer, primary_key=True, autoincrement=True)
-    ProductName = Column(String, nullable=False)
-    ProductDesc = Column(String)
-    ProductPrice = Column(Numeric(10, 2), nullable=False)
-    ProductStock = Column(Integer, nullable=False)
-    SupplierID = Column(Integer, ForeignKey("Supplier.SupplierID"), nullable=False)
-    SubCategoryID = Column(Integer, ForeignKey("SubCategory.SubCategoryID"), nullable=False)
+    productid = Column(Integer, primary_key=True, autoincrement=True)
+    productname = Column(String, nullable=False)
+    productdesc = Column(String)
+    productprice = Column(Numeric(10, 2), nullable=False)
+    productstock = Column(Integer, nullable=False)
+    supplierid = Column(Integer, ForeignKey("supplier.supplierid"), nullable=False)
+    subcategoryid = Column(Integer, ForeignKey("subcategory.subcategoryid"), nullable=False)
 
 # Create the tables in the database
 Base.metadata.create_all(engine)
@@ -116,20 +116,20 @@ for main_category_name, sub_category_name in unique_sub_categories:
 # Import to Postgres
 for main_category_name in main_categories:
     main_category = Category(
-        CategoryName=main_category_name,
-        CategoryDescription=main_category_name
+        categoryname=main_category_name,
+        categorydescription=main_category_name
     )
     session.add(main_category)
     session.commit()
 
 for (main_category_name, sub_category_name) in sub_categories:
     # Get the MainCategoryID of the current sub_category
-    main_category_id = session.query(Category.CategoryID).filter_by(CategoryName=main_category_name).first()[0]
+    main_category_id = session.query(Category.categoryid).filter_by(categoryname=main_category_name).first()[0]
     
     sub_category = SubCategory(
-        SubCategoryName=sub_category_name,
-        SubCategoryDescription=sub_category_name,
-        CategoryID=main_category_id
+        subcategoryname=sub_category_name,
+        subcategorydescription=sub_category_name,
+        categoryid=main_category_id
     )
     session.add(sub_category)
     session.commit()
