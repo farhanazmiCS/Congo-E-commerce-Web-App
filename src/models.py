@@ -5,6 +5,32 @@ Base = declarative_base()
 
 
 class Product(Base):
+    """
+    A class representing a product.
+
+    Attributes:
+    -----------
+    id : int
+        The unique identifier of the product.
+    name : str
+        The name of the product.
+    main_category : str
+        The main category of the product.
+    sub_category : str
+        The sub category of the product.
+    image : str
+        The URL of the product's image.
+    link : str
+        The URL of the product's page.
+    ratings : str
+        The rating of the product.
+    no_of_ratings : str
+        The number of ratings the product has received.
+    discount_price : str
+        The discounted price of the product.
+    actual_price : str
+        The actual price of the product.
+    """
     __tablename__ = 'product'
 
     id = Column(BigInteger, primary_key=True)
@@ -18,7 +44,10 @@ class Product(Base):
     discount_price = Column(String)
     actual_price = Column(String)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of the product.
+        """
         return {
             "id": self.id,
             "name": self.name,
@@ -32,6 +61,9 @@ class Product(Base):
             "actual_price": self.actual_price
         }
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """
+        Returns a string representation of the product.
+        """
         return "<Product(id='%s', name='%s', main_category='%s', sub_category='%s', image='%s', link='%s', ratings='%s', no_of_ratings='%s', discount_price='%s', actual_price='%s')>" % (
             self.id, self.name, self.main_category, self.sub_category, self.image, self.link, self.ratings, self.no_of_ratings, self.discount_price, self.actual_price)

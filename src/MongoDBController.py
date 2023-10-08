@@ -34,7 +34,7 @@ class MongoDBController:
         self.client = MongoClient(url)
         self.db = self.client["test"]
 
-    def add_product(self, product):
+    def add_product(self, product: dict) -> None:
         """
         Adds a product to the database.
 
@@ -46,7 +46,7 @@ class MongoDBController:
         collection = self.db["product"]
         collection.insert_one(product)
 
-    def get_product(self, product_id):
+    def get_product(self, product_id: int) -> dict:
         """
         Retrieves a product from the database.
 
@@ -63,7 +63,7 @@ class MongoDBController:
         collection = self.db["product"]
         return collection.find_one({"id": product_id})
 
-    def delete_product(self, product_id):
+    def delete_product(self, product_id: int) -> None:
         """
         Deletes a product from the database.
 

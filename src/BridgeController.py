@@ -13,7 +13,7 @@ class BridgeController:
         self.pg_controller = PostgreSQLController()
         self.mongo_controller = MongoDBController()
 
-    def add_product_to_both(self, product):
+    def add_product_to_both(self, product: Product) -> None:
         """
         Adds a product to both PostgreSQL and MongoDB.
 
@@ -28,7 +28,7 @@ class BridgeController:
         self.pg_controller.add_product(product)
         self.mongo_controller.add_product(product_dict)
 
-    def get_product_from_both(self, product_id):
+    def get_product_from_both(self, product_id: int) -> tuple:
         """
         Gets a product from both PostgreSQL and MongoDB.
 
@@ -40,7 +40,7 @@ class BridgeController:
         """
         return self.pg_controller.get_product(product_id), self.mongo_controller.get_product(product_id)
     
-    def delete_product_from_both(self, product_id):
+    def delete_product_from_both(self, product_id: int) -> None:
         """
         Deletes a product from both PostgreSQL and MongoDB.
 
@@ -53,7 +53,7 @@ class BridgeController:
         self.pg_controller.delete_product(product_id)
         self.mongo_controller.delete_product(product_id)
 
-    def get_product_from_pg(self, product_id):
+    def get_product_from_pg(self, product_id: int) -> Product:
         """
         Gets a product from PostgreSQL.
 
@@ -65,7 +65,7 @@ class BridgeController:
         """
         return self.pg_controller.get_product(product_id)
     
-    def get_product_from_mongo(self, product_id):
+    def get_product_from_mongo(self, product_id: int) -> dict:
         """
         Gets a product from MongoDB.
 
@@ -77,7 +77,7 @@ class BridgeController:
         """
         return self.mongo_controller.get_product(product_id)
     
-    def delete_product_from_pg(self, product_id):
+    def delete_product_from_pg(self, product_id: int) -> None:
         """
         Deletes a product from PostgreSQL.
 
@@ -89,7 +89,7 @@ class BridgeController:
         """
         self.pg_controller.delete_product(product_id)
 
-    def delete_product_from_mongo(self, product_id):
+    def delete_product_from_mongo(self, product_id: int) -> None:
         """
         Deletes a product from MongoDB.
 
