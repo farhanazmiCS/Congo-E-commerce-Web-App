@@ -3,10 +3,6 @@ from models import Base, Product
 from sqlalchemy.orm import sessionmaker
 
 
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from .models import Base, Product
-
 class PostgreSQLController:
     """
     A class used to interact with a PostgreSQL database using SQLAlchemy.

@@ -1,8 +1,6 @@
 from pymongo import MongoClient
 
 
-from pymongo import MongoClient
-
 class MongoDBController:
     """
     A class used to interact with a MongoDB database.
