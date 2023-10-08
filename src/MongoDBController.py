@@ -1,20 +1,79 @@
 from pymongo import MongoClient
 
 
+from pymongo import MongoClient
+
 class MongoDBController:
-    def __init__(self, url="mongodb://inf2003-project:9XygVh5kKnrscIiKfsPXCos1KtjQtFSmMcZfwod9O22zosZE3ZUHrVVbtSQs262Jvv5IwpiFeOUWACDbJsgL2A==@inf2003-project.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@inf2003-project@"):
+    """
+    A class used to interact with a MongoDB database.
+
+    ...
+
+    Attributes
+    ----------
+    url : str
+        The URL of the MongoDB database.
+
+    Methods
+    -------
+    add_product(product)
+        Adds a product to the database.
+    get_product(product_id)
+        Retrieves a product from the database.
+    delete_product(product_id)
+        Deletes a product from the database.
+    """
+
+    def __init__(self, url="mongodb://localhost:27017/"):
+        """
+        Constructs a new MongoDBController object.
+
+        Parameters
+        ----------
+        url : str, optional
+            The URL of the MongoDB database (default is "mongodb://localhost:27017/").
+        """
         self.client = MongoClient(url)
         self.db = self.client["test"]
 
     def add_product(self, product):
+        """
+        Adds a product to the database.
+
+        Parameters
+        ----------
+        product : dict
+            A dictionary representing the product to be added.
+        """
         collection = self.db["product"]
         collection.insert_one(product)
 
     def get_product(self, product_id):
+        """
+        Retrieves a product from the database.
+
+        Parameters
+        ----------
+        product_id : int
+            The ID of the product to be retrieved.
+
+        Returns
+        -------
+        dict
+            A dictionary representing the retrieved product.
+        """
         collection = self.db["product"]
         return collection.find_one({"id": product_id})
 
     def delete_product(self, product_id):
+        """
+        Deletes a product from the database.
+
+        Parameters
+        ----------
+        product_id : int
+            The ID of the product to be deleted.
+        """
         collection = self.db["product"]
         collection.delete_one({"id": product_id})
 
