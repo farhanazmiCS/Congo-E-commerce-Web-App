@@ -28,7 +28,7 @@ class BridgeController:
         self.pg_controller.add_product(product)
         self.mongo_controller.add_product(product_dict)
 
-    def get_product_from_both(self, product_id: int) -> tuple:
+    def get_product_from_both(self, product_id: int) -> tuple[Product, dict]:
         """
         Gets a product from both PostgreSQL and MongoDB.
 
