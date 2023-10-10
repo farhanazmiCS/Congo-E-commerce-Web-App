@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
+    <script>
+    // initialise accordion for the filter form on the page
+    $( document ).ready(function() {
+
+    var formfield = document.getElementById('destination-field-grp');
+    var addField =  document.getElementById("add-destination");
+    var removeLink = document.getElementById("remove-destination");
+    var fieldNumber = 0;
+    var optionList= ["Marina Bay Sands","The Ritz-Carlton","Shangri-La Singapore","ParkRoyal Collection Marina Bay","Capella Singapore","Dusit Thani Laguna Singapore","Hotel Indigo Singapore Katong","The Clan Hotel Singapore","The Vagabond Club","Duxton Reserve Singapore","W Singapore","The St. Regis Singapore","Singapore Marriott Tang Plaza Hotel","M Social Singapore","The Fullerton Bay Hotel Singapore","Four Seasons Hotel","InterContinental Singapore","Raffles Singapore","Sofitel Singapore Sentosa Resort & Spa","Andaz Singapore","Mandarin Oriental"];
+    var availOptionList = optionList;
+    var destinationsSelected  = document.getElementsByName('destination');
+
+    function updateAvailable(){
+        var currDestinationsSelected  = document.getElementsByName('destination');
+        availOptionList = optionList;
+        optionHTML="";
+        for (var i =0;i<currDestinationsSelected.length;i++){
+            availOptionList=availOptionList.filter(function(item){
+                return item!= currDestinationsSelected[i].value;
+            });
+        };
+        for (var i=0 ; i<availOptionList.length;i++){
+            optionHTML= optionHTML + "<option value='"+ availOptionList[i] +"'>"+availOptionList[i] +"</option>";
+        };
+        
+        for(var i =0;i<currDestinationsSelected.length;i++){
+            currDestinationsSelected[i].innerHTML="<option value='"+ currDestinationsSelected[i].value +"'>"+currDestinationsSelected[i].value +"</option>";
+            currDestinationsSelected[i].innerHTML+=optionHTML;
+        };
+
+    };
+
+    destinationsSelected[0].addEventListener("change",function(){
+        updateAvailable();
+    });
+
+
+    addField.addEventListener("click", function() {
+        event.preventDefault();
+        if(fieldNumber<20){
+            updateAvailable();
+            var newField = document.createElement('select');
+            var newHTML= ""
+            for (var i=0 ; i<availOptionList.length;i++){
+                newHTML= newHTML + "<option value='"+ availOptionList[i] +"'>"+availOptionList[i] +"</option>";
+            };
+            newField.setAttribute('name','destination');
+            newField.setAttribute('class','destination-dropdown');
+            fieldNumber++;
+            newField.setAttribute('id','destination-field-'+ fieldNumber);
+            newField.innerHTML=newHTML;
+            formfield.appendChild(newField);
+            formfield.lastChild.addEventListener("change",function(){
+            updateAvailable();
+            });
+            updateAvailable();
+            removeLink.classList.remove("hidden");
+        };
+    });
+
+    removeLink.addEventListener("click", function() {
+        event.preventDefault();
+        var removedField = document.getElementById("destination-field-" + fieldNumber);
+        removedField.remove();
+        updateAvailable();
+        fieldNumber--;
+        if(fieldNumber==0){
+            removeLink.classList.add("hidden");
+        }
+    });
+
+
+    const loader = document.getElementById("app-form-loader");
+    const formContent = document.getElementById("app-form-content")
+    const formTitle = document.getElementById("form-title")
+
+    function displayLoading(){
+        loader.classList.remove("hidden");
+        formContent.classList.add("hidden");
+        formTitle.innerHTML="Loading...";
+    };
+    
+    
+        // Get map form:
+        const mapForm =document.getElementById('map-form');
+
+        mapForm.addEventListener('submit',function(event){
+            event.preventDefault();
+            displayLoading();
+            var time = document.getElementById('time-field').value;
+            var day = document.getElementById('day-field').value;
+            var destinationsSelected  = document.getElementsByName('destination');
+            var destinationArr = [];
+            var roundTrip
+            var fuelCost=document.getElementById('fuel-field').value
+            if (document.getElementById('round-trip-field').value=="Yes"){
+                roundTrip= true
+            } else if (document.getElementById('round-trip-field').value=="No"){
+                roundTrip= false
+            }
+            
+            
+            for(var i=0;i < destinationsSelected.length;i++){
+                if(destinationsSelected[i].value){
+                    destinationArr.push(destinationsSelected[i].value);
+                }
+                console.log(destinationsSelected[i].value);
+            }
+
+            fetch('/generate', {
+                method:"POST",
+                body:JSON.stringify({'time':time,'day':day,'destinations':destinationArr,'fuel':fuelCost,'roundTrip':roundTrip}),
+                headers:{
+                    'Content-Type':'application/json',
+             }
+            }).then(response => response.json())
+            .then(html =>{
+                document.getElementById('app-map').innerHTML=html.mapStaticHTML
+                document.getElementById('app-main-section').innerHTML=html.resultHTML
+                document.getElementById('app-modal-content').innerHTML=html.mapHTML
+
+                document.getElementById("map-modal-toggle").addEventListener("click", function() {
+                    event.preventDefault();
+                    toggleModal(mapModal);
+                });
+
+                document.getElementById("map-img-modal-toggle").addEventListener("click", function() {
+                    event.preventDefault();
+                    toggleModal(mapModal);
+                });
+        
+            })
+            
+        })
+
+    var modalToggle = document.getElementById("map-modal-toggle")
+    var modalImgToggle = document.getElementById("map-img-modal-toggle")
+    var mapModal = document.getElementById("map-modal")
+    var modalClose = document.getElementById("modal-close")
+
+    function toggleModal(modal){
+        if (mapModal.style.display=="none" || mapModal.style.display==""){
+            mapModal.style.display = "block";
+        }else if (mapModal.style.display = "block"){
+            mapModal.style.display = "none";
+        }
+    }
+
+    modalToggle.addEventListener("click", function() {
+        event.preventDefault();
+        toggleModal(mapModal);
+    });
+
+    modalImgToggle.addEventListener("click", function() {
+        event.preventDefault();
+        toggleModal(mapModal);
+    });
+
+    mapModal.addEventListener("click", function() {
+        event.preventDefault();
+        toggleModal(mapModal);
+    });
+        
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes();
+    document.getElementById('time-field').value= String(today.getHours()).padStart(2, '0') + ":" + String(today.getMinutes()).padStart(2, '0');
+
+    });
+    </script>
+    <title>OptiTour</title>
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='favicon.png')}}">
+</head>
+<body>
+<a href="#top" class="fixed-btn"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+
+<div class="app-body">
+    <section class="app-section-1" id="overview #top">
+        <div class="app-header" id="#top">
+            <div class="app-section-header">
+                <h1 class="app-h1">Road Map Of <br>Singapore</h1>
+            </div>
+            <div class="logo-container">
+                <img class="logo" src="/static/logo3.png" alt="logo">
+            </div>
+        </div>
+        <div class="app-map-section" id="app-map">
+            <img class="map-img" id= "map-img-modal-toggle" src="/static/map-generated-default.png" alt="road map of singapore" title="View larger image...">
+            <a href="#" id="map-modal-toggle">Click here to view interactive map</a>
+        </div>
+       
+       
+        
+    </section>
+    <section class="app-form-section" id="app-main-section">
+        <div class="app-form-container">
+            <h2 id="form-title">Enter Your Route.</h2>
+            <div id="app-form-loader" class="hidden"></div>
+            <div id="app-form-content">
+                <form action="" method="post" id="map-form">
+                    <div class="form-flex">
+                    <div class="form-group form-half select-field">
+                        <label for="day">Day:</label><br>
+                            <select name="day" id="day-field" class="">
+                                <option value="Weekday">Weekday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday or Public Holiday">Sunday or Public Holiday</option>
+                                <option value="Eve of Public Holiday">Eve of Public Holiday</option>
+                            </select>
+                    </div>
+                    <div class="form-group form-half">  
+                        <label for="time" class="time-label">Time:</label><br>
+                        <input type="time" id="time-field" name="time" required>
+                    </div>
+                    </div>
+                    <div class="form-flex">
+                        <div class="form-group form-half relative">
+                            <label for="fuel">Cost of fuel per liter:</label><br>
+                            <i class="input-icon">$</i><input type="number" id="fuel-field" name="fuel" required class="form-control"  placeholder="2.67" step="0.01" value="2.67"><br>
+                        </div>  
+                        <div class="form-group form-half select-field"> 
+                            <label for="round-trip">Does it have to be a round trip?</label>
+                            <br>
+                            <select name="round-trip" class="round-trip-dropdown" id="round-trip-field">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-flex">
+                        <div class="form-group form-half">
+                            <label for="start">Start Point:</label><br>
+                            <input type="text" id="start" name="start" required class="form-control"  placeholder="Changi Airport Terminal 3" readonly><br>
+                        </div>    
+                        <div class="form-group form-half select-field" id="destination-field-grp"> 
+                            <div class="label-group">
+                            <label for="destination">Destination:</label><a href="#" class="hidden" id="remove-destination">remove</a><a href="#" id="add-destination">add</a>
+                            </div>
+                            <br>
+                            <select name="destination" class="destination-dropdown">
+                                <option value="Marina Bay Sands">Marina Bay Sands</option>
+                                <option value="The Ritz-Carlton">The Ritz-Carlton</option>
+                                <option value="Shangri-La Singapore">Shangri-La Singapore</option>
+                                <option value="ParkRoyal Collection Marina Bay">ParkRoyal Collection Marina Bay</option>
+                                <option value="Capella Singapore">Capella Singapore</option>
+                                <option value="Dusit Thani Laguna Singapore">Dusit Thani Laguna Singapore</option>
+                                <option value="Hotel Indigo Singapore Katong">Hotel Indigo Singapore Katong</option>
+                                <option value="The Clan Hotel Singapore">The Clan Hotel Singapore</option>
+                                <option value="The Vagabond Club">The Vagabond Club</option>
+                                <option value="Duxton Reserve Singapore">Duxton Reserve Singapore</option>
+                                <option value="W Singapore">W Singapore</option>
+                                <option value="The St. Regis Singapore">The St. Regis Singapore</option>
+                                <option value="Singapore Marriott Tang Plaza Hotel">Singapore Marriott Tang Plaza Hotel</option>
+                                <option value="M Social Singapore">M Social Singapore</option>
+                                <option value="The Fullerton Bay Hotel Singapore">The Fullerton Bay Hotel Singapore</option>
+                                <option value="Four Seasons Hotel">Four Seasons Hotel</option>
+                                <option value="InterContinental Singapore">InterContinental Singapore</option>
+                                <option value="Raffles Singapore">Raffles Singapore</option>
+                                <option value="Sofitel Singapore Sentosa Resort & Spa">Sofitel Singapore Sentosa Resort & Spa</option>
+                                <option value="Andaz Singapore">Andaz Singapore</option>
+                                <option value="Mandarin Oriental">Mandarin Oriental</option>
+                            </select>
+                        </div>
+                    </div>        
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </div>
+          
+            </div>
+        </div>
+    </section>
+    <div class="modal map-modal" id="map-modal" tabindex="-1" >
+        <i class="fa fa-times modal-close" id= "modal-close"  aria-label="Close"></i>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="app-modal-content">
+                {{ htmlMap|safe }}
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>

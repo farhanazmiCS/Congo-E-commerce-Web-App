@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='favicon.png')}}">
+    <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity=
+    "sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+      <!--jQuery-->
+    <script defer
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous">
+    </script>
+    <!--Bootstrap JS-->
+    <script defer
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+    integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+    crossorigin="anonymous">
+    </script>
+    <script src="{{url_for('static', filename='brands.js')}}"></script>
+    <script src="{{url_for('static', filename='solid.js')}}"></script>
+    <script src="{{url_for('static', filename='fontawesome.js')}}"></script>
+    <!-- Custom JS -->
+    <script defer src="js/main.js"></script>
+</head>
+
+<body>
+
+        
+<div class="nav-holder ">
+    <div class="upper-nav">
+    <div class="container">
+        <div class="row">
+            <a href="/categories">Categories</a><a href="/subcategories">Subcategories</a><a href="#">Orders</a><a href="#">Track Orders</a><a href="#">Seller login</a><a href="#">Staff login</a>
+    </div>
+    </div>
+
+    </div>
+    <nav class="navbar navbar-expand-sm container">
+        <a class="navbar-brand" href="/"> <img src="{{url_for('static', filename='logo.png')}}" alt="Neco Arc"
+                title="Workspace+ logo"/></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>  
+        <div class="collapse navbar-collapse split-nav" id="navbarTogglerDemo01">
+        
+        <div class="navbar-nav search-form">
+            
+            <form class="form-inline ">
+                <label for="nav-search">Search:</label>
+                <input class="form-control mr-sm-2 search-input" type="search" name="nav-search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+        </div>
+        
+        
+        
+        <ul class="navbar-nav split-menu">
+            <li class="nav-item">
+                <a class="nav-link cart-icon" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/lab08/#cats">Sign up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/lab08/#cats">Sign in</a>
+            </li>
+        </ul>
+        </div>
+        
+        </div>   
+    </nav>
+</div>
+
+    {% block content %}{% endblock %}
+
+<footer class="">
+    <div class="row container">
+    <div class="col-sm-6">
+        <img class="footer-logo" src="{{url_for('static', filename='logo2.png')}}" alt="footer-workspace-plus-logo">
+        <h3>About Congo.db</h3>
+        <p> We at Congo.db pride ourselves on delivering a great shopping experience!</p>
+    </div>
+    
+    <div class="col-sm-6">
+        <h3>Congo.db Pte Ltd</h3>
+        <p>+65 9899 2122</p>
+        <p>20 Punggol Hill Road</p>
+        <p>Singapore 156782</p>
+    </div>
+    <p class="copyright"><em>Copyright &copy; 2023 Congo.db Pte Ltd</em></p>
+    </div>
+    
+</footer>
+
+
+</body>
+
+</html>

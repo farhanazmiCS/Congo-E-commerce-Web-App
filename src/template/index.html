@@ -1,11 +1,261 @@
-<html>
+{% extends "base.html" %}
+{% block title %}Congo.db{% endblock %}
+{% block content %}
 
-<head>
-    <title>Message</title>
-</head>
+<div class="gradient-header-bg home">
+<header class="container">
+    <div class="home-cta-banner">
+        <div class="home-cta">
+            <div class="home-cta-container">
+                <h1>Welcome To <br>Congo.db</h1>
+                <p>Browse our product categories</p>
+                <a class="btn btn-primary" href="#" role="button">All Categories</a>
+            </div>
+        </div>
+        <div class="home-cta-carousel">
+            <div id="carouselExampleControls" class="carousel" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="{{url_for('static', filename='console.png')}}" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{url_for('static', filename='airpods.png')}}" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{url_for('static', filename='tablet.png')}}" alt="Third slide">
+                    </div>
+                </div>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+</div>
 
-<body>
-    <h1>hi, welcome to the website </h1>
-</body>
+<div class="home-categories container">
+    <div class="row">
+        <div class="title-container">
+        <h2>Categories</h2>
+        <a href="/categories">See all  ></a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='apparel.png')}}" alt="apparel">
+            <span>Apparel</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='beauty.png')}}" alt="apparel">
+            <span>Beauty</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='instruments.png')}}" alt="apparel">
+            <span>Instruments</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='home-appliances.png')}}" alt="apparel">
+            <span>Home appliances</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='furniture.png')}}" alt="apparel">
+            <span>Furniture</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='stationery.png')}}" alt="apparel">
+            <span>Stationery</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='toys.png')}}" alt="apparel">
+            <span>Toys</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='kitchen.png')}}" alt="apparel">
+            <span>Kitchen</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='travel.png')}}" alt="apparel">
+            <span>Travel</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='footwear.png')}}" alt="apparel">
+            <span>Footwear</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='smartwatch.png')}}" alt="apparel">
+            <span>Smartwatch</span>
+            </a>
+        </div>
+        <div class="category-item col-sm-2">
+            <a href="#">
+            <img src="{{url_for('static', filename='smartphone.png')}}" alt="apparel">
+            <span>Smartphone</span>
+            </a>
+        </div>
+    </div>
 
-</html>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="title-container">
+            <h2>Top Sellers</h2>
+            <a href="#">See all  ></a>
+        </div>
+        <div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div><div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div><div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="title-container">
+            <h2>Under $25</h2>
+            <a href="#">See all  ></a>
+        </div>
+        <div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div><div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div><div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <a href="#" class="product-link">
+            <div class="product-item ">
+                <div>
+                    <h3>Ligma Fork</h3>
+                </div>
+                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
+                <div class="price-section">
+                <p><span>$</span>14.90</p>
+                <p><i class="fa-solid fa-star"></i>5.0</p>
+                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
+                </div>
+                
+            </a>        
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
