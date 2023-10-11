@@ -22,5 +22,11 @@ def categories():
 def subcategories():
     return render_template('subcategories.html')
 
+@app.route('/product', methods=["GET","POST"])
+def product():
+    productRating=5.0
+
+    return render_template('product.html', productName="ligma-fork",productRating=str(productRating),productDescription="Lorem ipsum dolor sit amnet.",productCategory="Lifestyle",productSubcategory="Lifestyle",productPrice = "14.99",productImageHTML=url_for('static', filename='fork.jpg'))
+
 if __name__ == '__main__':
     app.run(debug=True)
