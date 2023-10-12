@@ -22,9 +22,14 @@ h2,h1,h3,h4,.nav-link,.dropdown a{
     color: #1d9abc;
 }
 
-h1{
+.home-cta h1{
     font-size:55px;
 }
+
+h1{
+    font-size:38px;
+}
+
 
 h3{
     font-size:20px;
@@ -378,7 +383,7 @@ footer .row {
 }
 
 .categories{
-    margin-top: -80px;
+    margin-top: -90px;
     margin-bottom: 60px
 }
 
@@ -445,8 +450,8 @@ footer .row {
     padding:80px 20px 120px 20px;
 }
 
-.products,.product-content{
-    margin-top:-120px;
+.products,.product-content,.search-result{
+    margin-top:-130px;
 }
 
 .product-pagination{
@@ -550,7 +555,7 @@ footer .row {
     margin:40px 0 60px 0;
 }
 
-#review-form .form-group,#review-form{
+#review-form .form-group, #review-form, #filter-form{
     flex-direction: column;
     align-items: flex-start;
     width:100%;
@@ -575,6 +580,45 @@ ol.breadcrumb{
 .order-info div{
     flex:1;
 }
+
+.filter-container{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    padding:15px 0;
+}
+
+#filter-form{
+    padding:20px;
+    background-color: #fff;
+    margin:0;
+}
+
+#filter-form h2{
+    font-size: 20px;
+}
+
+.filter-container .filter-input{
+    flex:1;
+    display: flex;
+    margin-right: 20px;
+}
+
+.filter-container label{
+    margin-right: 20px;
+}
+
+.filter-row{
+    padding-bottom:0;
+}
+
+#login-form{
+    max-width: 600px;
+    padding: 30px;
+    background-color: #fff;
+    margin: -130px auto 0 auto;
+}
+
 
 @media (max-width: 992px) {
     h1{
