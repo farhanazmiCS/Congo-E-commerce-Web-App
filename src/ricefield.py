@@ -25,8 +25,15 @@ def subcategories():
 @app.route('/product', methods=["GET","POST"])
 def product():
     productRating=5.0
-
     return render_template('product.html', productName="ligma-fork",productRating=str(productRating),productDescription="Lorem ipsum dolor sit amnet.",productCategory="Lifestyle",productSubcategory="Lifestyle",productPrice = "14.99",productImageHTML=url_for('static', filename='fork.jpg'))
+
+@app.route('/search-result', methods=["GET","POST"])
+def searchResult():
+    return render_template('search-result.html',searchTerm="ligma fork")
+
+@app.route('/login', methods=["GET","POST"])
+def login():
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
