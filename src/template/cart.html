@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Congo.db{% endblock %}
+{% block content %}
+
+<div class="gradient-header-bg products-header">
+    <header class="container">
+        <div class="row">
+        </div>
+    </header>
+</div>
+    
+    <div class="container main-form">
+        <div class="row">
+            <div class="col-sm-12 cart-col">
+                
+                <form id="cart-form" method="post">
+                    <h1>Cart</h1> 
+                    <div class="cart-item">
+                        <div class="cart-img-mask">
+                            <a href="/product">
+                            <img src="{{url_for('static', filename='fork.jpg')}}">
+                            </a>
+                        </div>
+                        <div class="cart-item-info">
+                            <a href="/product"><h2>Ligma Fork</h2></a>
+                            <p>Price: $14.99</p>
+                            <p>Quantity: 1</p>
+                        </div>
+                        <div class="cart-remove-button">
+                            <a href=""><i class="fa-solid fa-x"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="cart-img-mask">
+                            <a href="/product">
+                            <img src="{{url_for('static', filename='fork.jpg')}}">
+                            </a>
+                        </div>
+                        <div class="cart-item-info">
+                            <a href="/product" ><h2>Ligma Fork</h2></a>
+                            <p>Price: $14.99</p>
+                            <p>Quantity: 1</p>
+                        </div>
+                        <div class="cart-remove-button">
+                            <a href=""><i class="fa-solid fa-x"></i></a>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Checkout</button>
+
+                </form>
+
+            </div>
+        </div>     
+    </div>
+{% endblock %}

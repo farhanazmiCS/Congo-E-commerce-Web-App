@@ -25,7 +25,7 @@ def subcategories():
 @app.route('/product', methods=["GET","POST"])
 def product():
     productRating=5.0
-    return render_template('product.html', productName="ligma-fork",productRating=str(productRating),productDescription="Lorem ipsum dolor sit amnet.",productCategory="Lifestyle",productSubcategory="Lifestyle",productPrice = "14.99",productImageHTML=url_for('static', filename='fork.jpg'))
+    return render_template('product.html', productName="ligma-fork",productRating=str(productRating),productDescription="Lorem ipsum dolor sit amnet.",productCategory="Lifestyle",productSubcategory="Lifestyle",productPrice = "14.99",productImageHTML=url_for('static', filename='fork.jpg'),productQuantity='2',productSupplier='SIT')
 
 @app.route('/search-result', methods=["GET","POST"])
 def searchResult():
@@ -34,6 +34,10 @@ def searchResult():
 @app.route('/login', methods=["GET","POST"])
 def login():
     return render_template('login.html')
+
+@app.route('/cart', methods=["GET","POST"])
+def cart():
+    return render_template('cart.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

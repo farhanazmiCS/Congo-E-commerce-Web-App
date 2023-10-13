@@ -32,7 +32,7 @@ h1{
 
 
 h3{
-    font-size:20px;
+    font-size:21px;
 }
 
 h2{
@@ -181,7 +181,7 @@ footer .copyright{
     background-color: #fff;
 }
 
-.footer-social-menu li svg{
+.footer-social-menu li i{
     width:15px;
     height:15px;
 }
@@ -353,7 +353,7 @@ footer h3{
     font-size:12px;
 }
 
-.product-item svg{
+.product-item i{
     color:#1d9abc;
     margin-right: 5px;
 }
@@ -489,6 +489,7 @@ footer .row {
 
 .product-review{
     padding:20px 0;
+    border-bottom:2px solid #ebebeb;
 }
 
 .product-info img{
@@ -502,11 +503,12 @@ footer .row {
 .product-categories{
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .product-categories div {
    flex:1;
-   padding:20px 0;
+   padding:10px 0;
 }
 
 #order-form h2{
@@ -530,8 +532,10 @@ footer .row {
     background-color: #fff;;
 }
 
-.product-review {
-    border-bottom:2px solid #ebebeb;
+
+
+.product-review i{
+    margin-right:5px;
 }
 
 .product-info h1{
@@ -560,6 +564,9 @@ footer .row {
     align-items: flex-start;
     width:100%;
     flex-basis: 100%;
+}
+
+#review-form .form-group{
     margin:20px 0;
 }
 
@@ -619,10 +626,83 @@ ol.breadcrumb{
     margin: -130px auto 0 auto;
 }
 
+#cart-form{
+    max-width: 800px;
+    padding: 30px;
+    background-color: #fff;
+    margin: -130px auto 0 auto;
+}
+
+.rating-stars{
+    display:flex;
+}
+
+.rating-stars input[type="radio"]{
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.rating-stars label{
+    margin-right:10px;
+}
+
+.star-selected i,.star-selected{
+     color:#1d9abc;
+}
+
+.product-review div{
+    display:flex;
+    justify-content: space-between;
+}
+
+.search-row{
+    padding-top: 20px;
+}
+
+.cart-item{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding:20px;
+    border-bottom:2px solid #ebebeb;
+}
+
+.cart-item img{
+    object-fit: contain;
+    width:100%;
+    height:auto;
+}
+
+.cart-item .cart-img-mask{
+    width:150px;
+    height: 150px;
+    overflow:hidden;
+}
+
+.cart-item-info{
+    margin: 0px 20px;
+    flex:1;
+}
+
+.cart-item-info p{
+    margin: 0 0 10px;
+}
+
+.cart-item-info h2{
+    font-size: 21px;
+    margin: 0 0 20px;
+}
+
+.cart-item-info a{
+    color: #111f2a;
+}
+
+
 
 @media (max-width: 992px) {
     h1{
-        font-size:48px;
+        font-size:32px;
     }
     
     h3{
