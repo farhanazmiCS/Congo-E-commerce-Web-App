@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Congo.db{% endblock %}
+{% block content %}
+
+<div class="gradient-header-bg products-header">
+    <header class="container">
+        <div class="row">
+        </div>
+    </header>
+</div>
+    
+    <div class="container main-form">
+        <div class="row">
+            <div class="col-sm-12 orders-col">
+                
+                <div class="order-overview">
+                    <h1>Your Orders:</h1> 
+                    <div class="orders-item">
+                        <div class="orders-item-info">
+                            <a href="/order"><h2>Order: 10069</h2></a>
+                            <p>Price: $14.99</p>
+                            <p>Date made: 14/10/2023</p>
+                            <p>Arrival Date: 29/10/2023</p>
+                            <p>Status: Shipped</p>
+                        </div>
+                        <div class="orders-remove-button">
+                            <a href=""><i class="fa-solid fa-x"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="orders-item">
+                        <div class="orders-item-info">
+                            <a href="/order" ><h2>Order:10070</h2></a>
+                            <p>Price: $14.99</p>
+                            <p>Date made: 14/10/2023</p>
+                            <p>Arrival Date: 29/10/2023</p>
+                            <p>Status: Pending</p>
+                        </div>
+                        <div class="orders-remove-button">
+                            <a href=""><i class="fa-solid fa-x"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>     
+    </div>
+{% endblock %}

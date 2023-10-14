@@ -11,48 +11,46 @@
     
     <div class="container main-form">
         <div class="row">
-            <div class="col-sm-12 cart-col">
+            <div class="col-sm-12 order-col">
                 
-                <form id="cart-form" method="post">
-                    <h1>Cart</h1> 
-                    <div class="cart-item">
-                        <div class="cart-img-mask">
+                <form id="order-info-form" method="post">
+                    <h1>Order: {{orderNumber}}</h1> 
+                    <div class="order-item">
+                        <div class="order-img-mask">
                             <a href="/product">
                             <img src="{{url_for('static', filename='fork.jpg')}}">
                             </a>
                         </div>
-                        <div class="cart-item-info">
+                        <div class="order-item-info">
                             <a href="/product"><h2>Ligma Fork</h2></a>
                             <p>Price: $14.99</p>
                             <p>Quantity: 1</p>
                         </div>
-                        <div class="cart-remove-button">
-                            <a href=""><i class="fa-solid fa-x"></i></a>
-                        </div>
                     </div>
 
-                    <div class="cart-item">
-                        <div class="cart-img-mask">
+                    <div class="order-item">
+                        <div class="order-img-mask">
                             <a href="/product">
                             <img src="{{url_for('static', filename='fork.jpg')}}">
                             </a>
                         </div>
-                        <div class="cart-item-info">
+                        <div class="order-item-info">
                             <a href="/product" ><h2>Ligma Fork</h2></a>
                             <p>Price: $14.99</p>
                             <p>Quantity: 1</p>
                         </div>
-                        <div class="cart-remove-button">
-                            <a href=""><i class="fa-solid fa-x"></i></a>
-                        </div>
+                      
                     </div>
 
-                    <div class="cart-subtotal">
-                        <div><h2>Subtotal:</h2><p>$29.98</p></div>
+                    <div class="order-subtotal">
+                        <div><h2>Subtotal:</h2><p>${{orderTotal}}</p></div>
+                        <div><h2>Date made:</h2><p>{{orderDate}}</p></div>
+                        <div><h2>Arrival date:</h2><p>{{orderArrivalDate}}</p></div>
+                        <div><h2>Status:</h2><p>{{orderStatus}}</p></div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Checkout</button>
-
+                    <div class="order-button-group">
+                    <button type="submit" class="btn btn-primary">Cancel Order</button> <a href="/orders" class="btn btn-primary">Back to Orders</a>
+                    </div>
                 </form>
 
             </div>

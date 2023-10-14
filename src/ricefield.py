@@ -39,5 +39,17 @@ def login():
 def cart():
     return render_template('cart.html')
 
+@app.route('/orders', methods=["GET","POST"])
+def orders():
+    return render_template('orders.html')
+
+@app.route('/order', methods=["GET","POST"])
+def order():
+    return render_template('order.html',orderNumber="10006969",orderTotal="29.98",orderDate="14/10/2023",orderStatus="Shipped", orderArrivalDate="29/10/2023")
+
+@app.route('/signup', methods=["GET","POST"])
+def signup():
+    return render_template('signup.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
