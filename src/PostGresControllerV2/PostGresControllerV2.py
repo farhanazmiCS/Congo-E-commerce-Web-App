@@ -61,7 +61,7 @@ class Read:
         self.connection = connection
         self.cur = self.connection.cursor()
         
-    def fetch(self, table: str, columns: list=[], joins: list=[], where: list=[], params=None) -> object:
+    def fetch(self, table: str, columns: list=[], joins: list=[], where: list=[]) -> object:
         """ Fetches data from a specified table and automatically executes the SQL 
 
             Usage examples:
@@ -88,7 +88,7 @@ class Read:
             sql += self.construct_where(where)
             
         # Execute and fetch results
-        return self.execute(sql, params)
+        return self.execute(sql)
     
     def construct_joins(self, joins):
         """ For constructing the joins """
@@ -111,13 +111,10 @@ class Read:
         return where_str
             
 
-    def execute(self, sql, params=None):
+    def execute(self, sql):
         """ Executes the SQL query """
         try:
-            if params:
-                self.cur.execute(sql, params)  # using parameters to avoid SQL injection
-            else:
-                self.cur.execute(sql)
+            self.cur.execute(sql)
             return self.cur.fetchall()
         except Exception as e:
             # Log or print the exception
@@ -145,17 +142,46 @@ class Update:
 class Delete:
     def __init__(self, connection):
         self.connection = connection
-        self.curr = self.connection.cursor()
+        self.cur = self.connection.cursor()
         
-    def delete(self, table, conditions=None):
-        """ Deletes tuple(s) from a table """
-        if conditions == None:
-            return f'DELETE FROM {table}'
-        else:
-            return f'DELETE FROM {table} WHERE'
+    def delete(self, table, conditions=[]):
+        """ Deletes tuple(s) from a table 
 
-    def execute(self, table, conditions=None):
-        sql = self.delete(table, conditions)
+            Usage examples:
+
+            delete('public.user') -> DELETE FROM public.user
+            delete('public.user', ["username='controllerTest']) -> DELETE FROM public.user WHERE username='controllerTest'
+        
+        """
+        sql = f'DELETE FROM {table}'
+        if conditions != []:
+            sql += f'{self.construct_where(conditions)}'
+        return self.execute(sql)
+        
+    def construct_where(self, conditions):
+        """ For constructing the where """
+        where_str = ''
+        for index, where in enumerate(conditions):
+            if index == 0:
+                where_str += f' WHERE {where}'
+            elif index != conditions[-1]:
+                where_str += f'AND {where}'
+            else:
+                where_str += f'{where}'
+        return where_str
+
+    def execute(self, sql):
+        """ Executes the SQL query """
+        try:
+            self.cur.execute(sql)
+            self.connection.commit()
+        except Exception as e:
+            # Rollback if execution fails
+            self.connection.rollback()
+            # Log or print the exception
+            print(f"An error occurred: {str(e)}")
+            # You might want to re-raise the exception after logging it for further upstream handling
+            raise e
 
 
 def initialise_crud():
