@@ -1,4 +1,4 @@
-from psycopg2 import connect
+from psycopg2 import connect, DatabaseError
 import configparser
 
 def establish_conn() -> object:
@@ -18,21 +18,42 @@ class Create:
         self.connection = connection
         self.cur = self.connection.cursor()
 
-    def insert(self, table: str, columns: list, values: list) -> str:
-        """ Inserts a value into a column in a table and returns the sql statement """
+    def insert(self, table: str, columns: list, values: list) -> object:
+        """ Inserts a value into a column in a table and returns the sql statement 
+        
+            Usage example:
+
+            insert(table='user', 
+                      columns=[
+                          'username', 
+                          'userpasword', 
+                          'usertype', 
+                          'useremail', 
+                          'useraddress'
+                        ], 
+                      values=[
+                          'controllerTest2',
+                          'HASHED_PASSWORD',
+                          'customer',
+                          'controllertest2@test.com',
+                          '510 Dover Rd, Singapore 139660'
+                      ])    
+        """
         columns = ','.join(columns)
         placeholders = ','.join(['%s'] * len(values))
-        sql = f'INSERT INTO {table} ({columns}) VALUES ({placeholders})'
+        sql = f'INSERT INTO "{table}" ({columns}) VALUES ({placeholders})'
         return self.execute(sql, values)
 
-    def execute(self, sql, values: list):
+    def execute(self, sql: str, values: list) -> None:
         """ Executes the prepared statement """
         try:
             self.cur.execute(sql, values)
-        except:
-            print("Query cannot be executed")
+            self.connection.commit()
+        except (Exception, DatabaseError) as e:
+            self.connection.rollback()
+            print(f'Error {e}')
         else:
-            print("Success!")
+            print("Record successfully added into table")
 
 
 class Read:
@@ -40,23 +61,31 @@ class Read:
         self.connection = connection
         self.cur = self.connection.cursor()
         
-    def fetch(self, table: str, columns=None, joins=None, where=None, params=None):
-        """ Fetches data from a specified table and automatically executes the SQL """
+    def fetch(self, table: str, columns: list=[], joins: list=[], where: list=[], params=None) -> object:
+        """ Fetches data from a specified table and automatically executes the SQL 
+
+            Usage examples:
+
+                fetch(table='supplier') -> SELECT * FROM supplier
+                fetch(table='supplier', columns=['suppliername'], where={'supplierid':1}) -> SELECT suppliername FROM supplier WHERE supplierid = 1 
+
+        """
         
-        # Selecting all columns
-        if columns is None:
+        # If columns parameter is empty, *
+        if columns == []:
             sql = f'SELECT * FROM {table}'
+        # Projection
         else:
             columns = ','.join(columns)
             sql = f'SELECT {columns} FROM {table}'
 
         # Handling joins
-        if joins:
+        if joins != []:
             sql += self.construct_joins(joins)
             
         # Handling where conditions
-        if where:
-            sql += f' WHERE {where}'
+        if where != []:
+            sql += self.construct_where(where)
             
         # Execute and fetch results
         return self.execute(sql, params)
@@ -68,6 +97,19 @@ class Read:
             # Example use "JOIN products ON sid=pid"
             join_str += f" {join['type']} JOIN {join['table']} ON {join['condition']} "
         return join_str.strip()
+    
+    def construct_where(self, conditions):
+        """ For constructing the where """
+        where_str = ''
+        for index, where in enumerate(conditions):
+            if index == 0:
+                where_str += f' WHERE {where}'
+            elif index != conditions[-1]:
+                where_str += f'AND {where}'
+            else:
+                where_str += f'{where}'
+        return where_str
+            
 
     def execute(self, sql, params=None):
         """ Executes the SQL query """
