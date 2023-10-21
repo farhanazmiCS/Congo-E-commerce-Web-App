@@ -102,7 +102,7 @@ class Read:
         for join in joins:
             # Example use "JOIN products ON sid=pid"
             join_str += f" {join['type']} JOIN {join['table']} ON {join['condition']} "
-        return join_str.strip()
+        return join_str
     
     def construct_where(self, conditions):
         """ For constructing the where """

@@ -5,6 +5,7 @@ app.secret_key = 'inf2003'  # Replace 'your_secret_key_here' with your actual se
 # Import app_pages logic
 import app_pages.signup
 import app_pages.login
+import app_pages.category
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
@@ -13,10 +14,6 @@ def homepage():
 @app.route('/subcategory', methods=["GET","POST"])
 def subcategory():
     return render_template('subcategory.html',categoryName="beauty-placeholder")
-
-@app.route('/category', methods=["GET","POST"])
-def category():
-    return render_template('category.html', categoryName="category-placeholder")
 
 @app.route('/categories', methods=["GET","POST"])
 def categories():

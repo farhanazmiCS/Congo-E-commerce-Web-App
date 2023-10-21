@@ -12,206 +12,48 @@
     </header>
     </div>
     
-    <div class="container products">
-        <div class="row">
+<!-- Iterate through the products to display them -->
+<div class="container products">
+    <div class="row">
+        {% for product in products %}
             <div class="col-sm-3">
-                <a href="/product" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
+                <a href="/product/{{ product[0] }}" class="product-link">
+                    <div class="product-item">
+                        <div>
+                            <h3>{{ product[1] }}</h3> <!-- Product Name -->
+                        </div>
+                        <img src="{{ product[3] }}" alt="product"> <!-- Product Image URL -->
+                        <div class="price-section">
+                            <p><span>$</span>{{ product[4] }}</p> <!-- Product Price -->
+                            <p><i class="fa-solid fa-star"></i>XX</p> <!-- Product Rating -->
+                            <button class="btn btn-primary" href="/product/{{ product[0] }}" role="button">Shop Now</button>
+                        </div>
                     </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="/product" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div><div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div><div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
+                </a>
             </div>
-            <div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div><div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div><div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div><div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div><div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <a href="#" class="product-link">
-                <div class="product-item ">
-                    <div>
-                        <h3>Ligma Fork</h3>
-                    </div>
-                    <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                    <div class="price-section">
-                    <p><span>$</span>14.90</p>
-                    <p><i class="fa-solid fa-star"></i>5.0</p>
-                    <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                    </div>
-                    
-                </a>        
-                </div>
-            </div>
-        </div>
-        <div class="row product-pagination">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-              </nav>
-        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination -->
+<div class="row product-pagination">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if page is defined and page > 1 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('category', category=category_id, page=page-1) }}">Previous</a></li>
+            {% endif %}
+            {% for i in range(1, total_pages + 1) %}
+                <li class="page-item {% if i == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('category', category=category_id, page=i) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            {% if page is defined and page < total_pages %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('category', category=category_id, page=page+1) }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
 
         <div class="row category-subcategory">
             <div class="title-container">
