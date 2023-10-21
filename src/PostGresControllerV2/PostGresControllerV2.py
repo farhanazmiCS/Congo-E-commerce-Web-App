@@ -1,10 +1,16 @@
+import os
 from psycopg2 import connect, DatabaseError
 import configparser
 
 def establish_conn() -> object:
     """ Establishes a connection with the relational database """
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    config_file = os.path.join(script_dir, 'config.ini')
+
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(config_file)
+
     conn = connect(
         host=config['CREDENTIALS']['host'],
         database=config['CREDENTIALS']['database'],

@@ -1,6 +1,8 @@
 from flask import *
 app = Flask(__name__, template_folder='template')
 
+# Import and register your views (blueprints) here
+import signup
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
@@ -46,10 +48,6 @@ def orders():
 @app.route('/order', methods=["GET","POST"])
 def order():
     return render_template('order.html',orderNumber="10006969",orderTotal="29.98",orderDate="14/10/2023",orderStatus="Shipped", orderArrivalDate="29/10/2023")
-
-@app.route('/signup', methods=["GET","POST"])
-def signup():
-    return render_template('signup.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

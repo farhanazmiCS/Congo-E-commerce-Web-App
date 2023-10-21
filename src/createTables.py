@@ -19,7 +19,7 @@ class User(Base):
 
     userid = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, nullable=False)
-    userpasword = Column(String, nullable=False)
+    userpassword = Column(String, nullable=False)
     usertype = Column(String, nullable=False)
     useremail = Column(String, nullable=False)
     useraddress = Column(String, nullable=False)
