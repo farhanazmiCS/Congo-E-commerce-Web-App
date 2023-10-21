@@ -7,7 +7,7 @@ create, read, update, delete = initialise_crud()
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    signup_success = False
+    signup_success = False  # Initialize these variables with default values
     error_message = None
 
     if request.method == 'POST':
@@ -17,7 +17,12 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        if password1 == password2:
+        # Check if the username or email already exists
+        user_exists = read.fetch(table='public.user', where=[f"username = '{username}' OR useremail = '{email}'"])
+
+        if user_exists:
+            error_message = "Username or email already exists."
+        elif password1 == password2:
             # Hash the password using Werkzeug
             hashed_password = generate_password_hash(password1)
 
@@ -33,6 +38,7 @@ def signup():
             # Use create.insert() to insert the user data into the database
             query = create.insert(table='user', columns=list(user_data.keys()), values=list(user_data.values()))
             signup_success = True
+            error_message = None  # Reset error message on success
         else:
             error_message = "Passwords do not match."
 
