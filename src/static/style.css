@@ -424,6 +424,17 @@ footer .row {
     height: 200px;
 }
 
+/* Style for the active page link */
+.pagination .page-item.active .page-link {
+    color: #ffffff; /* Text color for active link */
+    background-color: #1d9abc; /* Background color for active link */
+}
+
+/* Style for non-active page links */
+.pagination .page-item .page-link {
+    color: #1d9abc; /* Text color for non-active link */
+}
+
 .price-section{
     display: flex;
     justify-content: center;

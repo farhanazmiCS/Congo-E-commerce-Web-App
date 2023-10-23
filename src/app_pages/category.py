@@ -47,8 +47,8 @@ def category():
     products = fetch_products_by_category(category_id, page)
 
     # Calculate the starting and ending page numbers for pagination
-    start_page = max(1, page - 5)
-    end_page = min(total_pages, page + 5)
+    start_page = max(1, page - 2)
+    end_page = min(total_pages, page + 2)
 
     return render_template('category.html', category_id=category_id, categoryName=category_name, products=products,
                            page=page, total_pages=total_pages, 
