@@ -9,14 +9,11 @@ create, read, update, delete = initialise_crud()
 import app_pages.signup
 import app_pages.login
 import app_pages.category
+import app_pages.subcategory
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
     return render_template('index.html')
-
-@app.route('/subcategory', methods=["GET","POST"])
-def subcategory():
-    return render_template('subcategory.html',categoryName="beauty-placeholder")
 
 @app.route('/categories', methods=["GET","POST"])
 def categories():
