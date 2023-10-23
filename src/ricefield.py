@@ -12,18 +12,12 @@ import app_pages.category
 import app_pages.subcategory
 import app_pages.search_result
 import app_pages.product
+import app_pages.subcategories
+import app_pages.categories
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
     return render_template('index.html')
-
-@app.route('/categories', methods=["GET","POST"])
-def categories():
-    return render_template('categories.html')
-
-@app.route('/subcategories', methods=["GET","POST"])
-def subcategories():
-    return render_template('subcategories.html')
 
 @app.route('/cart', methods=["GET","POST"])
 def cart():

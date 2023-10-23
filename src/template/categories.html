@@ -14,163 +14,39 @@
     
     <div class="container categories">
         <div class="row">
-
+            {% for category in categories %}
             <div class="category-item col-sm-2">
-                <a href="/category">
-                <img src="{{url_for('static', filename='apparel.png')}}" alt="apparel">
-                <span>Apparel</span>
+                <a href="/category?category={{ category.id }}">
+                    <img src="{{ category.image }}" alt="{{ category.name }}">
+                    <span>{{ category.name }}</span>
                 </a>
             </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='beauty.png')}}" alt="apparel">
-                <span>Beauty</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='instruments.png')}}" alt="apparel">
-                <span>Instruments</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='home-appliances.png')}}" alt="apparel">
-                <span>Home appliances</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='furniture.png')}}" alt="apparel">
-                <span>Furniture</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='stationery.png')}}" alt="apparel">
-                <span>Stationery</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='toys.png')}}" alt="apparel">
-                <span>Toys</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='kitchen.png')}}" alt="apparel">
-                <span>Kitchen</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='travel.png')}}" alt="apparel">
-                <span>Travel</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='footwear.png')}}" alt="apparel">
-                <span>Footwear</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='smartwatch.png')}}" alt="apparel">
-                <span>Smartwatch</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='smartphone.png')}}" alt="apparel">
-                <span>Smartphone</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='apparel.png')}}" alt="apparel">
-                <span>Apparel</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='beauty.png')}}" alt="apparel">
-                <span>Beauty</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='instruments.png')}}" alt="apparel">
-                <span>Instruments</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='home-appliances.png')}}" alt="apparel">
-                <span>Home appliances</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='furniture.png')}}" alt="apparel">
-                <span>Furniture</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='stationery.png')}}" alt="apparel">
-                <span>Stationery</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='toys.png')}}" alt="apparel">
-                <span>Toys</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='kitchen.png')}}" alt="apparel">
-                <span>Kitchen</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='travel.png')}}" alt="apparel">
-                <span>Travel</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='footwear.png')}}" alt="apparel">
-                <span>Footwear</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='smartwatch.png')}}" alt="apparel">
-                <span>Smartwatch</span>
-                </a>
-            </div>
-            <div class="category-item col-sm-2">
-                <a href="#">
-                <img src="{{url_for('static', filename='smartphone.png')}}" alt="apparel">
-                <span>Smartphone</span>
-                </a>
-            </div>
+            {% endfor %}
         </div>
+    </div>
         
 </div>
 <div class="row product-pagination">
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            {% if page > 1 %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('categories', page=page-1) }}">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            {% endif %}
+
+            {% for p in range(1, total_pages + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('categories', page=p) }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+
+            {% if page < total_pages %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('categories', page=page+1) }}">Next</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+            {% endif %}
         </ul>
-      </nav>
+    </nav>
 </div>
 {% endblock %}
