@@ -83,7 +83,7 @@ class Read:
 
                 fetch(table='supplier') -> SELECT * FROM supplier
                 fetch(table='supplier', columns=['suppliername'], where={'supplierid':1}) -> SELECT suppliername FROM supplier WHERE supplierid = 1 
-                fetch(table='supplier', columns=['suppliername'], orderBy={'supplierName': 'DESC'}) -> SELECT suppliername FROM supplier ORDER BY suppliername DESC
+                fetch(table='supplier', columns=['suppliername'], orderBy={'suppliername': 'DESC'}) -> SELECT suppliername FROM supplier ORDER BY suppliername DESC
                 fetch(table='supplier', columns['suppliername'], limit=20, offset=20) -> SELECT suppliername FROM supplier LIMIT 20 OFFSET 20
 
         """
