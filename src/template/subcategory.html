@@ -56,6 +56,7 @@
                 {% endif %}
 
                 <form method="GET" action="{{ url_for('subcategory', subcategory=subcategory_id) }}" class="form-inline d-flex align-items-center">
+                    <input type="hidden" name="subcategory" value="{{ subcategory_id }}">
                     <label for="pageDropdown" class="ml-2 mr-2">Page:</label>
                     <select class="form-control" id="pageDropdown" name="page" onchange="this.form.submit()">
                         {% for i in range(1, total_pages + 1) %}
@@ -63,6 +64,7 @@
                         {% endfor %}
                     </select>
                 </form>
+                
             </ul>
         </nav>
     </div>

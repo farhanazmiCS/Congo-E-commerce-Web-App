@@ -10,6 +10,7 @@ import app_pages.signup
 import app_pages.login
 import app_pages.category
 import app_pages.subcategory
+import app_pages.search_result
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
@@ -27,10 +28,6 @@ def subcategories():
 def product():
     productRating=5.0
     return render_template('product.html', productName="ligma-fork",productRating=str(productRating),productDescription="Lorem ipsum dolor sit amnet.",productCategory="Lifestyle",productSubcategory="Lifestyle",productPrice = "14.99",productImageHTML=url_for('static', filename='fork.jpg'),productQuantity='2',productSupplier='SIT')
-
-@app.route('/search-result', methods=["GET","POST"])
-def searchResult():
-    return render_template('search-result.html',searchTerm="ligma fork")
 
 @app.route('/cart', methods=["GET","POST"])
 def cart():
