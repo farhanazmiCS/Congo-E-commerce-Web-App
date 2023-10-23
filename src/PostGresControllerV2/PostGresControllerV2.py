@@ -67,13 +67,24 @@ class Read:
         self.connection = connection
         self.cur = self.connection.cursor()
         
-    def select(self, table: str, columns: list=[], joins: list=[], where: list=[]) -> object:
+    def select(
+            self, 
+            table: str, 
+            columns: list=[], 
+            joins: list=[], 
+            where: list=[], 
+            distinct: bool=False, 
+            orderBy: dict={}, 
+            limit: int=None, 
+            offset: int=None) -> object:
         """ Fetches data from a specified table and automatically executes the SQL 
 
             Usage examples:
 
                 fetch(table='supplier') -> SELECT * FROM supplier
                 fetch(table='supplier', columns=['suppliername'], where={'supplierid':1}) -> SELECT suppliername FROM supplier WHERE supplierid = 1 
+                fetch(table='supplier', columns=['suppliername'], orderBy={'supplierName': 'DESC'}) -> SELECT suppliername FROM supplier ORDER BY suppliername DESC
+                fetch(table='supplier', columns['suppliername'], limit=20, offset=20) -> SELECT suppliername FROM supplier LIMIT 20 OFFSET 20
 
         """
         
@@ -83,7 +94,10 @@ class Read:
         # Projection
         else:
             columns = ','.join(columns)
-            sql = f'SELECT {columns} FROM {table}'
+            if not distinct:
+                sql = f'SELECT {columns} FROM {table}'
+            else:
+                sql = f'SELECT DISTINCT {columns} FROM {table}'
 
         # Handling joins
         if joins != []:
@@ -92,6 +106,19 @@ class Read:
         # Handling where conditions
         if where != []:
             sql += self.construct_where(where)
+
+        # Handling order by operations
+        if orderBy != {}:
+            for order in orderBy:
+                sql += self.construct_order(order, orderBy[order])
+
+        # Handling limit
+        if limit != None:
+            sql += self.construct_limit(limit)
+
+        # Handling offset
+        if offset != None:
+            sql += self.construct_offset(offset)
             
         # Execute and fetch results
         return self.execute(sql)
@@ -115,8 +142,22 @@ class Read:
             else:
                 where_str += f'{where}'
         return where_str
+    
+    def construct_order(self, column: str, type: str='ASC') -> str:
+        """ For constructing the order by """
+        order_str = f' ORDER BY {column} {type}'
+        return order_str
+    
+    def construct_limit(self, limit: int) -> str:
+        """ For constructing limit query """
+        limit_str = f' LIMIT {limit}'
+        return limit_str
+    
+    def construct_offset(self, offset: int) -> str:
+        """ For constructing offset query """
+        offset_str = f' OFFSET {offset}'
+        return offset_str
             
-
     def execute(self, sql) -> None:
         """ Executes the SQL query """
         try:
