@@ -430,9 +430,20 @@ footer .row {
     background-color: #1d9abc; /* Background color for active link */
 }
 
+/* Style for the hover active page link */
+.pagination .page-item.active .page-link:hover {
+    color: #ffffff; /* Text color for active link */
+    background-color: #1d9abc; /* Background color for active link */
+}
+
 /* Style for non-active page links */
 .pagination .page-item .page-link {
     color: #1d9abc; /* Text color for non-active link */
+}
+
+/* Hover effect for non-active links */
+.pagination .page-item .page-link:hover {
+    background-color: rgb(223, 223, 223); /* Change background color on hover */
 }
 
 .price-section{
