@@ -1,10 +1,16 @@
+import os
 from psycopg2 import connect, DatabaseError
 import configparser
 
 def establish_conn() -> object:
     """ Establishes a connection with the relational database """
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    config_file = os.path.join(script_dir, 'config.ini')
+
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(config_file)
+
     conn = connect(
         host=config['CREDENTIALS']['host'],
         database=config['CREDENTIALS']['database'],
@@ -96,7 +102,7 @@ class Read:
         for join in joins:
             # Example use "JOIN products ON sid=pid"
             join_str += f" {join['type']} JOIN {join['table']} ON {join['condition']} "
-        return join_str.strip()
+        return join_str
     
     def construct_where(self, conditions) -> str:
         """ For constructing the where """
