@@ -16,37 +16,37 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="/category">{{productCategory}}</a></li>
-                    <li class="breadcrumb-item"><a href="/subcategory">{{productSubcategory}}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{productName}}</li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('category', category=product['category_id']) }}">{{ product['category_name'] }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('subcategory', subcategory=product['subcategory_id']) }}">{{ product['subcategory_name'] }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ product['product_name'] }}</li>
                     </ol>
                 </nav>
-                <h1>{{productName}}</h1>
-                <img src="{{productImageHTML}}" alt="fork">
+                <h1>{{ product['product_name'] }}</h1>
+                <img src="{{ product['product_image'] }}" alt="{{ product['product_name'] }}">
 
-                <div class="product-categories">
+                <div class="product-categories mt-5">
                     <div>
                         <h3>Category</h3>
-                        <p><a href="/{{productCategory}}">{{productCategory}} </a></p>
+                        <p><a href="{{ url_for('category', category=product['category_id']) }}">{{ product['category_name'] }}</a></p>
                     </div>
                     <div>
                         <h3>Subcategory</h3>
-                        <p><a href="{{productSubcategory}}">{{productSubcategory}}</a></p>
+                        <p><a href="{{ url_for('subcategory', subcategory=product['subcategory_id']) }}">{{ product['subcategory_name'] }}</a></p>
                     </div>
                   
                 </div>
                 <div class="product-categories">
                     <div>
                         <h3>Supplier</h3>
-                        <p><a href="/{{productSupplier}}">{{productSupplier}} </a></p>
+                        <p>{{ product['supplier_name'] }}</a></p>
                     </div>
                     <div>
                         <h3>Remaining Quantity</h3>
-                        <p><a href="{{productQuantity}}">{{productQuantity}}</a></p>
+                        <p>{{ product['product_stock']}}</a></p>
                     </div>
                 </div>
                 <h2>Product Description</h2>
-                <p>{{productDescription}}</p>
+                <p>{{ product['product_description'] }}</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-12 sticky">
@@ -62,7 +62,7 @@
                 </div>
                 <div>
                     <h3>Price</h3>
-                        <p><span>$</span>14.90</p>
+                        <p><span>$</span>{{ product['product_price'] }}</p>
                 </div>
             </div>
             <div class="form-group">

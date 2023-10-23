@@ -2,7 +2,6 @@ from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, request, abort, render_template
 from werkzeug.security import generate_password_hash
-from PostGresControllerV2.PostGresControllerV2 import initialise_crud
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

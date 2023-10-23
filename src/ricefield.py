@@ -11,6 +11,7 @@ import app_pages.login
 import app_pages.category
 import app_pages.subcategory
 import app_pages.search_result
+import app_pages.product
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
@@ -23,11 +24,6 @@ def categories():
 @app.route('/subcategories', methods=["GET","POST"])
 def subcategories():
     return render_template('subcategories.html')
-
-@app.route('/product', methods=["GET","POST"])
-def product():
-    productRating=5.0
-    return render_template('product.html', productName="ligma-fork",productRating=str(productRating),productDescription="Lorem ipsum dolor sit amnet.",productCategory="Lifestyle",productSubcategory="Lifestyle",productPrice = "14.99",productImageHTML=url_for('static', filename='fork.jpg'),productQuantity='2',productSupplier='SIT')
 
 @app.route('/cart', methods=["GET","POST"])
 def cart():

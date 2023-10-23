@@ -2,7 +2,6 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
-from PostGresControllerV2.PostGresControllerV2 import initialise_crud
 
 def fetch_products_by_category(category_id, page):
     products_per_page = 12  # Number of products to display per page
@@ -16,7 +15,7 @@ def fetch_products_by_category(category_id, page):
 def get_category_name(category_id):
     category = read.select(table='category', where=[f'categoryid = {category_id}'])
     if category:
-        return category[0][1].title()
+        return category[0][1]
     return "Category Not Found"
 
 # TODO: For pagination

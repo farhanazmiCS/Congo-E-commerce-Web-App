@@ -2,7 +2,6 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
-from PostGresControllerV2.PostGresControllerV2 import initialise_crud
 
 def fetch_products_by_category(subcategory_id, page):
     products_per_page = 12  # Number of products to display per page
@@ -15,7 +14,7 @@ def fetch_products_by_category(subcategory_id, page):
 def get_subcategory_name(subcategory_id):
     subcategory = read.select(table='subcategory', where=[f'subcategoryid = {subcategory_id}'])
     if subcategory:
-        return subcategory[0][2].title()
+        return subcategory[0][2]
     return "Subcategory Not Found"
 
 # TODO: For pagination

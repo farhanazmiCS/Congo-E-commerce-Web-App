@@ -17,7 +17,7 @@
         <div class="row">
             {% for product in products %}
                 <div class="col-sm-3">
-                    <a href="/product/{{ product[0] }}" class="product-link">
+                    <a href="/product?id={{ product[0] }}" class="product-link">
                         <div class="product-item">
                             <div>
                                 <h3>{{ product[1] }}</h3> <!-- Product Name -->
@@ -28,7 +28,7 @@
                             <div class="price-section">
                                 <p><span>$</span>{{ product[4] }}</p> <!-- Product Price -->
                                 <p><i class="fa-solid fa-star"></i>XX</p> <!-- TODO: Product Rating -->
-                                <button class="btn btn-primary" href="/product/{{ product[0] }}" role="button">Shop Now</button>
+                                <button class="btn btn-primary" href="/product?id={{ product[0] }}" role="button">Shop Now</button>
                             </div>
                         </div>
                     </a>
