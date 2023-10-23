@@ -1,9 +1,8 @@
 from __main__ import app
+from ricefield import create, read, update, delete
 from flask import Flask, request, abort, render_template
 from werkzeug.security import generate_password_hash
 from PostGresControllerV2.PostGresControllerV2 import initialise_crud
-
-create, read, update, delete = initialise_crud()
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -18,7 +17,7 @@ def signup():
         password2 = request.form.get('password2')
 
         # Check if the username or email already exists
-        user_exists = read.fetch(table='public.user', where=[f"username = '{username}' OR useremail = '{email}'"])
+        user_exists = read.select(table='public.user', where=[f"username = '{username}' OR useremail = '{email}'"])
 
         if user_exists:
             error_message = "Username or email already exists."

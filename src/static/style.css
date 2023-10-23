@@ -420,6 +420,10 @@ footer .row {
     padding:15px;
 }
 
+.product-image img {
+    height: 200px;
+}
+
 .price-section{
     display: flex;
     justify-content: center;
@@ -815,4 +819,3 @@ ol.breadcrumb{
         max-width: 200px;
     }
 }
-

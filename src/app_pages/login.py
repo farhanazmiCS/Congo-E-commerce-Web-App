@@ -1,9 +1,8 @@
 from __main__ import app
+from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, abort, render_template, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from PostGresControllerV2.PostGresControllerV2 import initialise_crud
-
-create, read, update, delete = initialise_crud()
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -13,7 +12,7 @@ def login():
         password = request.form.get('password')
 
         # Replace 'user_password' with the correct column name for the hashed password in your database
-        user_data = read.fetch(table='public.user', where=[f"useremail = '{email}'"])
+        user_data = read.select(table='public.user', where=[f"useremail = '{email}'"])
         
         if user_data:
             for row in user_data:
