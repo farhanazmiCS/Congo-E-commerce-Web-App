@@ -1,5 +1,6 @@
 from __main__ import app
 from ricefield import create, read, update, delete
+from mongodbcontrollerV2 import MongoDBController
 from flask import Flask, request, abort, render_template
 from werkzeug.security import generate_password_hash
 
@@ -32,10 +33,28 @@ def signup():
                 'useremail': email,
                 'useraddress': address
             }
-
             # Use create.insert() to insert the user data into the database
             query = create.insert(table='user', columns=list(user_data.keys()), values=list(user_data.values()))
+
+            # create user's cart in MongoDB
+            # get user ID from created user's username
+            user_id = read.select(table='public.user', where=[f"username = '{username}'"])
+            if (user_id):
+
+                cart_data = {
+                    'user_id': user_id[0][0],
+                    'products': []
+                }
+
+                controller = MongoDBController() 
+                controller.create('Cart', cart_data)
+                controller.close_connection()
+
+            else:
+                error_message = "User ID not found to create cart."
+
             signup_success = True
+
             error_message = None  # Reset error message on success
         else:
             error_message = "Passwords do not match."

@@ -75,6 +75,8 @@ class MongoDBController:
         collection = self.db["product"]
         collection.delete_one({"id": product_id})
 
+        
+
 
 if __name__ == "__main__":
     controller = MongoDBController()

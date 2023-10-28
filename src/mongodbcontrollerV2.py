@@ -2,12 +2,17 @@ import pymongo
 import pandas as pd
 
 class MongoDBController:
-    def __init__(self, connection_uri, database_name=None):
-        self.client = pymongo.MongoClient(connection_uri)
-        if database_name:
-            self.db = self.client[database_name]
-        else:
-            raise ValueError("A database name must be provided")
+    # def __init__(self, connection_uri, database_name=None):
+    #     self.client = pymongo.MongoClient(connection_uri)
+    #     if database_name:
+    #         self.db = self.client[database_name]
+    #     else:
+    #         raise ValueError("A database name must be provided")
+        
+    def __init__(self):
+        self.client = pymongo.MongoClient("mongodb://inf2003-project:9XygVh5kKnrscIiKfsPXCos1KtjQtFSmMcZfwod9O22zosZE3ZUHrVVbtSQs262Jvv5IwpiFeOUWACDbJsgL2A==@inf2003-project.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@inf2002003-project@")
+        self.db = self.client["test"]
+
 
     def create(self, collection_name, data):
         collection = self.db[collection_name]
@@ -47,10 +52,12 @@ if __name__ == "__main__":
 
     controller = MongoDBController(connection_uri, database_name)
 
-    # Insert data from Air Conditioners CSV
-    controller.insert_csv_data("air_conditioners", "Air Conditioners.csv")
+    # controller.create("Cart", {"userid": 1, "products": []})
 
-    # Insert data from All Books CSV
-    controller.insert_csv_data("all_books", "All Appliances.csv")
+    # # Insert data from Air Conditioners CSV
+    # controller.insert_csv_data("air_conditioners", "Air Conditioners.csv")
+
+    # # Insert data from All Books CSV
+    # controller.insert_csv_data("all_books", "All Appliances.csv")
 
     controller.close_connection()
