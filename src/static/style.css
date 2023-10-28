@@ -50,6 +50,11 @@ h4{
     background-color: #feffff;
 }
 
+.dropdown-item:active, .dropdown-item:hover{
+    background-color: #1d9abc;
+    color: #ffffff;
+}
+
 .nav-holder{
     position:sticky;
     top:0;
