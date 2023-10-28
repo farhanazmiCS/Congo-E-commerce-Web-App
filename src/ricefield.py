@@ -14,14 +14,16 @@ import app_pages.search_result
 import app_pages.product
 import app_pages.subcategories
 import app_pages.categories
+import app_pages.cart
+
 
 @app.route('/',methods=['GET','POST'])
 def homepage():
     return render_template('index.html')
 
-@app.route('/cart', methods=["GET","POST"])
-def cart():
-    return render_template('cart.html')
+# @app.route('/cart', methods=["GET","POST"])
+# def cart():
+#     return render_template('cart.html')
 
 @app.route('/orders', methods=["GET","POST"])
 def orders():
@@ -36,6 +38,7 @@ def logout():
     # Clear the user's session data to log them out
     session.pop('user_id', None)
     session.pop('user_name', None)
+    session.pop('cart', None)
 
     # Redirect the user to the homepage or any other appropriate page
     return redirect(url_for('homepage'))

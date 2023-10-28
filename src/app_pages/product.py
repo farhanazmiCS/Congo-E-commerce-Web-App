@@ -1,7 +1,8 @@
 import math
 from __main__ import app
 from ricefield import create, read, update, delete
-from flask import Flask, redirect, request, render_template, session, url_for
+from flask import Flask, flash, redirect, request, render_template, session, url_for
+from .cart import getCart, getProducts, getProductDetails
 
 def get_product_details(product_id):
     product_details = read.select(
@@ -69,3 +70,31 @@ def product():
 
             # Return product details
             return render_template('product.html', product=product_details)
+        
+@app.route('/add_to_cart', methods=["POST"])
+def add_to_cart():
+    if 'user_id' not in session:
+        flash('You must be logged in to add products to your cart', 'danger')
+        return redirect(url_for('login'))
+    
+    cart = getCart() # Get the user's cart from the user's session
+    print(cart)
+
+    product_id = request.form.get('product_id', type=int) # Get the product ID from the form
+    quantity = request.form.get('quantity', type=int) # Get the quantity from the form
+    
+    if product_id is not None and quantity is not None:
+        for product in cart:
+            if product.get('product_id') == product_id:
+                # If the product is already in the cart, update the quantity
+                product['quantity'] += quantity
+                
+        else:
+            # If the product is not in the cart, add it
+            cart.append({
+                'product_id': product_id,
+                'quantity': quantity
+            })
+       
+            return redirect(url_for('cart'))
+    return redirect(url_for('homepage'))
