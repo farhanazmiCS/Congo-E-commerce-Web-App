@@ -9,46 +9,50 @@
         <div class="container main-form">
     </header>
 </div>
-    
-    
-        <div class="row">
-            <div class="col-sm-12 cart-col">
-                
-                <form id="cart-form" method="post">
-                    
-                    {% if error_messages %}
-                    <div class="alert alert-danger">
-                        <ul>
-                            <div> An Error has occured. Please check below for the relevant errors:</div>
-                            
-                            {% for error_message in error_messages %}
-                            <li>{{ error_message }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
-                    
-                    <h1>Cart</h1> 
-                    {% for product in products %}
-                    <div class="cart-item">
-                        <div class="cart-img-mask">
-                            <a href="/product?id={{ product['product_id'] }}" class="product-link">
-                            <img src="{{ product['product_image'] }}" alt="{{ product['product_name'] }}">
-                            </a>
-                        </div>
-                        <div class="cart-item-info">
-                            <a href="/product?id={{ product['product_id'] }}" class="product-link"><h2>{{ product.product_name }}</h2></a>
-                            <p>Price: ${{product.product_price}}</p>
-                            <p>Quantity: {{product.product_quantity }}</p>
-                        </div>
-                        <div class="cart-remove-button">
-                            <a href=""><i class="fa-solid fa-x"></i></a>
-                        </div>
-                        </a>
-                    </div>
-                    {% endfor %}
 
-                    <!-- <div class="cart-item">
+
+<div class="row">
+    <div class="col-sm-12 cart-col">
+
+        <form id="cart-form" method="post">
+
+            {% if session.get('error_message') %}
+            <div class="alert alert-danger">
+                <ul>
+                    <div> An Error has occurred. Please check below for the relevant errors:</div>
+
+                    {% for error_message in session.get('error_message') %}
+                    <li>{{ error_message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% set _ = session.pop('error_message', None) %}
+            {% endif %}
+
+
+            <h1>Cart</h1>
+            {% for product in products %}
+            <div class="cart-item">
+                <div class="cart-img-mask">
+                    <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                        <img src="{{ product['product_image'] }}" alt="{{ product['product_name'] }}">
+                    </a>
+                </div>
+                <div class="cart-item-info">
+                    <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                        <h2>{{ product.product_name }}</h2>
+                    </a>
+                    <p>Price: ${{product.product_price}}</p>
+                    <p>Quantity: {{product.product_quantity }}</p>
+                </div>
+                <div class="cart-remove-button">
+                    <a href=""><i class="fa-solid fa-x"></i></a>
+                </div>
+                </a>
+            </div>
+            {% endfor %}
+
+            <!-- <div class="cart-item">
                         <div class="cart-img-mask">
                             <a href="/product">
                             <img src="{{url_for('static', filename='fork.jpg')}}">
@@ -64,15 +68,18 @@
                         </div>
                     </div> -->
 
-                    <div class="cart-subtotal">
-                        <div><h2>Subtotal:</h2><p>${{ subtotal }}</p></div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Checkout</button>
-
-                </form>
-
+            <div class="cart-subtotal">
+                <div>
+                    <h2>Subtotal:</h2>
+                    <p>${{ subtotal }}</p>
+                </div>
             </div>
-        </div>     
+
+            <button type="submit" class="btn btn-primary">Checkout</button>
+
+        </form>
+
     </div>
+</div>
+</div>
 {% endblock %}
