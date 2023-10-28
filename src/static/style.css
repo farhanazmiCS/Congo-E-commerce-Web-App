@@ -645,7 +645,7 @@ ol.breadcrumb{
     padding-bottom:0;
 }
 
-#login-form,#signup-form{
+#login-form,#signup-form,#update-profile-form{
     max-width: 600px;
     padding: 30px;
     background-color: #fff;
