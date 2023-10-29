@@ -17,6 +17,7 @@ import app_pages.product
 import app_pages.subcategories
 import app_pages.categories
 import app_pages.cart
+import app_pages.order
 
 # @app.route('/cart', methods=["GET","POST"])
 # def cart():
@@ -26,9 +27,9 @@ import app_pages.cart
 def orders():
     return render_template('orders.html')
 
-@app.route('/order', methods=["GET","POST"])
-def order():
-    return render_template('order.html',orderNumber="10006969",orderTotal="29.98",orderDate="14/10/2023",orderStatus="Shipped", orderArrivalDate="29/10/2023")
+# @app.route('/order', methods=["GET","POST"])
+# def order():
+#     return render_template('order.html',orderNumber="10006969",orderTotal="29.98",orderDate="14/10/2023",orderStatus="Shipped", orderArrivalDate="29/10/2023")
 
 @app.route('/logout')
 def logout():

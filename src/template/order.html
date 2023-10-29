@@ -8,52 +8,55 @@
         </div>
     </header>
 </div>
-    
-    <div class="container main-form">
-        <div class="row">
-            <div class="col-sm-12 order-col">
-                
-                <form id="order-info-form" method="post">
-                    <h1>Order: {{orderNumber}}</h1> 
-                    <div class="order-item">
-                        <div class="order-img-mask">
-                            <a href="/product">
-                            <img src="{{url_for('static', filename='fork.jpg')}}">
-                            </a>
-                        </div>
-                        <div class="order-item-info">
-                            <a href="/product"><h2>Ligma Fork</h2></a>
-                            <p>Price: $14.99</p>
-                            <p>Quantity: 1</p>
-                        </div>
-                    </div>
 
-                    <div class="order-item">
-                        <div class="order-img-mask">
-                            <a href="/product">
-                            <img src="{{url_for('static', filename='fork.jpg')}}">
-                            </a>
-                        </div>
-                        <div class="order-item-info">
-                            <a href="/product" ><h2>Ligma Fork</h2></a>
-                            <p>Price: $14.99</p>
-                            <p>Quantity: 1</p>
-                        </div>
-                      
-                    </div>
+<div class="container main-form">
+    <div class="row">
+        <div class="col-sm-12 order-col">
 
-                    <div class="order-subtotal">
-                        <div><h2>Subtotal:</h2><p>${{orderTotal}}</p></div>
-                        <div><h2>Date made:</h2><p>{{orderDate}}</p></div>
-                        <div><h2>Arrival date:</h2><p>{{orderArrivalDate}}</p></div>
-                        <div><h2>Status:</h2><p>{{orderStatus}}</p></div>
+            <form id="order-info-form" method="post">
+                <h1>Order: {{order_detail[0][_id]}}</h1>
+                {% for product in products %}
+                <div class="order-item">
+                    <div class="order-img-mask">
+                        <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                            <img src="{{ product['product_image'] }}" alt="{{ product['product_name'] }}">
+                        </a>
                     </div>
-                    <div class="order-button-group">
-                    <button type="submit" class="btn btn-primary">Cancel Order</button> <a href="/orders" class="btn btn-primary">Back to Orders</a>
+                    <div class="order-item-info">
+                        <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                            <h2>{{ product.product_name }}</h2>
+                        </a>
+                        <p>Price: ${{product.product_price}}</p>
+                        <p>Quantity: {{product.product_quantity }}</p>
                     </div>
-                </form>
+                </div>
+                {% endfor %}
 
-            </div>
-        </div>     
+                <div class="order-subtotal">
+                    <div>
+                        <h2>Subtotal:</h2>
+                        <p>${{order_detail[0]["total"]}}</p>
+                    </div>
+                    <div>
+                        <h2>Date made:</h2>
+                        <p>{{order_detail[0]["date"]}}</p>
+                    </div>
+                    <div>
+                        <h2>Arrival date:</h2>
+                        <p>{{order_detail[0]["arrival_date"]}}</p>
+                    </div>
+                    <div>
+                        <h2>Status:</h2>
+                        <p>{{order_detail[0]["status"]}}</p>
+                    </div>
+                </div>
+                <div class="order-button-group">
+                    <button type="submit" class="btn btn-primary">Cancel Order</button> <a href="/orders"
+                        class="btn btn-primary">Back to Orders</a>
+                </div>
+            </form>
+
+        </div>
     </div>
+</div>
 {% endblock %}
