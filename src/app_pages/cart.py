@@ -4,6 +4,9 @@ from ricefield import read, create, update, delete
 from mongodbcontrollerV2 import MongoDBController
 
 
+# Returns the cart of the user as a list
+# If the user does not have a cart, returns None
+# If the user is not logged in, redirects to login page
 def getCart():
     if 'user_id' in session:
         controller = MongoDBController()
@@ -15,7 +18,8 @@ def getCart():
         session['error_message'] = "You must be logged in to view your cart"
         return redirect(url_for('login'))
 
-
+# Returns the products in the cart as an array of product dictionaries
+# If the cart is empty, returns None
 def getProducts(cart):
     if cart is not None:
         product_array = []  # Array of product dictionaries
@@ -25,7 +29,7 @@ def getProducts(cart):
             # getting product id to perform details query
             product_id = product.get('product_id')
             product_details = getProductDetails(
-                product_id, product.get('quantity'))  # getting product details
+                product_id, product.get('product_quantity'))  # getting product details
 
             if product_details is not None:  # if the product exist and is in stock
                 # product_details['product_quantity'] = product.get('quantity') # adding quantity to product details
@@ -33,7 +37,39 @@ def getProducts(cart):
                 product_array.append(product_details)
         return product_array
 
+def updateProductInSessionCart(product): # updates a product in the session cart with new price and quantity
+    cart = session['cart']
+    for product in cart:
+        if product.get('product_id') == product.get('product_id'):
+            product['product_quantity'] = product['product_quantity']
+            product['product_price'] = product['product_price']
+            break
+    session['cart'] = cart
 
+# removes a product from the session cart
+def removeProductFromCart(product_id):
+    cart = session['cart']
+    for product in cart:
+        if product.get('product_id') == product_id:
+            cart.remove(product)
+            break
+    session['cart'] = cart
+
+def updateProductQuantity(product_id, product_quantity):
+    cart = session['cart']
+    for product in cart:
+        if product.get('product_id') == product_id:
+            product['product_quantity'] = product_quantity
+            break
+    session['cart'] = cart
+
+# saves the session cart to the MongoDB
+def saveSessionCarttoDB():
+    controller = MongoDBController()
+    cart = session['cart']
+    controller.update('Cart', {'user_id': session['user_id']}, {'products': cart})
+
+# gets product details from SQL
 def getProductDetails(product_id, product_quantity):
     product = read.select(
         table='product',
@@ -43,16 +79,24 @@ def getProductDetails(product_id, product_quantity):
     )
 
     if not product:  # if product does not exist
+        removeProductFromCart(product_id) # remove invalid product from session cart
+        saveSessionCarttoDB() # save session cart to database
         return None  # no error message for this. Just silently exclude it
 
     product_stock = product[0][4]
     product_name = product[0][1]
 
-    if product_stock == 0:
+    if product_stock == 0: # if product is out of stock
+        removeProductFromCart(product_id) # remove product from session cart
+        saveSessionCarttoDB() # save session cart to database
         session['error_message'].append(
             f"Product {product_name} has been removed from your cart as it is out of stock, ")
         return None
-    elif product_stock < product_quantity:
+    
+    elif product_stock < product_quantity: # if product stock is less than quantity in cart
+        product_quantity = product_stock # set quantity to available stock
+        updateProductQuantity(product_id, product_quantity) # update quantity in session cart
+        saveSessionCarttoDB() # save session cart to database
         session['error_message'].append(
             f"Product {product_name} has less stock than the quantity in your cart. Quantity has been reduced to available stock, ")
         product_quantity = product_stock
@@ -68,14 +112,13 @@ def getProductDetails(product_id, product_quantity):
         }
         return product_details
 
-
 def getSubtotal(products):
     subtotal = 0
     for product in products:
+        print(product)
         subtotal += float(product.get('product_price')) * \
             int(product.get('product_quantity'))
     return subtotal
-
 
 @app.route('/cart', methods=["GET", "POST"])
 def cart():
@@ -85,11 +128,11 @@ def cart():
         session['error_message'] = "You must be logged in to view your cart"
         return redirect(url_for('login'))
 
-    print("the user id is: ")
-    print(session.get('user_id'))
-    print(session.get('cart'))
+    # print("the user id is: ")
+    # print(session.get('user_id'))
+    # print(session.get('cart'))
     # if the session cart is empty, pull cart from database
-    if session.get('cart') is None or session.get('cart') == []:
+    if not session.get('cart') or session.get('cart') == []:
         cart = getCart()
         products = getProducts(cart)
         session['cart'] = products
@@ -101,8 +144,8 @@ def cart():
         products = session['cart']
         subtotal = getSubtotal(products)
 
-    session['error_message'].append("Banana, ")
-    session['error_message'].append("Apple, ")
-    session['error_message'].append("Orange, ")
+    # session['error_message'].append("Banana, ")
+    # session['error_message'].append("Apple, ")
+    # session['error_message'].append("Orange, ")
 
     return render_template('cart.html', products=products, subtotal=subtotal)

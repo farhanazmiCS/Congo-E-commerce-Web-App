@@ -2,7 +2,7 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, flash, redirect, request, render_template, session, url_for
-from .cart import getCart, getProducts, getProductDetails
+from .cart import getCart, getProducts, getProductDetails, removeProductFromCart, updateProductQuantity, saveSessionCarttoDB, updateProductInSessionCart
 
 def get_product_details(product_id):
     product_details = read.select(
@@ -63,10 +63,7 @@ def product():
     product_id = request.args.get('id', type=int)
     if product_id is not None:
         product_details = get_product_details(product_id)
-
-        print(product_details)
         if product_details:
-
 
             # Return product details
             return render_template('product.html', product=product_details)
@@ -74,27 +71,55 @@ def product():
 @app.route('/add_to_cart', methods=["POST"])
 def add_to_cart():
     if 'user_id' not in session:
-        flash('You must be logged in to add products to your cart', 'danger')
+        session['error_message'] = "You must be logged in to add items to your cart"
         return redirect(url_for('login'))
     
-    cart = getCart() # Get the user's cart from the user's session
-    print(cart)
+    cart = session.get('cart') # Get the user's cart from the user's session
 
     product_id = request.form.get('product_id', type=int) # Get the product ID from the form
-    quantity = request.form.get('quantity', type=int) # Get the quantity from the form
+    product_name = request.form.get('product_name', type=str) # Get the product name from the form
+    product_image = request.form.get('product_image', type=str) # Get the product image from the form
+    product_quantity = request.form.get('product_quantity', type=int) # Get the quantity from the form
+    product_price = request.form.get('product_price', type=float) # Get the price from the form
+    product_stock = request.form.get('product_stock', type=int) # Get the stock from the form
+
     
-    if product_id is not None and quantity is not None:
+    if product_id is not None and product_quantity is not None:
         for product in cart:
             if product.get('product_id') == product_id:
                 # If the product is already in the cart, update the quantity
-                product['quantity'] += quantity
-                
+                product['product_price'] = product_price # setting the product price to the price of the product in the database (most recent)
+                product['product_quantity'] += product_quantity
+                updateProductInSessionCart(product_id)
+
+                print(cart)
+                print(product_price)
+                saveSessionCarttoDB()
+                return redirect(url_for('cart'))
+                   
         else:
             # If the product is not in the cart, add it
+            print(product_price)
             cart.append({
                 'product_id': product_id,
-                'quantity': quantity
+                'product_name': product_name,
+                'product_image': product_image,
+                'product_price': product_price,
+                'product_stock': product_stock,
+                'product_quantity': product_quantity
             })
+            print(cart)
+            session['cart'] = cart # Update the user's session cart
+            saveSessionCarttoDB() # Save the user's session cart to the database
        
             return redirect(url_for('cart'))
     return redirect(url_for('homepage'))
+
+@app.route('/remove_from_cart', methods=["POST"])
+def remove_from_cart():
+    if 'user_id' not in session:
+        session['error_message'] = "You must be logged in to remove items from your cart"
+        return redirect(url_for('login'))
+    removeProductFromCart(request.form.get('product_id', type=int))
+    saveSessionCarttoDB()
+    return redirect(url_for('cart'))

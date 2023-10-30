@@ -24,6 +24,8 @@ def checkout(cart: dict, order_total: float):
     }
     _id = mgdb.create('Orders', data)
     mgdb.update('Cart', {'user_id': cart['user_id']}, {'products': []})
+    #clear session cart
+    session['cart'] = []
     #!!! REMEMBER TO IMPLEMENT THE UPDATE OF THE PRODUCT STOCK
     
     return _id.inserted_id
