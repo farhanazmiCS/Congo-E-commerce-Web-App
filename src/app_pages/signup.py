@@ -17,13 +17,13 @@ def signup():
         password2 = request.form.get('password2')
 
         # Check if the username or email already exists
-        user_exists = read.select(table='public.user', where=[f"username = '{username}' OR useremail = '{email}'"])
+        user_exists = read.select(table='public.user', where=[f"useremail = '{email}'"])
 
         if user_exists:
-            error_message = "Username or email already exists."
+            error_message = "Email already exists."
         elif password1 == password2:
-            # Hash the password using Werkzeug
-            hashed_password = generate_password_hash(password1)
+            # Hash the password using scrypt
+            hashed_password = generate_password_hash(password1, method='scrypt')
 
             # Create a dictionary with the user data
             user_data = {

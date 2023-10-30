@@ -18,7 +18,15 @@ def update_profile():
         new_password = request.form.get('new_password')
         confirm_password = request.form.get('confirm_password')
 
-        if new_password and new_password != confirm_password:
+        # Check if the new email already exists in the database
+        user_exists = read.select(
+            table='public."user"',
+            where=[f'useremail = \'{email}\'']
+        )
+
+        if user_exists:
+            error_message = "Email already exists. Please choose another email."
+        elif new_password and new_password != confirm_password:
             error_message = "Passwords do not match."
         else:
             update_data = {
@@ -29,7 +37,7 @@ def update_profile():
 
             # Only update password if user enters a value
             if new_password:
-                hashed_password = generate_password_hash(new_password)
+                hashed_password = generate_password_hash(new_password, method='scrypt')
                 update_data['userpassword'] = hashed_password
 
             query = update.update(
