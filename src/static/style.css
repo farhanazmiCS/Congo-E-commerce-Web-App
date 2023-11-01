@@ -758,7 +758,7 @@ ol.breadcrumb{
     margin:0 0 5px 0;
 }
 
-.products .row{
+.products .row, .categories .row{
     justify-content: flex-start;
 }
 
