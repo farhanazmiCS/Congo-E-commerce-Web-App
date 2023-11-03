@@ -1,6 +1,52 @@
 {% extends "base.html" %}
 {% block title %}Congo.db{% endblock %}
 {% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+ $( document ).ready(function() {
+    var deleteButtons = document.getElementsByClassName("delete-order-button");
+
+    for(i=0 ; i < deleteButtons.length;i++ ){
+        deleteButtons[i].addEventListener("click",function(){
+            event.preventDefault();
+            if(document.getElementsByClassName("alert").length>0){
+                document.getElementsByClassName("alert")[0].remove();
+            }
+            var deletedOrder=event.currentTarget.getAttribute("orderid");
+            console.log(deletedOrder);
+            fetch('/remove_order', {
+                method:"POST",
+                body:JSON.stringify({'deletedOrderId':deletedOrder}),
+                headers:{
+                    'Content-Type':'application/json',
+             }
+            }).then(response => response.json())
+            .then(html =>{
+                successMessage=  document.createElement("div"); 
+                successMessage.appendChild(document.createTextNode(html.response_message));
+                successMessage.classList.add("alert");
+                successMessage.classList.add("alert-success");
+                document.getElementById('orders-title').insertAdjacentElement( 'afterend', successMessage)
+                console.log(html.order_id)
+                if (html.order_id!=-1){
+                    document.getElementById(html.order_id).remove();
+                }
+                
+                });
+        });
+
+
+    };
+
+
+
+
+
+
+ })
+</script>
+
+
 
 <div class="gradient-header-bg products-header">
     <header class="container">
@@ -14,33 +60,49 @@
             <div class="col-sm-12 orders-col">
                 
                 <div class="order-overview">
-                    <h1>Your Orders:</h1> 
-                    <div class="orders-item">
-                        <div class="orders-item-info">
-                            <a href="/order"><h2>Order: 10069</h2></a>
-                            <p>Price: $14.99</p>
-                            <p>Date made: 14/10/2023</p>
-                            <p>Arrival Date: 29/10/2023</p>
-                            <p>Status: Shipped</p>
-                        </div>
-                        <div class="orders-remove-button">
-                            <a href=""><i class="fa-solid fa-x"></i></a>
-                        </div>
+                    <h1 id="orders-title">Your Orders:</h1> 
+                    {% if session.get('error_message') %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            <div> An Error has occurred. Please check below for the relevant errors:</div>
+        
+                            {% for error_message in session.get('error_message') %}
+                            <li>{{ error_message }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
-
-                    <div class="orders-item">
-                        <div class="orders-item-info">
-                            <a href="/order" ><h2>Order:10070</h2></a>
-                            <p>Price: $14.99</p>
-                            <p>Date made: 14/10/2023</p>
-                            <p>Arrival Date: 29/10/2023</p>
-                            <p>Status: Pending</p>
-                        </div>
-                        <div class="orders-remove-button">
-                            <a href=""><i class="fa-solid fa-x"></i></a>
-                        </div>
+                    {% set _ = session.pop('error_message', None) %}
+                    {% endif %}
+                    {% if session.get('status_message') %}
+                    <div class="alert alert-success">
+                        
+        
+                            {{session.get('status_message')}}
+                           
                     </div>
+                    {% set _ = session.pop('status_message', None) %}
+                    {% endif %}
+        
+        
+                    <div id="orders-display">
 
+
+                        {%for order in orders%} 
+                        <div class="orders-item" id="{{order['_id']}}">
+                            <div class="orders-item-info">
+                                <a href="/single_order?order_id={{order['_id']}}"><h2>Order: {{order['_id']}}</h2></a>
+                                <p>Price: ${{'%0.2f'|format(order['total'])}}</p>
+                                <p>Date made: {{order['date']}}</p>
+                                <p>Arrival Date: {{order['arrival_date']}}</p>
+                                <p>Status: {{order['status']}}</p>
+                            </div>
+                            <div class="orders-remove-button">
+                                <a href="#" orderid="{{order['_id']}}" class="delete-order-button"><i class="fa-solid fa-x"></i></a>
+                            </div>
+                        </div>
+                        {%endfor%} 
+                          
+                    </div>
                 </div>
 
             </div>

@@ -38,8 +38,18 @@ def getOrderDetail(id: int):
     return list(mgdb.read('Orders', query))
 
 
+#delete an order   
+def deleteOrderSingle(orderId:int):
+   mgdb.delete("Orders",{ "_id": orderId })
+
+
 @app.route('/order', methods=["GET", "POST"])
 def order():
+    # Initialize an error message variable
+    session.setdefault('error_message', [])
+    if session.get('user_id') is None:
+        session['error_message'] = "You must be logged in to view your cart"
+        return redirect(url_for('login'))
     cart = getCart()
     products = getProducts(cart)
     ordertotal = getSubtotal(products)
@@ -49,4 +59,23 @@ def order():
     print(order_detail)
     
 
-    return render_template('order.html', order_detail=order_detail, ordertotal=ordertotal, products=products)
+    return render_template('order.html', order_detail=order_detail, ordertotal=ordertotal, products=products, order_id = order_id)
+
+
+@app.route('/cancel_order', methods=["GET", "POST"])
+def selectCancelOrder():
+     # Initialize an error message variable
+    session.setdefault('error_message', [])
+    if session.get('user_id') is None:
+        session['error_message'] = "You must be logged in to view your cart"
+        return redirect(url_for('login'))
+    session.setdefault('status_message', [])
+    if request.method == 'GET' and request.args.get('order_id'):
+        order_id= request.args.get('order_id')
+        deleteOrderSingle(order_id)
+        session['status_message'] = "Order Deleted."    
+        return redirect(url_for('orders'))
+    else:
+        session['error_message'] = "Order does not exist."
+        return redirect(url_for('orders'))
+   
