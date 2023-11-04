@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Congo.db{% endblock %}
+{% block content %}
+
+<div class="gradient-header-bg dashboard-header">
+<header class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1> {{ session['user_name'] }}'s Dashboard</h1>
+        </div>
+    </div>
+</header>
+</div>
+  
+    <!-- Iterate through the products to display them -->
+    <div class="container dashboard">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="dashboard-item">
+                    <h2>Recent Orders</h2>
+                    <table>
+                        <tr>
+                            <th>Order Name</th>
+                            <th>Order date</th>
+                            <th>Total Cost</th>
+                        </tr>
+                        {% for order in recentOrderList%}
+                        <tr>
+                            <td><a href="/single_order?order_id={{order['_id']}}">{{order['_id']}}</a></td>
+                            <td>{{order['date']}}</td>
+                            <td>${{'%0.2f'|format(order['total'])}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                    <!--<button class="btn btn-primary" href="/orders" role="button">View All Orders</button>-->
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="dashboard-item">
+                    <h2>Favourite items</h2>
+                    <table>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Number ordered</th>
+                            <th>Cost</th>
+                        </tr>
+                        {% for product in sortedProductQuantityList%}
+                        <tr>
+                            <td><a href="product?id={{product[0]}}">{{product[1][0]}}</a></td>
+                            <td>{{product[1][1]}}</td>
+                            <td>${{product[1][2]}}</td>
+                        </tr>
+                        {%endfor%}
+
+
+                    </table>
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-6">
+                <div class="dashboard-item">
+                    <h2>Favourite categories</h2>
+                    <table>
+                        <tr>
+                            <th>Order Name</th>
+                            <th>Order date</th>
+                            <th>Total Cost</th>
+                        </tr>
+
+                        {% for order in ordersNeedingPayment%}
+                        <tr>
+                            <td><a href="/single_order?order_id={{order['_id']}}">{{order['_id']}}</a></td>
+                            <td>{{order['date']}}</td>
+                            <td>${{'%0.2f'|format(order['total'])}}</td>
+                        </tr>
+                        {%endfor%}
+                      
+
+                    </table>
+                    <!--<button class="btn btn-primary" href="/orders" role="button">View All Orders</button>-->
+                </div>
+            </div>
+        
+
+            <div class="col-sm-6">
+                <div class="dashboard-item">
+                    <h2>Shipped Orders</h2>
+                    <table>
+                        <tr>
+                            <th>Order Name</th>
+                            <th>Order Date</th>
+                            <th>Arrival Date</th>
+                        </tr>
+
+                        {% for order in shippedOrderList%}
+                        <tr>
+                            <td><a href="/single_order?order_id={{order['_id']}}">{{order['_id']}}</a></td>
+                            <td>{{order['date']}}</td>
+                            <td>{{order['arrival_date']}}</td>
+                        </tr>
+                        {%endfor%}
+
+                    </table>
+                    <!--<button class="btn btn-primary" href="/orders" role="button">View All Orders</button> -->
+                </div>
+            </div>
+          
+
+            <div class="col-sm-12">
+                <div class="dashboard-item">
+                    <h2>Monthly Spending</h2>
+
+                
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="dashboard-item">
+                    <h2>Lifetime Expenditure</h2>
+                    <P class=" dashboard-stat"><span>$</span> {{'%0.2f'|format(totalExpenditure)}}</P>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="dashboard-item">
+                    <h2>Most Expensive Order</h2>
+                    <P class=" dashboard-stat"><span>$</span> {{'%0.2f'|format(maxTotal)}}</P>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="dashboard-item">
+                    <h2>Total items ordered</h2>
+                    <P class=" dashboard-stat"> {{totalQuantity}} <span>items</span></P>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    
+
+{% endblock %}

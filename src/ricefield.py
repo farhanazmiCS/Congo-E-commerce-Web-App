@@ -19,14 +19,17 @@ import app_pages.categories
 import app_pages.cart
 import app_pages.order
 import app_pages.admin
+import app_pages.orders
+import app_pages.single_order
+import app_pages.user_dashboard
 
 # @app.route('/cart', methods=["GET","POST"])
 # def cart():
 #     return render_template('cart.html')
 
-@app.route('/orders', methods=["GET","POST"])
-def orders():
-    return render_template('orders.html')
+#@app.route('/orders', methods=["GET","POST"])
+#def orders():
+#    return render_template('orders.html')
 
 # @app.route('/order', methods=["GET","POST"])
 # def order():
