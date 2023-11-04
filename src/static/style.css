@@ -791,7 +791,11 @@ ol.breadcrumb{
     background-color: #17252A;
     color: #ebebeb;
     font-weight: 700;
+    height: 4em;
+    overflow: hidden;
 }
+
+
 
 .dashboard-item tr{
     font-weight: 400;
@@ -807,6 +811,19 @@ ol.breadcrumb{
 
 .dashboard-item h2{
     margin-bottom:20px;
+}
+
+.dashboard-item .dashboard-stat{
+    font-size:21px;
+    font-weight: 700;
+    font-family: 'Ubuntu', sans-serif;
+    padding:15px;
+    color:#1d9abc;
+    background-color: #ebebeb ;
+}
+
+.dashboard-item .dashboard-stat span{
+    font-size:15px;
 }
 
 

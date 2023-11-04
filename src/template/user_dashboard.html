@@ -24,12 +24,22 @@
                             <th>Order date</th>
                             <th>Total Cost</th>
                         </tr>
-                        {% for order in recentOrderList%}
+
+                        {% for i in range(0,5)%}
+                        {% if recentOrderList[i]%}
                         <tr>
-                            <td><a href="/single_order?order_id={{order['_id']}}">{{order['_id']}}</a></td>
-                            <td>{{order['date']}}</td>
-                            <td>${{'%0.2f'|format(order['total'])}}</td>
+                            <td><a href="/single_order?order_id={{recentOrderList[i]['_id']}}">{{recentOrderList[i]['_id']}}</a></td>
+                            <td>{{recentOrderList[i]['date']}}</td>
+                            <td>${{'%0.2f'|format(recentOrderList[i]['total'])}}</td>
                         </tr>
+                        {% else%}
+                        <tr>
+                            <td>no data</td>
+                            <td>no data</td>
+                            <td>no data</td>
+                        </tr>
+                        {%endif%}
+
                         {%endfor%}
                     </table>
                     <!--<button class="btn btn-primary" href="/orders" role="button">View All Orders</button>-->
@@ -45,12 +55,22 @@
                             <th>Number ordered</th>
                             <th>Cost</th>
                         </tr>
-                        {% for product in sortedProductQuantityList%}
+                       
+                        {% for i in range(0,5)%}
+                        {% if sortedProductQuantityList[i]%}
                         <tr>
-                            <td><a href="product?id={{product[0]}}">{{product[1][0]}}</a></td>
-                            <td>{{product[1][1]}}</td>
-                            <td>${{product[1][2]}}</td>
+                            <td><a href="/product?id={{sortedProductQuantityList[i][0]}}">{{sortedProductQuantityList[i][1][0]}}</a></td>
+                            <td>{{sortedProductQuantityList[i][1][1]}}</td>
+                            <td>${{'%0.2f'|format(sortedProductQuantityList[i][1][2])}}</td>
                         </tr>
+                        {% else%}
+                        <tr>
+                            <td>no data</td>
+                            <td>no data</td>
+                            <td>no data</td>
+                        </tr>
+                        {%endif%}
+
                         {%endfor%}
 
 
@@ -62,20 +82,31 @@
 
             <div class="col-sm-6">
                 <div class="dashboard-item">
-                    <h2>Favourite categories</h2>
+                    <h2>Orders Arriving Soon</h2>
                     <table>
                         <tr>
                             <th>Order Name</th>
                             <th>Order date</th>
-                            <th>Total Cost</th>
+                            <th>Arrival Date</th>
                         </tr>
 
-                        {% for order in ordersNeedingPayment%}
+                    
+
+                        {% for i in range(0,5)%}
+                        {% if arrivingOrderList[i]%}
                         <tr>
-                            <td><a href="/single_order?order_id={{order['_id']}}">{{order['_id']}}</a></td>
-                            <td>{{order['date']}}</td>
-                            <td>${{'%0.2f'|format(order['total'])}}</td>
+                            <td><a href="/single_order?order_id={{arrivingOrderList[i]['_id']}}">{{arrivingOrderList[i]['_id']}}</a></td>
+                            <td>{{arrivingOrderList[i]['date']}}</td>
+                            <td>{{arrivingOrderList[i]['arrival_date']}}</td>
                         </tr>
+                        {% else%}
+                        <tr>
+                            <td>no data</td>
+                            <td>no data</td>
+                            <td>no data</td>
+                        </tr>
+                        {%endif%}
+
                         {%endfor%}
                       
 
@@ -95,12 +126,21 @@
                             <th>Arrival Date</th>
                         </tr>
 
-                        {% for order in shippedOrderList%}
+                        {% for i in range(0,5)%}
+                        {% if shippedOrderList[i]%}
                         <tr>
-                            <td><a href="/single_order?order_id={{order['_id']}}">{{order['_id']}}</a></td>
-                            <td>{{order['date']}}</td>
-                            <td>{{order['arrival_date']}}</td>
+                            <td><a href="/single_order?order_id={{shippedOrderList[i]['_id']}}">{{shippedOrderList[i]['_id']}}</a></td>
+                            <td>{{shippedOrderList[i]['date']}}</td>
+                            <td>{{shippedOrderList[i]['arrival_date']}}</td>
                         </tr>
+                        {% else%}
+                        <tr>
+                            <td>no data</td>
+                            <td>no data</td>
+                            <td>no data</td>
+                        </tr>
+                        {%endif%}
+
                         {%endfor%}
 
                     </table>
@@ -112,8 +152,11 @@
             <div class="col-sm-12">
                 <div class="dashboard-item">
                     <h2>Monthly Spending</h2>
+                    {% autoescape off %}
+                    
+                    {{expenditureChartHTML}}
 
-                
+                    {% endautoescape %}
                 </div>
             </div>
 
@@ -133,6 +176,17 @@
                 <div class="dashboard-item">
                     <h2>Total items ordered</h2>
                     <P class=" dashboard-stat"> {{totalQuantity}} <span>items</span></P>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="dashboard-item">
+                    <h2>Number of Orders per Month</h2>
+                    {% autoescape off %}
+                    
+                    {{orderNumberChartHTML}}
+
+                    {% endautoescape %}
                 </div>
             </div>
 
