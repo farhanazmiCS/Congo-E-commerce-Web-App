@@ -108,8 +108,13 @@
                       Featured
                     </div>
                     <div class="card-body">
-                      <h5 class="card-title">Special title treatment</h5>
-                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                      {% if revenue_month_year|length > 1 %}
+                        <h5 class="card-title">Revenue for {{ revenue_month_year[1] }} 2023</h5>
+                        <p class="card-text">SGD {{ revenue_month_year[0].totalRevenue }}</p>
+                      {% else %}
+                      <h5 class="card-title">Revenue for {{ revenue_month_year[0] }} 2023</h5>
+                      <p class="card-text">SGD 0</p>
+                      {% endif %}
                       <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                   </div>
