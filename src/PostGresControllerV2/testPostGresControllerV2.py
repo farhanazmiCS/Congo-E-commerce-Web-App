@@ -82,3 +82,7 @@ query = update.update(
 query = read.select(table='public.user')
 for record in query:
     print(record)
+
+query = read.select(table='orderstatus')
+for record in query:
+    print(record)

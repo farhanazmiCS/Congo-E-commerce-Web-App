@@ -23,7 +23,7 @@ def signup():
             error_message = "Email already exists."
         elif password1 == password2:
             # Hash the password using scrypt
-            hashed_password = generate_password_hash(password1, method='scrypt')
+            hashed_password = generate_password_hash(password1)
 
             # Create a dictionary with the user data
             user_data = {
