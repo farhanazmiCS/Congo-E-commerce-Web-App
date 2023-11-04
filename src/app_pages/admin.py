@@ -1,19 +1,25 @@
 from __main__ import app
 from flask import Flask, redirect, request, render_template, session, url_for
 from ricefield import create, read, update, delete
+from mongodbcontrollerV2 import MongoDBController
 
-def remove_products():
-    pass
+mongoController = MongoDBController()
 
-def top_sold_products():
-    pass
-
-def update_stock():
-    pass
+def get_total_sales_revenue():
+    query = [
+    {
+        '$group': {
+            '_id': 'null',
+            'totalRevenue': { '$sum': '$total' }
+        }
+    }
+]
+    return list(mongoController.aggregate('Orders', query))
 
 @app.route('/admin')
 def dashboard():
-    return render_template('admin_dashboard.html')
+    revenue = get_total_sales_revenue()
+    return render_template('admin_dashboard.html', revenue=revenue)
 
 @app.route('/admin/inventory')
 def inventory():

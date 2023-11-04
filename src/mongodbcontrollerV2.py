@@ -21,6 +21,10 @@ class MongoDBController:
     def read(self, collection_name, query):
         collection = self.db[collection_name]
         return collection.find(query)
+    
+    def aggregate(self, collection_name, query):
+        collection = self.db[collection_name]
+        return collection.aggregate(query)
 
     def update(self, collection_name, query, new_data):
         collection = self.db[collection_name]
