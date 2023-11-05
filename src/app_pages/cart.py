@@ -63,11 +63,20 @@ def updateProductQuantity(product_id, product_quantity):
             break
     session['cart'] = cart
 
+def ConvertToDbCart(cart):
+    db_cart = []
+    for product in cart:
+        db_cart.append({'product_id': product.get('product_id'), 'product_quantity': product.get('product_quantity')})
+    return db_cart
+
 # saves the session cart to the MongoDB
 def saveSessionCarttoDB():
     controller = MongoDBController()
     cart = session['cart']
-    controller.update('Cart', {'user_id': session['user_id']}, {'products': cart})
+    db_cart = ConvertToDbCart(cart)
+    # get only product id and quantity from session cart
+    
+    controller.update('Cart', {'user_id': session['user_id']}, {'products': db_cart})
 
 # gets product details from SQL
 def getProductDetails(product_id, product_quantity):
@@ -118,7 +127,9 @@ def getSubtotal(products):
         print(product)
         subtotal += float(product.get('product_price')) * \
             int(product.get('product_quantity'))
-    return subtotal
+    # return subtotal to 2 decimals place
+    return "{:.2f}".format(subtotal)
+
 
 @app.route('/cart', methods=["GET", "POST"])
 def cart():

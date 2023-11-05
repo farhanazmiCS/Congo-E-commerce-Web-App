@@ -17,4 +17,6 @@ RUN apt-get update && apt-get install -y  \
     python3-pip \
     git-lfs
 
+RUN pip install plotly
+
 ENV COSMOS_CONNECTION_STRING "mongodb://inf2003-project:9XygVh5kKnrscIiKfsPXCos1KtjQtFSmMcZfwod9O22zosZE3ZUHrVVbtSQs262Jvv5IwpiFeOUWACDbJsgL2A==@inf2003-project.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@inf2003-project@"
