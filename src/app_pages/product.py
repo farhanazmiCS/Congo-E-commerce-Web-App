@@ -13,7 +13,41 @@ def fetch_average_rating(product_id):
         return str(result[0].get('averageRating', 0))  # Return the average rating if found
     else:
         return "N/A"
-    
+
+def fetch_user_reviews(product_id):
+    pipeline = [
+        { 
+            '$match': {
+                'productID': product_id
+            }
+        },
+        { 
+            '$unwind': '$reviews'
+        },
+        {
+            '$sort': { 
+                'reviews.timestamp': -1  # Sort reviews by timestamp in descending order (latest first)
+            }
+        },
+        {
+            '$group': {
+                '_id': '$productID',
+                'reviews': {
+                    '$push': '$reviews'
+                }
+            }
+        }
+    ]
+
+    result = list(mgdb.aggregate('Reviews', pipeline))
+    print(result)
+
+    if result:
+        return result[0].get('reviews', [])
+    else:
+        return []  # Return an empty list if no reviews found
+
+
 def get_product_details(product_id):
     product_details = read.select(
         table='product',
@@ -49,7 +83,7 @@ def get_product_details(product_id):
         )
         suppliername = supplier[0][1] if supplier else None
         averageRating = fetch_average_rating(product_id)
-
+        
         product_dict = {
             'product_id': product[0],
             'product_name': product[1],
@@ -77,8 +111,11 @@ def product():
         product_details = get_product_details(product_id)
         if product_details:
 
+            # Fetch all user reviews for the product from MongoDB
+            user_reviews = fetch_user_reviews(product_id)
+
             # Return product details
-            return render_template('product.html', product=product_details)
+            return render_template('product.html', product=product_details, user_reviews=user_reviews)
 
 def calculate_average_rating(product_id):
     # Aggregate the reviews to calculate the average rating
@@ -127,7 +164,7 @@ def review():
             'name': user_name,
             'rating': rating,
             'review': review,
-            'timstamp': datetime.now()
+            'timestamp': datetime.now()
         }
         # Find the existing record for the product in the reviews collection
         existing_review = list(mgdb.read('Reviews', {'productID': product_id}))

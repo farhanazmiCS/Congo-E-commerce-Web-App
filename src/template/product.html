@@ -82,28 +82,21 @@
         <div class="col-lg-8 col-md-12" id="review">
             <div class="product-reviews">
                 <h2>Reviews</h2>
-                <div class="product-review">
-                    <div>
-                        <h3>Reviewer 1</h3>
-                        <p>5 <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i></p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                </div>
-                <div class="product-review">
-                    <div>
-                        <h3>Reviewer 2</h3>
-                        <p>4 <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i></p>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet.</p>
-                </div>
+                {% for review in user_reviews %}
+        <div class="product-review">
+            <div>
+                <h3>{{ review.name }}</h3>
+                <p>{{ review.rating }}
+                    {% for _ in range(review.rating) %}
+                    <i class="fa fa-star star-selected" aria-hidden="true"></i>
+                    {% endfor %}
+                </p>
+            </div>
+            <p>{{ review.review }}</p>
+            <p><small>Reviewed On: {{ review.timestamp.strftime('%d %B %Y, %H:%M:%S') }}</small></p>
+        </div>
+        {% endfor %}
+
                 <div class="product-review-form ">
                     <form id="review-form" class="form-inline" action="/review" method="post">
                         <div class="form-group">
