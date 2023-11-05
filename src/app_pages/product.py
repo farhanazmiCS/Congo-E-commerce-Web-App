@@ -1,9 +1,19 @@
+from datetime import datetime
 import math
 from __main__ import app
-from ricefield import create, read, update, delete
+from ricefield import create, read, update, delete, mgdb
 from flask import Flask, flash, redirect, request, render_template, session, url_for
 from .cart import getCart, getProducts, getProductDetails, removeProductFromCart, updateProductQuantity, saveSessionCarttoDB, updateProductInSessionCart
 
+def fetch_average_rating(product_id):
+    result = list(mgdb.read('Reviews', {'productID': product_id}))
+    print(result)
+
+    if len(result):
+        return str(result[0].get('averageRating', 0))  # Return the average rating if found
+    else:
+        return "N/A"
+    
 def get_product_details(product_id):
     product_details = read.select(
         table='product',
@@ -38,7 +48,8 @@ def get_product_details(product_id):
             where=[f'supplierid = {supplier_id}']
         )
         suppliername = supplier[0][1] if supplier else None
-        
+        averageRating = fetch_average_rating(product_id)
+
         product_dict = {
             'product_id': product[0],
             'product_name': product[1],
@@ -51,7 +62,8 @@ def get_product_details(product_id):
             'category_id': category_id,
             'category_name': categoryname,
             'supplier_id': supplier_id,
-            'supplier_name': suppliername
+            'supplier_name': suppliername,
+            'product_rating': averageRating
         }
         return product_dict
     else:
@@ -67,7 +79,79 @@ def product():
 
             # Return product details
             return render_template('product.html', product=product_details)
+
+def calculate_average_rating(product_id):
+    # Aggregate the reviews to calculate the average rating
+    pipeline = [
+        { # Selects the documents where the value of the 'productID' field equals 'product_id'
+            '$match': {
+                'productID': product_id  
+            }
+        },
+        { # Deconstructs the 'reviews' array field from the input documents to output a document for each element
+            '$unwind': '$reviews'  
+        },
+        {
+            '$group': { # Groups the input documents by the specified '_id' expression
+                '_id': '$productID',  
+                'averageRating': { # Computes the average 'rating' for each distinct group
+                    '$avg': '$reviews.rating'  
+                }
+            }
+        }
+    ]
+
+    result = list(mgdb.aggregate('Reviews', pipeline))
+
+    if result:
+        # Extract the average rating from the result
+        average_rating = result[0].get('averageRating')
+
+        # Update the product's averageRating in MongoDB
+        mgdb.update('Reviews', {'productID': product_id}, {'averageRating': round(average_rating, 2)})
+
+
+@app.route('/review', methods=["POST"])
+def review():
+    if request.method == "POST":
+        # Get review data from the form
+        product_id = request.form.get('product_id', type=int)
+        rating = request.form.get('rating', type=int)
+        review = request.form.get('review', type=str)
+        user_id = session.get('user_id')
+        user_name = session.get('user_name')
+
+        # Prepare the review data
+        review_data = {
+            'userid': user_id,
+            'name': user_name,
+            'rating': rating,
+            'review': review,
+            'timstamp': datetime.now()
+        }
+        # Find the existing record for the product in the reviews collection
+        existing_review = list(mgdb.read('Reviews', {'productID': product_id}))
         
+        print(existing_review)
+
+        if len(existing_review) > 0:
+            # If the record already exists, append the new review to the 'reviews' field
+            existing_review_data = existing_review[0]
+            reviews_list = existing_review_data.get('reviews', [])
+            reviews_list.append(review_data)
+            
+            # Update the reviews field with the new review data
+            mgdb.update('Reviews', {'productID': product_id}, {'reviews': reviews_list})
+        else:
+            # If the record doesn't exist, create a new one with the 'reviews' field
+            mgdb.create('Reviews', {'productID': product_id, 'reviews': [review_data]})
+
+        # Calculate the average rating for the product
+        calculate_average_rating(product_id)
+
+        # Redirect to the product page with the anchor fragment
+        return redirect(url_for('product') + '?id=' + str(product_id) + '#review')
+
 @app.route('/add_to_cart', methods=["POST"])
 def add_to_cart():
     if 'user_id' not in session:

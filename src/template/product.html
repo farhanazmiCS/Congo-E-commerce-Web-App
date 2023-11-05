@@ -57,7 +57,7 @@
                     <h3>Rating</h3>
                     <p>
                         <i class="fa fa-star" aria-hidden="true"></i>
-                        {{productRating}}
+                        {{ product['product_rating'] }}
                     </p>
                 </div>
                 <div>
@@ -65,19 +65,21 @@
                         <p><span>$</span>{{ product['product_price'] }}</p>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="quantity"><h3>Quantity</h3></label>
-                <input type="number" name="product_quantity" value="1" placeholder="1">
+                <div>
+                    <label for="product_quantity"><h3>Quantity</h3></label>
+                    <input type="number" name="product_quantity" value="1" placeholder="1">
+                </div>
                 <input type="hidden" name="product_id" value="{{ product['product_id'] }}">
                 <input type="hidden" name="product_name" value="{{ product['product_name'] }}">
                 <input type="hidden" name="product_image" value="{{ product['product_image'] }}">
                 <input type="hidden" name="product_price" value="{{ product['product_price'] }}">
                 <input type="hidden" name="product_stock" value="{{ product['product_stock'] }}">
-            </div>
+            <div class="form-group mt-3">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to cart</button>
+            </div>
             </form>
         </div>
-        <div class="col-lg-8 col-md-12">
+        <div class="col-lg-8 col-md-12" id="review">
             <div class="product-reviews">
                 <h2>Reviews</h2>
                 <div class="product-review">
@@ -103,10 +105,10 @@
                     <p>Lorem ipsum dolor sit amet.</p>
                 </div>
                 <div class="product-review-form ">
-                    <form id="review-form" class="form-inline" method="post">
+                    <form id="review-form" class="form-inline" action="/review" method="post">
                         <div class="form-group">
                             <h3><label for="review">Leave a review here:</label></h3>
-                            <textarea name="review" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea name="review" class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
                         </div>
                         <div class="form-group rating-group">
                             <h3><label for="review">Rating:</label></h3>
@@ -127,27 +129,32 @@
                                 <label for="star-4" title="4 stars">
                                     <i class="active fa fa-star" aria-hidden="true"></i>
                                 </label>
-                                <input id="star-5" type="radio" name="rating" value="5" class="rating-star"></input>
+                                <input id="star-5" type="radio" name="rating" value="5" class="rating-star" checked></input>
                                 <label for="star-5" title="5 star">
                                     <i class="active fa fa-star" aria-hidden="true"></i>
                                 </label>
+                                <input type="hidden" name="product_id" value="{{ product['product_id'] }}">
                             </div>
                             <script>
-                                var stars=document.getElementsByClassName('rating-star');
-                                prevValue=0;
-                                for(i=0 ;i<stars.length; i++){
+                                var stars = document.getElementsByClassName('rating-star');
+                                var prevValue = 5;
+                            
+                                for (i = 0; i < stars.length; i++) {
                                     console.log(stars[i].nextElementSibling);
-                                    stars[i].addEventListener('click', function(){
-                                        value=parseInt(event.target.value);
-                                        for(i=0;i<prevValue; i++){
+                                    stars[i].addEventListener('click', function () {
+                                        value = parseInt(event.target.value);
+                                        for (i = 0; i < prevValue; i++) {
                                             stars[i].nextElementSibling.classList.remove('star-selected');
                                         }
-                                        for(i=0;i<value; i++){
+                                        for (i = 0; i < value; i++) {
                                             stars[i].nextElementSibling.classList.add('star-selected');
                                         }
-                                        prevValue=value;
+                                        prevValue = value;
                                     });
-                                };
+                                }
+                            
+                                // Trigger a click event on the 5th star when the page loads
+                                document.getElementById('star-5').click();
                             </script>
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
