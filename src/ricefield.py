@@ -1,9 +1,12 @@
 from flask import *
 from PostGresControllerV2.PostGresControllerV2 import initialise_crud
+from mongodbcontrollerV2 import MongoDBController
+
 app = Flask(__name__, template_folder='template')
 app.secret_key = 'inf2003'  # Replace 'your_secret_key_here' with your actual secret key
 
 create, read, update, delete = initialise_crud()
+mgdb = MongoDBController()
 
 # Import app_pages logic
 import app_pages.home
