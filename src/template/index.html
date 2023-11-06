@@ -58,70 +58,30 @@
     <div class="row">
         <div class="title-container">
             <h2>Top Sellers</h2>
-            <a href="#">See all  ></a>
         </div>
+        
+        {% for product in top_product %}
         <div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
+            <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                <div class="product-item">
+                    <div>
+                        <h3>{{ product['product_name'] }}</h3> <!-- Product Name -->
+                    </div>
+                    <div class="product-image"> <!-- Wrap the image with a div -->
+                        <img src="{{ product['product_image'] }}" alt="product"> <!-- Product Image URL with inline CSS -->
+                    </div>
+                    <div class="price-section">
+                        <p><span>$</span>{{ product['product_price'] }}</p> <!-- Product Price -->
+                        <p><i class="fa-solid fa-star"></i> {{ product['product_rating'] }}</p>
+                        <div>Quantity Sold: {{ product['quantity_sold'] }}</div>
+                        <button class="btn btn-primary" href="/product?id={{ product[0] }}" role="button">Shop Now</button>
+                    </div>
                 </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
-        </div><div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
-                </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
-        </div><div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
-                </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
+            </a>
         </div>
-        <div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
-                </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
-        </div>
+       {% endfor %}
+
+
     </div>
 </div>
 
@@ -129,70 +89,27 @@
     <div class="row">
         <div class="title-container">
             <h2>Under $25</h2>
-            <a href="#">See all  ></a>
+            <a href="{{ url_for('searchResult', productname='', filter_price=25) }}">See all  ></a>
         </div>
+        {% for product in product_under_25 %}
         <div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
+            <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                <div class="product-item">
+                    <div>
+                        <h3>{{ product['product_name'] }}</h3> <!-- Product Name -->
+                    </div>
+                    <div class="product-image"> <!-- Wrap the image with a div -->
+                        <img src="{{ product['product_image'] }}" alt="product"> <!-- Product Image URL with inline CSS -->
+                    </div>
+                    <div class="price-section">
+                        <p><span>$</span>{{ product['product_price'] }}</p> <!-- Product Price -->
+                        <p><i class="fa-solid fa-star"></i> {{ product['product_rating'] }}</p>
+                        <button class="btn btn-primary" href="/product?id={{ product[0] }}" role="button">Shop Now</button>
+                    </div>
                 </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
-        </div><div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
-                </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
-        </div><div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
-                </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
+            </a>
         </div>
-        <div class="col-sm-3">
-            <a href="#" class="product-link">
-            <div class="product-item ">
-                <div>
-                    <h3>Ligma Fork</h3>
-                </div>
-                <img src="{{url_for('static', filename='fork.jpg')}}" alt="fork">
-                <div class="price-section">
-                <p><span>$</span>14.90</p>
-                <p><i class="fa-solid fa-star"></i>5.0</p>
-                <button class="btn btn-primary" href="#" role="button">Shop Now</button>
-                </div>
-                
-            </a>        
-            </div>
-        </div>
+       {% endfor %}
     </div>
 </div>
 {% endblock %}

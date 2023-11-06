@@ -6,7 +6,10 @@ from flask import Flask, redirect, request, render_template, session, url_for
 def fetch_products(productname, page, category=None, max_price=None, min_rating=None):
     products_per_page = 12
     offset = (page - 1) * products_per_page
-    where_conditions = [f'productname ~* \'\\m{productname}\\M\'']
+    where_conditions = []
+
+    if (productname != ""):
+        where_conditions.append(f'productname ~* \'\\m{productname}\\M\'')
 
     if category is not None:
         where_conditions.append(f'categoryid = {category}')
@@ -17,16 +20,24 @@ def fetch_products(productname, page, category=None, max_price=None, min_rating=
     if min_rating is not None:
         where_conditions.append(f'productrating >= {min_rating}')
     
-    where_clause = ' AND '.join(where_conditions)
-
-    products = read.select(
-        table='product',
-        where=[where_clause],
-        joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
-        orderBy={'productname': 'ASC'},
-        limit=products_per_page,
-        offset=offset
-    )
+    if where_conditions:
+        where_clause = ' AND '.join(where_conditions)
+        products = read.select(
+            table='product',
+            where=[where_clause],
+            joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
+            orderBy={'productname': 'ASC'},
+            limit=products_per_page,
+            offset=offset
+        )
+    else:
+        products = read.select(
+            table='product',
+            joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
+            orderBy={'productname': 'ASC'},
+            limit=products_per_page,
+            offset=offset
+        )
 
     product_list = []
 
@@ -43,29 +54,37 @@ def fetch_products(productname, page, category=None, max_price=None, min_rating=
         
     return product_list
 
-
-
 def get_total_products(productname, category=None, max_price=None, min_rating=None):
     products_per_page = 12
 
-    where_conditions = [f'productname ~* \'\\m{productname}\\M\'']
+    where_conditions = []
+
+    if (productname != ""):
+        where_conditions.append(f'productname ~* \'\\m{productname}\\M\'')
 
     if category is not None:
         where_conditions.append(f'categoryid = {category}')
     
     if max_price is not None:
         where_conditions.append(f'productprice <= {max_price}')
-    
+
     if min_rating is not None:
         where_conditions.append(f'productrating >= {min_rating}')
     
     where_clause = ' AND '.join(where_conditions)
 
-    products = read.select(
-        columns=['COUNT(*)'],
-        where=[where_clause],
-        table='product',
-        joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}])
+    if where_conditions:
+        products = read.select(
+            columns=['COUNT(*)'],
+            where=[where_clause],
+            table='product',
+            joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}])
+    else:
+        products = read.select(
+            columns=['COUNT(*)'],
+            table='product',
+            joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}])
+
     total_pages = math.ceil((products[0][0])/products_per_page)
     
     return total_pages
@@ -79,7 +98,7 @@ def get_categories():
 
 @app.route('/search-result', methods=["GET"])
 def searchResult():
-    productname = request.args.get('productname', default='NULL', type=str)
+    productname = request.args.get('productname', default="", type=str)
     page = request.args.get('page', default=1, type=int)
     category = request.args.get('filter_category', default=None, type=int)
     max_price = request.args.get('filter_price', default=None, type=float)

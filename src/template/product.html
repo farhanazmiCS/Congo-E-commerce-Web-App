@@ -115,6 +115,11 @@
         {% endif %}
 
                 <div class="product-review-form ">
+                {% if 'user_id' not in session %}
+                    <div class="alert alert-primary" role="alert">
+                        You must <a href=" {{ url_for('login') }}">login</a> to leave a product review.
+                    </div>
+                {% else %}
                     <form id="review-form" class="form-inline" action="/review" method="post">
                         <div class="form-group">
                             <h3><label for="review">Leave a review here:</label></h3>
@@ -169,6 +174,7 @@
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
                     </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
