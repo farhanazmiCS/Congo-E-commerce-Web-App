@@ -33,6 +33,14 @@
                 {% set _ = session.pop('status_message', None) %}
                 {% endif %}
 
+                <form method="get" action="{{ url_for('admin_orders') }}">
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="" {% if not current_status %}selected{% endif %}>All</option>
+                        <option value="Pending" {% if current_status == "Pending" %}selected{% endif %}>Pending</option>
+                        <option value="Shipped" {% if current_status == "Shipped" %}selected{% endif %}>Shipped</option>
+                        <!-- Add other statuses as needed -->
+                    </select>
+                </form>
 
                 <div id="orders-display">
                     {%for order in orders%}
