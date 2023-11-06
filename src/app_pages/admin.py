@@ -116,7 +116,10 @@ def dashboard(sales_revenue_month: int=10, sales_revenue_year: int=2023):
         return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product)
     elif request.method == 'POST':
         month = int(request.form['month'])
-        year = int(request.form['year'])
+        try:
+            year = int(request.form['year'])
+        except ValueError:
+            year = 2023
         revenue_month_year = get_total_sales_revenue_by_month_and_year(month, year)
         return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product)
 
