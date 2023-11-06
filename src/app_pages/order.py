@@ -6,6 +6,9 @@ from mongodbcontrollerV2 import MongoDBController
 <<<<<<< HEAD
 from app_pages.cart import getCart, getProducts, getSubtotal
 from app_pages.orders import setOrderStatus
+=======
+from app_pages.cart import getCart, getProducts, getSubtotal, getProductDetails
+>>>>>>> d600aee2cfa3f4cded76dc516c545bba9d73bf78
 import datetime
 
 mgdb = MongoDBController()
@@ -18,7 +21,11 @@ def checkout(cart: dict, order_total: float):
     date = datetime.datetime.now().strftime("%d/%m/%Y")
     arrival_date = (datetime.datetime.now() + datetime.timedelta(days=14)).strftime("%d/%m/%Y")
 
+    cart = getCart()
+    products_to_checkout = getProducts(cart)
+    order_total = getSubtotal(products_to_checkout)
 
+    print("PRODUCTS TO CHECKOUT: ", products_to_checkout)
 
     data = {
         'user_id': cart['user_id'],
