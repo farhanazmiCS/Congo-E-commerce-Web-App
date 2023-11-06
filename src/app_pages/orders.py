@@ -49,16 +49,16 @@ def orders():
 
 
 
-@app.route('/remove_order', methods=["GET", "POST"])
+@app.route('/cancel_order_ajax', methods=["GET", "POST"])
 def removeOrder():
     reqdata=request.get_json()
-    deletedOrder = reqdata['deletedOrderId']
-    if checkOrderStatus(deletedOrder) == 'pending':
-        deleteOrder(deletedOrder)
-        responseMessage="Order has been deleted."
-        res=make_response(jsonify({ "response_message": responseMessage, "order_id": deletedOrder}))
+    cancelledOrder = reqdata['deletedOrderId']
+    if checkOrderStatus(cancelledOrder) == 'pending':
+        setOrderStatus(cancelledOrder,"cancelled")
+        responseMessage="Order has been Cancelled."
+        res=make_response(jsonify({ "response_message": responseMessage, "order_id": cancelledOrder}))
     else:
-        responseMessage="Order cannot be been deleted because it is "+ checkOrderStatus(deletedOrder) + "."
+        responseMessage="Order cannot be been deleted because it is "+ checkOrderStatus(cancelledOrder) + "."
         res=make_response(jsonify({ "response_message": responseMessage,"order_id": -1}))
     
     

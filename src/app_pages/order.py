@@ -4,6 +4,7 @@ from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
 from mongodbcontrollerV2 import MongoDBController
 from app_pages.cart import getCart, getProducts, getSubtotal
+from app_pages.orders import setOrderStatus
 import datetime
 
 mgdb = MongoDBController()
@@ -84,7 +85,7 @@ def order():
         order_detail = getOrderDetail(order_id)
         print(order_detail)
 
-        return render_template('order.html', order_detail=order_detail, ordertotal=ordertotal, products=products, order_id=order_id)
+        return render_template('order.html', order_detail=order_detail, ordertotal=ordertotal, products=products)
     else:
         # If it's not a POST request, redirect to the homepage
         return redirect(url_for('homepage'))
@@ -99,10 +100,15 @@ def selectCancelOrder():
     session.setdefault('status_message', [])
     if request.method == 'GET' and request.args.get('order_id'):
         order_id= request.args.get('order_id')
-        deleteOrderSingle(order_id)
-        session['status_message'] = "Order Deleted."    
-        return redirect(url_for('orders'))
-    else:
-        session['error_message'] = "Order does not exist."
-        return redirect(url_for('orders'))
-   
+        order_status = list(mgdb.read('Orders',{ "_id": order_id }))[0]['status']
+        if order_status == 'pending':
+            setOrderStatus(order_id,'cancelled')
+            session['status_message'] = "Order Cancelled."    
+            return redirect(url_for('orders'))
+        elif order_status == 'cancelled':
+            session['error_message'] = "Order has already been cancelled."
+            return redirect(url_for('orders'))
+        else:
+            session['error_message'] = "Order does not exist."
+            return redirect(url_for('orders'))
+    

@@ -14,7 +14,7 @@
             }
             var deletedOrder=event.currentTarget.getAttribute("orderid");
             console.log(deletedOrder);
-            fetch('/remove_order', {
+            fetch('/cancel_order_ajax', {
                 method:"POST",
                 body:JSON.stringify({'deletedOrderId':deletedOrder}),
                 headers:{
@@ -29,7 +29,7 @@
                 document.getElementById('orders-title').insertAdjacentElement( 'afterend', successMessage)
                 console.log(html.order_id)
                 if (html.order_id!=-1){
-                    document.getElementById(html.order_id).remove();
+                    document.getElementById(html.order_id + "-status").innerText ="Status: cancelled";
                 }
                 
                 });
@@ -63,13 +63,9 @@
                     <h1 id="orders-title">Your Orders:</h1> 
                     {% if session.get('error_message') %}
                     <div class="alert alert-danger">
-                        <ul>
-                            <div> An Error has occurred. Please check below for the relevant errors:</div>
-        
-                            {% for error_message in session.get('error_message') %}
-                            <li>{{ error_message }}</li>
-                            {% endfor %}
-                        </ul>
+                       
+                            {{session.get('error_message')}}
+                          
                     </div>
                     {% set _ = session.pop('error_message', None) %}
                     {% endif %}
@@ -94,11 +90,13 @@
                                 <p>Price: ${{'%0.2f'|format(order['total'])}}</p>
                                 <p>Date made: {{order['date']}}</p>
                                 <p>Arrival Date: {{order['arrival_date']}}</p>
-                                <p>Status: {{order['status']}}</p>
+                                <p id="{{order['_id']}}-status">Status: {{order['status']}}</p>
                             </div>
+                            {% if order['status'] == 'pending'%}
                             <div class="orders-remove-button">
                                 <a href="#" orderid="{{order['_id']}}" class="delete-order-button"><i class="fa-solid fa-x"></i></a>
                             </div>
+                            {% endif %}
                         </div>
                         {%endfor%} 
                           

@@ -14,7 +14,7 @@
         <div class="col-sm-12 order-col">
 
             <form id="order-info-form" method="post">
-                <h1>Order: {{order_detail[0][_id]}}</h1>
+                <h1>Order: {{order_detail[0]['_id']}}</h1>
                 {% for product in products %}
                 <div class="order-item">
                     <div class="order-img-mask">
@@ -51,7 +51,10 @@
                     </div>
                 </div>
                 <div class="order-button-group">
-                    <a href="/cancel_order?order_id={{order_id}}" class="btn btn-primary">Cancel Order</a> <a href="/orders"
+                    {% if order_detail[0]["status"]=='pending'%}
+                    <a href="/cancel_order?order_id={{order_detail[0]['_id']}}" class="btn btn-primary">Cancel Order</a> 
+                    {% endif %}
+                    <a href="/orders"
                         class="btn btn-primary">Back to Orders</a>
                 </div>
             </form>
