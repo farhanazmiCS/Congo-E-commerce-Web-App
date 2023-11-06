@@ -19,6 +19,11 @@ def get_random_image(category_id):
 def get_top_seller():
     pipeline = [
         {
+            '$match': {
+                'status': { '$in': ['pending', 'shipped'] }
+            }
+        },
+        {
             '$unwind': '$products'
         },
         {
