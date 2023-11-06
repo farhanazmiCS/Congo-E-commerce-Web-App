@@ -1,4 +1,4 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>{% block title %}{% endblock %}</title>
@@ -85,8 +85,41 @@
                 </div>
             </header>
         </div>
-        
+        <form method="POST" action="/admin">
+          <div style="padding-left: 40px">
+            <p>Filter revenue by month and year.</p>
+          </div>
+          <div class="row">
+            <div class="col">
+              <select name="month" id="month" class="form-control">
+                <option value="1">January</option>
+                <option value="2">Febuary</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+            <div class="col">
+              <input name="year" id="year" type="number" class="form-control" placeholder="Year" min="1900" max="2099">
+            </div>
+          </div>
+          <div class="row" style="padding-left: 35px">
+            <button type="submit" class="btn btn-primary">Filter</button>
+          </div>
+        </form>
         <div class="container text-center">
+            <br />
+            <br />
+            <br />
+            <div class="form-group">
+            </div>
             <div class="row">
               <div class="col">
                 <div class="card">
@@ -150,6 +183,14 @@
               </div>
             </div>
           </div>
+          <script>
+            $(document).ready(function() {
+              $('.dropdown-menu a.dropdown-item').click(function() {
+                var selectedValue = $(this).attr('value');
+                alert('Selected month value is: ' + selectedValue);
+              });
+            });
+          </script>
     </body>
     <footer>
         <div class="row container">
