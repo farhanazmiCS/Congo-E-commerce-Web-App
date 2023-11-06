@@ -5,14 +5,6 @@ from ricefield import create, read, update, delete, mgdb
 from flask import Flask, flash, redirect, request, render_template, session, url_for
 from .cart import getCart, getProducts, getProductDetails, removeProductFromCart, updateProductQuantity, saveSessionCarttoDB, updateProductInSessionCart
 
-def fetch_average_rating(product_id):
-    result = list(mgdb.read('Reviews', {'productID': product_id}))
-
-    if len(result):
-        return str(result[0].get('averageRating', 0))  # Return the average rating if found
-    else:
-        return "N/A"
-
 def fetch_user_reviews(product_id):
     pipeline = [
         { 
@@ -81,7 +73,6 @@ def get_product_details(product_id):
             where=[f'supplierid = {supplier_id}']
         )
         suppliername = supplier[0][1] if supplier else None
-        averageRating = fetch_average_rating(product_id)
         
         product_dict = {
             'product_id': product[0],
@@ -96,7 +87,7 @@ def get_product_details(product_id):
             'category_name': categoryname,
             'supplier_id': supplier_id,
             'supplier_name': suppliername,
-            'product_rating': averageRating
+            'product_rating': "N/A" if product[8] == 0.00 else product[8]
         }
         return product_dict
     else:
@@ -143,8 +134,11 @@ def calculate_average_rating(product_id):
         # Extract the average rating from the result
         average_rating = result[0].get('averageRating')
 
-        # Update the product's averageRating in MongoDB
-        mgdb.update('Reviews', {'productID': product_id}, {'averageRating': round(average_rating, 2)})
+        # Update the product's average rating in SQL DB
+        query = update.update(
+        table='product',
+        colvalues={'productrating': round(average_rating,2)},
+        where=[f'productid = {product_id}'])
 
 
 @app.route('/review', methods=["POST"])

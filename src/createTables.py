@@ -80,6 +80,7 @@ class Product(Base):
     productstock = Column(Integer, nullable=False)
     supplierid = Column(Integer, ForeignKey("supplier.supplierid"), nullable=False)
     subcategoryid = Column(Integer, ForeignKey("subcategory.subcategoryid"), nullable=False)
+    productrating = Column(Numeric(3, 2), nullable=False, default=0.00)
 
 # Create the tables in the database
 Base.metadata.create_all(engine)

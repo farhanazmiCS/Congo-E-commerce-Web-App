@@ -2,9 +2,8 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
-from .product import fetch_average_rating
 
-def fetch_products(productname, page, category=None, max_price=None, rating=None):
+def fetch_products(productname, page, category=None, max_price=None, min_rating=None):
     products_per_page = 12
     offset = (page - 1) * products_per_page
     where_conditions = [f'productname ~* \'\\m{productname}\\M\'']
@@ -14,73 +13,39 @@ def fetch_products(productname, page, category=None, max_price=None, rating=None
     
     if max_price is not None:
         where_conditions.append(f'productprice <= {max_price}')
+
+    if min_rating is not None:
+        where_conditions.append(f'productrating >= {min_rating}')
     
     where_clause = ' AND '.join(where_conditions)
 
-    # If no rating filter is applied
-    # Grab Products LIM to 12 Per Page using SQL WHERE statement
-    if rating == None:
-        products = read.select(
-            table='product',
-            where=[where_clause],
-            joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
-            orderBy={'productname': 'ASC'},
-            limit=products_per_page,
-            offset=offset
-        )
+    products = read.select(
+        table='product',
+        where=[where_clause],
+        joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
+        orderBy={'productname': 'ASC'},
+        limit=products_per_page,
+        offset=offset
+    )
 
-        product_list = []
+    product_list = []
 
-        for product in products:
-            averageRating = fetch_average_rating(product[0])
+    for product in products:
+        product_dict = {
+            'product_id': product[0],
+            'product_name': product[1],
+            'product_image': product[3],
+            'product_price': product[4],
+            'product_rating': "N/A" if product[8] == 0.00 else product[8]
+        }
 
-            if rating is None:
-                product_dict = {
-                    'product_id': product[0],
-                    'product_name': product[1],
-                    'product_image': product[3],
-                    'product_price': product[4],
-                    'product_rating': averageRating
-                }
-            product_list.append(product_dict)
-            
-        return product_list
-
-    
-    # If Rating Filter is Applied (SQL and NoSQL Combo)
-    else:
-        # Grab All Products based on (Category / Max Price Filters) if applicable
-        products = read.select(
-            table='product',
-            where=[where_clause],
-            joins=[{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
-            orderBy={'productname': 'ASC'}
-        )
-
-        product_list = []
-
-        # For each product, narrow down to those that fit rating criteria
-        for product in products:
-            averageRating = fetch_average_rating(product[0])
-            if averageRating == "N/A":
-                averageRating = 0
-
-            if float(averageRating) >= float(rating):
-                product_dict = {
-                    'product_id': product[0],
-                    'product_name': product[1],
-                    'product_image': product[3],
-                    'product_price': product[4],
-                    'product_rating': averageRating
-                }
-                
-                product_list.append(product_dict)
+        product_list.append(product_dict)
         
-        return product_list
-    
+    return product_list
 
 
-def get_total_products(productname, category=None, max_price=None):
+
+def get_total_products(productname, category=None, max_price=None, min_rating=None):
     products_per_page = 12
 
     where_conditions = [f'productname ~* \'\\m{productname}\\M\'']
@@ -90,6 +55,9 @@ def get_total_products(productname, category=None, max_price=None):
     
     if max_price is not None:
         where_conditions.append(f'productprice <= {max_price}')
+    
+    if min_rating is not None:
+        where_conditions.append(f'productrating >= {min_rating}')
     
     where_clause = ' AND '.join(where_conditions)
 
@@ -121,19 +89,9 @@ def searchResult():
     products = fetch_products(productname, page, category, max_price, min_rating)
 
     # Get pages for pagination
-    if (min_rating is None):
-        total_pages = get_total_products(productname, category, max_price)
-        start_page = max(1, page - 2)
-        end_page = min(total_pages, page + 2)
-    else:
-        total_pages = math.ceil(len(products) / 12)
-        start_page = max(1, page - 2)
-        end_page = min(total_pages, page + 2)
-
-        # View 12 records at a time
-        start_record = (page * 12) - 12
-        end_record = (page * 12)
-        products = products[start_record:end_record]
+    total_pages = get_total_products(productname, category, max_price, min_rating)
+    start_page = max(1, page - 2)
+    end_page = min(total_pages, page + 2)
 
     # Get categories for the dropdown
     categories = get_categories()

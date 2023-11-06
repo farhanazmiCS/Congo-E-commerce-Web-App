@@ -2,7 +2,6 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
-from .product import fetch_average_rating
 
 def fetch_products_by_category(subcategory_id, page):
     products_per_page = 12  # Number of products to display per page
@@ -14,14 +13,12 @@ def fetch_products_by_category(subcategory_id, page):
     product_list = []
     
     for product in products:
-        averageRating = fetch_average_rating(product[0])
-
         product_dict = {
             'product_id': product[0],
             'product_name': product[1],
             'product_image': product[3],
             'product_price': product[4],
-            'product_rating': averageRating
+            'product_rating': "N/A" if product[8] == 0.00 else product[8]
         }
 
         product_list.append(product_dict)
