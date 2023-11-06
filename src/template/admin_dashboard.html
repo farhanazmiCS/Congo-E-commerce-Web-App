@@ -152,45 +152,15 @@
             <div class="row">
               <div class="col">
                 <div class="card">
-                    <div class="card-body">
-                      <p class="card-text">Best Selling Product of All Time</p>
-                      <p class="card-text">{{ best_selling_product[0].product_name }}</p>
-                      <img src="{{ best_selling_product[0].product_image }}" class="img-fluid"><br /><br/>
-                      <p class="card-text">Purchased {{ best_selling_product[0].totalQuantity }} times</p>
-                    </div>
-                  </div>
-              </div>
-              <div class="col">
-                {% if revenue_month_year|length > 1 %}
-                <div class="card">
-                    <div class="card-header">
-                      Revenue for {{ revenue_month_year[1] }} 2023
-                    </div>
-                    <div class="card-body">
-                      <h5 class="card-title">SGD {{ revenue_month_year[0].totalRevenue }}</h5>
-                    </div>
-                </div>
-                {% else %}
-                <div class="card">
-                  <div class="card-header">
-                    Revenue for {{ revenue_month_year[0] }} 2023
-                  </div>
                   <div class="card-body">
-                    <h5 class="card-title">SGD 0</h5>
+                    <p class="card-text">Best Selling Product of All Time</p>
+                    <p class="card-text">{{ best_selling_product[0].product_name }}</p>
+                    <img src="{{ best_selling_product[0].product_image }}" class="img-fluid"><br /><br/>
+                    <p class="card-text">Purchased {{ best_selling_product[0].totalQuantity }} times</p>
                   </div>
                 </div>
-                {% endif %}
               </div>
             </div>
-          </div>
-          <script>
-            $(document).ready(function() {
-              $('.dropdown-menu a.dropdown-item').click(function() {
-                var selectedValue = $(this).attr('value');
-                alert('Selected month value is: ' + selectedValue);
-              });
-            });
-          </script>
     </body>
     <footer>
         <div class="row container">
