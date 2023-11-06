@@ -44,8 +44,17 @@
         <div class="row">
             <a href="/categories">Categories</a>
             <a href="/subcategories">Subcategories</a>
-            <a href="/orders">Orders</a>
-            <a href="/user_dashboard">User Dashboard</a>
+            
+            {% if 'user_type' in session and session['user_type'] == 'customer' %}
+                <!-- Content for customers -->
+                <a href="/orders">Orders</a>
+                <a href="/user_dashboard">User Dashboard</a>
+            {% endif %}
+
+            {% if 'user_type' in session and session['user_type'] == 'admin' %}
+                <!-- Content for administrator -->
+                <a href="/admin">Admin Dashboard</a>
+            {% endif %}
     </div>
     </div>
 
@@ -81,7 +90,6 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="/update-profile">Update Profile</a>
-                    <a class="dropdown-item" href="/my-orders">My Orders</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/logout"><i class="fa-solid fa-sign-out"></i> Logout</a>
                 </div>

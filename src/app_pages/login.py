@@ -23,6 +23,7 @@ def login():
                     # Passwords match, login is successful
                     session['user_id'] = row[0]  # Access the user ID from the tuple by index
                     session['user_name'] = row[1]
+                    session['user_type'] = row[3]
                     session['cart'] = []
                     return redirect(url_for('homepage'))
 
