@@ -39,6 +39,10 @@ class MongoDBController:
 
     def close_connection(self):
         self.client.close()
+    
+    def count_documents(self, collection_name, filter={}):
+        collection = self.db[collection_name]
+        return collection.count_documents(filter)
 
     def insert_csv_data(self, collection_name, csv_file):
         collection = self.db[collection_name]
