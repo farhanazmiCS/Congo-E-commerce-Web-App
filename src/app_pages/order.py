@@ -3,12 +3,9 @@ from bson import ObjectId
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
 from mongodbcontrollerV2 import MongoDBController
-<<<<<<< HEAD
 from app_pages.cart import getCart, getProducts, getSubtotal
 from app_pages.orders import setOrderStatus
-=======
 from app_pages.cart import getCart, getProducts, getSubtotal, getProductDetails
->>>>>>> d600aee2cfa3f4cded76dc516c545bba9d73bf78
 import datetime
 
 mgdb = MongoDBController()
