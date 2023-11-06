@@ -30,8 +30,6 @@
         <script src="{{url_for('static', filename='brands.js')}}"></script>
         <script src="{{url_for('static', filename='solid.js')}}"></script>
         <script src="{{url_for('static', filename='fontawesome.js')}}"></script>
-        <!-- Custom JS -->
-        <script defer src="js/main.js"></script>
     </head>
     <body>
         <div class="nav-holder ">
@@ -92,63 +90,66 @@
             <div class="row">
               <div class="col">
                 <div class="card">
-                    <div class="card-header">
-                      Featured
-                    </div>
                     <div class="card-body">
-                      <h5 class="card-title">Overall Total Revenue</h5>
-                      <p class="card-text">SGD {{ revenue[0].totalRevenue }}</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                      <p class="card-text">Overall Total Revenue</p>
+                      <h5 class="card-title">SGD {{ revenue[0].totalRevenue }}</h5>
                     </div>
                   </div>
               </div>
               <div class="col">
+                {% if revenue_month_year|length > 1 %}
                 <div class="card">
-                    <div class="card-header">
-                      Featured
-                    </div>
                     <div class="card-body">
-                      {% if revenue_month_year|length > 1 %}
-                        <h5 class="card-title">Revenue for {{ revenue_month_year[1] }} 2023</h5>
-                        <p class="card-text">SGD {{ revenue_month_year[0].totalRevenue }}</p>
-                      {% else %}
-                      <h5 class="card-title">Revenue for {{ revenue_month_year[0] }} 2023</h5>
-                      <p class="card-text">SGD 0</p>
-                      {% endif %}
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                      <p class="card-text">Revenue for {{ revenue_month_year[1] }} 2023</p>
+                      <h5 class="card-title">SGD {{ revenue_month_year[0].totalRevenue }}</h5>
                     </div>
+                </div>
+                {% else %}
+                <div class="card">
+                  <div class="card-body">
+                    <p class="card-text">                    
+                      Revenue for {{ revenue_month_year[0] }} 2023
+                    </p>
+                    <h5 class="card-title">SGD 0</h5>
                   </div>
-              </div>
+                </div>
+                {% endif %}
               </div>
             </div>
             <div class="row">
-                <div class="col">
-                  <div class="card">
-                      <div class="card-header">
-                        Featured
-                      </div>
-                      <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                      </div>
+              <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                      <p class="card-text">Best Selling Product of All Time</p>
+                      <p class="card-text">{{ best_selling_product[0].product_name }}</p>
+                      <img src="{{ best_selling_product[0].product_image }}" class="img-fluid"><br /><br/>
+                      <p class="card-text">Purchased {{ best_selling_product[0].totalQuantity }} times</p>
                     </div>
-                </div>
-                <div class="col">
-                  <div class="card">
-                      <div class="card-header">
-                        Featured
-                      </div>
-                      <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                      </div>
-                    </div>
-                </div>
-                </div>
+                  </div>
               </div>
-        </div>
+              <div class="col">
+                {% if revenue_month_year|length > 1 %}
+                <div class="card">
+                    <div class="card-header">
+                      Revenue for {{ revenue_month_year[1] }} 2023
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">SGD {{ revenue_month_year[0].totalRevenue }}</h5>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card">
+                  <div class="card-header">
+                    Revenue for {{ revenue_month_year[0] }} 2023
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">SGD 0</h5>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
     </body>
     <footer>
         <div class="row container">
