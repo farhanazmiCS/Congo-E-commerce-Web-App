@@ -43,6 +43,7 @@ def logout():
     # Clear the user's session data to log them out
     session.pop('user_id', None)
     session.pop('user_name', None)
+    session.pop('user_type', None)
     session.pop('cart', None)
 
     # Redirect the user to the homepage or any other appropriate page
