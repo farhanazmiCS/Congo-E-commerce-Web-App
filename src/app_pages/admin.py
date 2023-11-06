@@ -107,12 +107,18 @@ def get_best_selling_product() -> list:
     return list(mongoController.aggregate('Orders', query))
 
 
-@app.route('/admin')
-def dashboard():
+@app.route('/admin', methods=['GET', 'POST'])
+def dashboard(sales_revenue_month: int=10, sales_revenue_year: int=2023):
     revenue = get_total_sales_revenue()
-    revenue_month_year = get_total_sales_revenue_by_month_and_year(1, 2023)
     best_selling_product = get_best_selling_product()
-    return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product)
+    if request.method == 'GET':
+        revenue_month_year = get_total_sales_revenue_by_month_and_year(sales_revenue_month, sales_revenue_year)
+        return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product)
+    elif request.method == 'POST':
+        month = int(request.form['month'])
+        year = int(request.form['year'])
+        revenue_month_year = get_total_sales_revenue_by_month_and_year(month, year)
+        return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product)
 
 @app.route('/admin/inventory')
 def inventory():
