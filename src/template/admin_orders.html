@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Congo.db{% endblock %}
+{% block content %}
+
+<div class="gradient-header-bg products-header">
+    <header class="container">
+        <div class="row">
+        </div>
+    </header>
+</div>
+
+<div class="container main-form">
+    <div class="row">
+        <div class="col-sm-12 orders-col">
+
+            <div class="order-overview">
+                <h1 id="orders-title">All Orders:</h1>
+                {% if session.get('error_message') %}
+                <div class="alert alert-danger">
+
+                    {{session.get('error_message')}}
+
+                </div>
+                {% set _ = session.pop('error_message', None) %}
+                {% endif %}
+                {% if session.get('status_message') %}
+                <div class="alert alert-success">
+
+
+                    {{session.get('status_message')}}
+
+                </div>
+                {% set _ = session.pop('status_message', None) %}
+                {% endif %}
+
+
+                <div id="orders-display">
+
+
+                    {% set orders = [
+                    {
+                    '_id': '1234',
+                    'total': 50.00,
+                    'date': '2022-01-01',
+                    'arrival_date': '2022-01-10',
+                    'status': 'pending'
+                    },
+                    {
+                    '_id': '5678',
+                    'total': 100.00,
+                    'date': '2022-01-02',
+                    'arrival_date': '2022-01-11',
+                    'status': 'shipped'
+                    },
+                    {
+                    '_id': '9012',
+                    'total': 150.00,
+                    'date': '2022-01-03',
+                    'arrival_date': '2022-01-12',
+                    'status': 'delivered'
+                    }
+                    ]%}
+                    {%for order in orders%}
+                    <div class="orders-item" id="{{order['_id']}}">
+                        <div class="orders-item-info">
+                            <a href="/single_order?order_id={{order['_id']}}">
+                                <h2>Order: {{order['_id']}}</h2>
+                            </a>
+                            <p>Price: ${{'%0.2f'|format(order['total'])}}</p>
+                            <p>Date made: {{order['date']}}</p>
+                            <p>Arrival Date: {{order['arrival_date']}}</p>
+                            <p id="{{order['_id']}}-status">Status: {{order['status']}}</p>
+                        </div>
+                        {% if order['status'] == 'pending'%}
+                        <div class="orders-remove-button">
+                            <a href="#" orderid="{{order['_id']}}" class="delete-order-button"><i
+                                    class="fa-solid fa-x"></i></a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {%endfor%}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -25,6 +25,7 @@ import app_pages.admin
 import app_pages.orders
 import app_pages.single_order
 import app_pages.user_dashboard
+import app_pages.admin_orders
 
 # @app.route('/cart', methods=["GET","POST"])
 # def cart():
