@@ -6,3 +6,4 @@ flask
 pandas
 SQLAlchemy
 werkzeug
+plotly
