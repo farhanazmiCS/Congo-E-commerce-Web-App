@@ -44,18 +44,22 @@
                 </form>
 
                 <div id="orders-display">
+                    {%if orders|length == 0%}
+                        <h2>No Order</h2>
+                    {%else%}
                     {%for order in orders%}
-                    <div class="orders-item" id="{{order['_id']}}">
-                        <div class="orders-item-info">
-                            <a href="/single_order?order_id={{order['_id']}}">
-                                <h2>Order: {{order['_id']}}</h2>
-                            </a>
-                            <p>Price: ${{'%0.2f'|format(order['total'])}}</p>
-                            <p>Date made: {{order['date']}}</p>
-                            <p id="{{order['_id']}}-status">Status: {{order['status']}}</p>
+                        <div class="orders-item" id="{{order['_id']}}">
+                            <div class="orders-item-info">
+                                <a href="/single_order?order_id={{order['_id']}}">
+                                    <h2>Order: {{order['_id']}}</h2>
+                                </a>
+                                <p>Price: ${{'%0.2f'|format(order['total'])}}</p>
+                                <p>Date made: {{order['date']}}</p>
+                                <p id="{{order['_id']}}-status">Status: {{order['status']}}</p>
+                            </div>
                         </div>
-                    </div>
-                    {%endfor%}
+                        {%endfor%}
+                    {%endif%}
                 </div>
             </div>
             <div id="pagination">
