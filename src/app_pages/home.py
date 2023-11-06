@@ -24,7 +24,7 @@ def get_top_seller():
         {
             '$group': {
                 '_id': '$products.product_id',
-                'total': { '$sum': "$products.quantity" }
+                'total': { '$sum': "$products.product_quantity" }
             }
         },
         {
