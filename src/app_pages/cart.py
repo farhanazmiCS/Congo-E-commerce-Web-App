@@ -10,6 +10,7 @@ from mongodbcontrollerV2 import MongoDBController
 def getCart():
     if 'user_id' in session:
         controller = MongoDBController()
+        cart_cursor = controller.read('Cart', {'user_id': session['user_id']})
         cart = list(cart_cursor)  # Convert the cursor to a list of documents
         if cart:
             return cart[0]
@@ -114,6 +115,8 @@ def getProductDetails(product_id, product_quantity):
             'product_id': product[0][0],
             'product_name': product[0][1],
             'product_image': product[0][2],
+            # convert product price to Float in 2 decimal places
+            'product_price': "{:.2f}".format(float(product[0][3])),
             'product_stock': product[0][4],
             'product_quantity': product_quantity
         }
@@ -125,8 +128,8 @@ def getSubtotal(products):
         print(product)
         subtotal += float(product.get('product_price')) * \
             int(product.get('product_quantity'))
+    # return subtotal to 0.2f as float
     return "{:.2f}".format(subtotal)
-
 
 @app.route('/cart', methods=["GET", "POST"])
 def cart():

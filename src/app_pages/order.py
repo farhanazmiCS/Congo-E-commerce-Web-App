@@ -3,6 +3,7 @@ from bson import ObjectId
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
 from mongodbcontrollerV2 import MongoDBController
+<<<<<<< HEAD
 from app_pages.cart import getCart, getProducts, getSubtotal
 from app_pages.orders import setOrderStatus
 import datetime
@@ -17,25 +18,6 @@ def checkout(cart: dict, order_total: float):
     date = datetime.datetime.now().strftime("%d/%m/%Y")
     arrival_date = (datetime.datetime.now() + datetime.timedelta(days=14)).strftime("%d/%m/%Y")
 
-    products_to_checkout = []
-
-    # Fix for Misisng Product Details
-    for cart_product in cart['products']:
-        product_id = cart_product['product_id']
-        quantity = cart_product['product_quantity']
-        product_info = read.select(table='product', where=[f"productid = '{product_id}'"])
-
-        print(product_info)
-
-        product_name = product_info[0][1]
-        product_image = product_info[0][3]
-        product_price = float(product_info[0][4])
-
-        products_to_checkout.append({'product_id': product_id,
-                                    'product_name': product_name,
-                                    'product_image': product_image,
-                                    'product_price': product_price,
-                                    'product_quantity': quantity})
 
 
     data = {
