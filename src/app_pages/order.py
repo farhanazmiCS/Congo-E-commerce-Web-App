@@ -22,8 +22,6 @@ def checkout(cart: dict, order_total: float):
     products_to_checkout = getProducts(cart)
     order_total = getSubtotal(products_to_checkout)
 
-    print("PRODUCTS TO CHECKOUT: ", products_to_checkout)
-
     data = {
         'user_id': cart['user_id'],
         'products': products_to_checkout,
@@ -32,6 +30,10 @@ def checkout(cart: dict, order_total: float):
         'arrival_date': arrival_date,
         'total': float(order_total)
     }
+
+    for product in products_to_checkout:
+        reduceProductStockFromOrder(product)
+
     _id = mgdb.create('Orders', data)
     mgdb.update('Cart', {'user_id': cart['user_id']}, {'products': []})
     #clear session cart
@@ -40,7 +42,16 @@ def checkout(cart: dict, order_total: float):
     
     return _id.inserted_id
 
-   
+def reduceProductStockFromOrder(product):
+    new_stock = product['product_stock'] - product['product_quantity']
+
+    updateStock = update.update(
+        table='product',
+         colvalues={'productstock': new_stock},
+                 where=[f'productid = {product["product_id"]}'])
+    
+    print("Reduced product ID: ", product['product_id'] , " stock to: ", new_stock, " from: ", product['product_stock'], " by: ", product['product_quantity'], " units.")
+    return updateStock
 
 
 def getOrderDetail(id: int):
