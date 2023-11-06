@@ -5,18 +5,20 @@ from ricefield import create, read, update, delete, mgdb
 from flask import Flask, flash, redirect, request, render_template, session, url_for
 from .cart import getCart, getProducts, getProductDetails, removeProductFromCart, updateProductQuantity, saveSessionCarttoDB, updateProductInSessionCart
 
-def fetch_user_reviews(product_id):
+def fetch_user_reviews(product_id, page=1, reviews_per_page=5):
+    skip_count = (page - 1) * reviews_per_page
+    
     pipeline = [
-        { 
+        {
             '$match': {
                 'productID': product_id
             }
         },
-        { 
+        {
             '$unwind': '$reviews'
         },
         {
-            '$sort': { 
+            '$sort': {
                 'reviews.timestamp': -1  # Sort reviews by timestamp in descending order (latest first)
             }
         },
@@ -31,13 +33,24 @@ def fetch_user_reviews(product_id):
     ]
 
     result = list(mgdb.aggregate('Reviews', pipeline))
-    print(result)
 
     if result:
-        return result[0].get('reviews', [])
-    else:
-        return []  # Return an empty list if no reviews found
+        reviews = result[0].get('reviews', [])
+        total_reviews = len(reviews)
 
+        # Calculate the total number of pages
+        total_pages = math.ceil(total_reviews / reviews_per_page)
+
+        # Calculate the start and end indices for reviews on the current page
+        start_index = skip_count
+        end_index = min(start_index + reviews_per_page, total_reviews)
+
+        # Slice the reviews to get the ones for the current page
+        reviews_on_page = reviews[start_index:end_index]
+
+        return reviews_on_page, total_pages
+    else:
+        return [], 0  # Return an empty list and 0 pages if no reviews found
 
 def get_product_details(product_id):
     product_details = read.select(
@@ -96,16 +109,20 @@ def get_product_details(product_id):
 
 @app.route('/product', methods=["GET", "POST"])
 def product():
+
     product_id = request.args.get('id', type=int)
+    page = request.args.get('page', type=int, default=1)
+
     if product_id is not None:
         product_details = get_product_details(product_id)
         if product_details:
 
-            # Fetch all user reviews for the product from MongoDB
-            user_reviews = fetch_user_reviews(product_id)
+            # Fetch user reviews and calculate total pages
+            user_reviews, total_pages = fetch_user_reviews(product_id, page=page)
 
             # Return product details
-            return render_template('product.html', product=product_details, user_reviews=user_reviews)
+            return render_template('product.html', product=product_details, user_reviews=user_reviews,
+                                   total_pages=total_pages, current_page=page)
 
 def calculate_average_rating(product_id):
     # Aggregate the reviews to calculate the average rating

@@ -97,6 +97,23 @@
         </div>
         {% endfor %}
 
+        {% if user_reviews %}
+            <!-- Add pagination controls for reviews section -->
+            <div class="product-reviews-pagination mt-2">
+                <p>Review Page:</p>
+                <ul class="pagination">
+                    {% for p in range(1, total_pages + 1) %}
+                        <li class="page-item{% if current_page == p %} active{% endif %}">
+                            <a class="page-link" href="{{ url_for('product', id=product['product_id'], page=p) }}#review">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <!-- Display a message if there are no reviews -->
+            <p>There are no reviews for this product yet.</p>
+        {% endif %}
+
                 <div class="product-review-form ">
                     <form id="review-form" class="form-inline" action="/review" method="post">
                         <div class="form-group">
