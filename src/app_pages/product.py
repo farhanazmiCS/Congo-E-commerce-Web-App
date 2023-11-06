@@ -7,7 +7,6 @@ from .cart import getCart, getProducts, getProductDetails, removeProductFromCart
 
 def fetch_average_rating(product_id):
     result = list(mgdb.read('Reviews', {'productID': product_id}))
-    print(result)
 
     if len(result):
         return str(result[0].get('averageRating', 0))  # Return the average rating if found

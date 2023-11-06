@@ -16,24 +16,24 @@
     <div class="container products">
         <div class="row">
             {% for product in products %}
-                <div class="col-sm-3">
-                    <a href="/product?id={{ product[0] }}" class="product-link">
-                        <div class="product-item">
-                            <div>
-                                <h3>{{ product[1] }}</h3> <!-- Product Name -->
-                            </div>
-                            <div class="product-image"> <!-- Wrap the image with a div -->
-                                <img src="{{ product[3] }}" alt="product"> <!-- Product Image URL with inline CSS -->
-                            </div>
-                            <div class="price-section">
-                                <p><span>$</span>{{ product[4] }}</p> <!-- Product Price -->
-                                <p><i class="fa-solid fa-star"></i>XX</p> <!-- TODO: Product Rating -->
-                                <button class="btn btn-primary" href="/product?id={{ product[0] }}" role="button">Shop Now</button>
-                            </div>
+            <div class="col-sm-3">
+                <a href="/product?id={{ product['product_id'] }}" class="product-link">
+                    <div class="product-item">
+                        <div>
+                            <h3>{{ product['product_name'] }}</h3> <!-- Product Name -->
                         </div>
-                    </a>
-                </div>
-            {% endfor %}
+                        <div class="product-image"> <!-- Wrap the image with a div -->
+                            <img src="{{ product['product_image'] }}" alt="product"> <!-- Product Image URL with inline CSS -->
+                        </div>
+                        <div class="price-section">
+                            <p><span>$</span>{{ product['product_price'] }}</p> <!-- Product Price -->
+                            <p><i class="fa-solid fa-star"></i> {{ product['product_rating'] }}</p>
+                            <button class="btn btn-primary" href="/product?id={{ product[0] }}" role="button">Shop Now</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
         </div>
     </div>
 

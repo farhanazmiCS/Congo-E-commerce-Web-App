@@ -2,6 +2,7 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
+from .product import fetch_average_rating
 
 def fetch_products_by_category(category_id, page):
     products_per_page = 12  # Number of products to display per page
@@ -10,7 +11,23 @@ def fetch_products_by_category(category_id, page):
         table='product',
         joins = [{'type': 'INNER', 'table': 'subcategory', 'condition': 'product.subcategoryid = subcategory.subcategoryid'}],
         where= [f'categoryid = {category_id} ORDER BY productid ASC LIMIT {products_per_page} OFFSET {offset}'])
-    return products
+    
+    product_list = []
+    
+    for product in products:
+        averageRating = fetch_average_rating(product[0])
+
+        product_dict = {
+            'product_id': product[0],
+            'product_name': product[1],
+            'product_image': product[3],
+            'product_price': product[4],
+            'product_rating': averageRating
+        }
+
+        product_list.append(product_dict)
+    
+    return product_list
 
 def get_category_name(category_id):
     category = read.select(table='category', where=[f'categoryid = {category_id}'])

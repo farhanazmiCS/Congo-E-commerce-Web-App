@@ -2,6 +2,7 @@ import math
 from __main__ import app
 from ricefield import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
+from .product import fetch_average_rating
 
 def fetch_products(productname, page, category=None, max_price=None):
     products_per_page = 12
@@ -24,7 +25,24 @@ def fetch_products(productname, page, category=None, max_price=None):
         limit=products_per_page,
         offset=offset
     )
-    return products
+
+    print(products)
+    product_list = []
+
+    for product in products:
+        averageRating = fetch_average_rating(product[0])
+
+        product_dict = {
+            'product_id': product[0],
+            'product_name': product[1],
+            'product_image': product[3],
+            'product_price': product[4],
+            'product_rating': averageRating
+        }
+
+        product_list.append(product_dict)
+    
+    return product_list
 
 def get_total_products(productname, category=None, max_price=None):
     products_per_page = 12
@@ -71,7 +89,6 @@ def searchResult():
 
     # Get categories for the dropdown
     categories = get_categories()
-    print(categories)
 
     return render_template('search-result.html', searchTerm=productname, products=products,
                            page=page, total_pages=total_pages,
