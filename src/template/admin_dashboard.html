@@ -86,35 +86,38 @@
                 </div>
             </header>
         </div>
-        <form method="POST" action="/admin">
-          <div style="padding-left: 40px">
-            <p>Filter revenue by month and year.</p>
-          </div>
-          <div class="row">
-            <div class="col">
-              <select name="month" id="month" class="form-control">
-                <option value="1">January</option>
-                <option value="2">Febuary</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
+        <div class="container text-center">
+          <form method="POST" action="/admin">
+            <div style="padding-left: 40px">
+              <p>Filter revenue by month and year.</p>
             </div>
-            <div class="col">
-              <input name="year" id="year" type="number" class="form-control" placeholder="Year" min="1900" max="2099">
+            <div class="row">
+              <div class="col">
+                <select name="month" id="month" class="form-control">
+                  <option value="1">January</option>
+                  <option value="2">Febuary</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <div class="col">
+                <input name="year" id="year" type="number" class="form-control" placeholder="Year" min="2010" max="2023">
+              </div>
+              <div class="col">
+                <button type="submit" class="btn btn-primary">Filter</button>
+              </div>
             </div>
-          </div>
-          <div class="row" style="padding-left: 35px">
-            <button type="submit" class="btn btn-primary">Filter</button>
-          </div>
-        </form>
+          </form>
+        </div>
+        
         <div class="container text-center">
             <div class="row">
               <div class="col">
@@ -129,7 +132,7 @@
                 {% if revenue_month_year|length > 1 %}
                 <div class="card">
                     <div class="card-body">
-                      <p class="card-text">Revenue for {{ revenue_month_year[1] }} 2023</p>
+                      <p class="card-text">Revenue for {{ revenue_month_year[1] }} {{ year }}</p>
                       <h5 class="card-title">SGD {{ revenue_month_year[0].totalRevenue }}</h5>
                     </div>
                 </div>
@@ -137,7 +140,7 @@
                 <div class="card">
                   <div class="card-body">
                     <p class="card-text">                    
-                      Revenue for {{ revenue_month_year[0] }} 2023
+                      Revenue for {{ revenue_month_year[0] }} {{ year }}
                     </p>
                     <h5 class="card-title">SGD 0</h5>
                   </div>
