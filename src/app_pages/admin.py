@@ -2,6 +2,7 @@ from __main__ import app
 from flask import Flask, redirect, request, render_template, session, url_for
 from ricefield import create, read, update, delete
 from mongodbcontrollerV2 import MongoDBController
+from math import ceil
 
 mongoController = MongoDBController()
 
@@ -124,5 +125,35 @@ def dashboard(sales_revenue_month: int=10, sales_revenue_year: int=2023):
         return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product)
 
 @app.route('/admin/inventory')
-def inventory():
-    return render_template('admin_inventory.html')
+def inventory(page_size: int=50):
+    page = request.args.get('page', default=1, type=int)
+    products = []
+    offset = (page - 1) * page_size
+    query = read.select(
+        'product',
+        limit=page_size,
+        offset=offset
+    )
+
+    query_count_all_products = read.select(
+        'product',
+        ['COUNT(*)']
+    )
+
+    total_pages = ceil(query_count_all_products[0][0] / page_size)
+
+    for result in query:
+        product = {
+            'productid': result[0],
+            'productname': result[1],
+            'productdesc': result[2],
+            'productimg': result[3],
+            'productprice': result[4],
+            'productstock': result[5],
+            'supplierid': result[6],
+            'subcategoryid': result[7],
+            'productrating': result[8]
+        }
+        products.append(product)
+
+    return render_template('admin_inventory.html', products=products, total_pages=total_pages, page=page)

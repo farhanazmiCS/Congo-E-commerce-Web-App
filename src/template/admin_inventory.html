@@ -82,7 +82,7 @@
                 <header class="container">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h1>{{categoryName}}</h1>
+                            <h1>Inventory</h1>
                         </div>
                     </div>
                 </header>
@@ -90,59 +90,76 @@
             
             <div class="container text-center">
                 <div class="row">
-                  <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                          Featured
-                        </div>
-                        <div class="card-body">
-                          <h5 class="card-title">Special title treatment</h5>
-                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                          <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                          Featured
-                        </div>
-                        <div class="card-body">
-                          <h5 class="card-title">Special title treatment</h5>
-                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                          <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                      </div>
-                  </div>
-                  </div>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Product ID</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Product Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                      <tr>
+                        <th scope="row">{{ product.productid }}</th>
+                        <td>{{ product.productname }}</td>
+                        <td>{{ product.productdesc }}</td>
+                        <td>{{ product.productstock }}</td>
+                        <td>{{ product.productprice }}</td>
+                        <td>{{ product.productrating }}</td>
+                        <td><button class='btn btn-primary'>View Product</button></td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
-                <div class="row">
-                    <div class="col">
-                      <div class="card">
-                          <div class="card-header">
-                            Featured
-                          </div>
-                          <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                      <div class="card">
-                          <div class="card-header">
-                            Featured
-                          </div>
-                          <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                          </div>
-                        </div>
-                    </div>
-                    </div>
-                  </div>
+                
+                <!-- Your existing pagination code here -->
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if page > 1 %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('inventory', page=page-1) }}">Previous</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                        {% endif %}
+                        
+                        {# Define the maximum number of pagination buttons to display #}
+                        {% set max_buttons = 5 %}
+                        
+                        {# Calculate the starting and ending page numbers for the pagination window #}
+                        {% set start_page = page - (max_buttons // 2) %}
+                        {% if start_page < 1 %}
+                            {% set start_page = 1 %}
+                        {% endif %}
+                        {% set end_page = start_page + max_buttons - 1 %}
+                        {% if end_page > total_pages %}
+                            {% set end_page = total_pages %}
+                        {% endif %}
+                        
+                        {# Iterate over the pages within the pagination window #}
+                        {% for p in range(start_page, end_page + 1) %}
+                            <li class="page-item {% if p == page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('inventory', page=p) }}">{{ p }}</a>
+                            </li>
+                        {% endfor %}
+                        
+                        {% if page < total_pages %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('inventory', page=page+1) }}">Next</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">Next</span></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                
+                
+                
+
+<!-- Your existing pagination code here -->
+                
             </div>
         </body>
         <footer>
