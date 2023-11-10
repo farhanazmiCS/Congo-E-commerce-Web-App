@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import random
-from sqlalchemy import create_engine, Column, Integer, String, Numeric, Date, ForeignKey, func
+from sqlalchemy import create_engine, Column, Integer, String, Numeric, Date, ForeignKey, func, CheckConstraint
 from sqlalchemy.orm import declarative_base, Session
 
 # Define the database connection string
@@ -24,24 +24,13 @@ class User(Base):
     useremail = Column(String, nullable=False)
     useraddress = Column(String, nullable=False)
 
-# Define the Order table
-class Order(Base):
-    __tablename__ = "order"
-
-    orderid = Column(Integer, primary_key=True, autoincrement=True)
-    userid = Column(Integer, ForeignKey("user.userid"), nullable=False)
-    orderdate = Column(Date, nullable=False)
-    ordertotal = Column(Numeric(10, 2), nullable=False)
-
-# Define the OrderStatus table
-class OrderStatus(Base):
-    __tablename__ = "orderstatus"
-
-    orderstatusid = Column(Integer, primary_key=True, autoincrement=True)
-    orderid = Column(Integer, ForeignKey("order.orderid"), nullable=False)
-    orderstatusname = Column(String, nullable=False)
-    orderstatusdescription = Column(String, nullable=False)
-    shippeddate = Column(Date)
+    # Add constraints for email format, username, userpassword, and userpassword_hashed
+    __table_args__ = (
+        CheckConstraint(useremail.op('~')(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.com$'), name='Email_Is_Valid_Format'),
+        CheckConstraint(username != '', name='Username_Not_Empty'),
+        CheckConstraint(userpassword != '', name='Userpassword_Not_Empty'),
+        CheckConstraint(userpassword.op('~')(r'^scrypt:32768:8:1'), name='Userpassword_hashed'),
+    )
 
 # Define the Supplier table
 class Supplier(Base):
@@ -50,6 +39,12 @@ class Supplier(Base):
     supplierid = Column(Integer, primary_key=True, autoincrement=True)
     suppliername = Column(String, nullable=False)
     contactinfo = Column(String, nullable=False)
+
+    # Add a constraint to check contactinfo format and that supplier name is not empty
+    __table_args__ = (
+        CheckConstraint(contactinfo.op('~')(r'^\+65 [0-9]{8}$'), name='Contactinfo_Correct_Format'),
+        CheckConstraint(suppliername != '', name='Suppliername_Not_Empty'),
+    )
 
 # Define the SubCategory table
 class SubCategory(Base):
@@ -67,8 +62,13 @@ class Category(Base):
     categoryid = Column(Integer, primary_key=True, autoincrement=True)
     categoryname = Column(String, nullable=False)
     categorydescription = Column(String, nullable=False)
+    
+    # Add a constraint to check that the category name is not empty
+    __table_args__ = (
+        CheckConstraint(categoryname != '', name='Category_Name_Not_Empty'),
+    )
 
-# Define the Product_JX table
+# Define the Product table
 class Product(Base):
     __tablename__ = "product"
 
@@ -81,6 +81,15 @@ class Product(Base):
     supplierid = Column(Integer, ForeignKey("supplier.supplierid"), nullable=False)
     subcategoryid = Column(Integer, ForeignKey("subcategory.subcategoryid"), nullable=False)
     productrating = Column(Numeric(3, 2), nullable=False, default=0.00)
+
+    # Add constraints for price, product name, rating, and stock
+    __table_args__ = (
+        CheckConstraint(productprice > 0, name='Price_More_Than_Zero'),
+        CheckConstraint(productname != '', name='Product_Name_Not_Empty'),
+        CheckConstraint((productrating >= 0) & (productrating <= 5), name='Rating_Between_0_to_5'),
+        CheckConstraint(productrating >= 0, name='Rating_Not_Negative'),
+        CheckConstraint(productstock >= 0, name='Stock_Not_Negative'),
+    )
 
 # Create the tables in the database
 Base.metadata.create_all(engine)
