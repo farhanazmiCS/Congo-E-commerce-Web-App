@@ -83,6 +83,17 @@ query = read.select(table='public.user')
 for record in query:
     print(record)
 
-query = read.select(table='orderstatus')
-for record in query:
-    print(record)
+query = read.select(
+            'product',
+            limit=20,
+            orderBy={'productid': 'ASC'}
+        )
+for row in query:
+    print(row)
+
+query = read.select(
+                'product',
+                where=["productid='1'"],
+            )
+for row in query:
+    print(row)

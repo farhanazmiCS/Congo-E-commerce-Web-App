@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Congo.db{% endblock %}
+{% block content %}
+
+<div class="gradient-header-bg products-header">
+    <header class="container">
+        <div class="row">
+        </div>
+    </header>
+</div>
+    
+<div class="container product-content">
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="product-info">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ product['product_name'] }}</li>
+                    </ol>
+                </nav>
+                <h1>{{ product['productname'] }}</h1>
+                <img src="{{ product['productimg'] }}" alt="{{ product['productname'] }}">
+
+                <div class="product-categories mt-5">
+                </div>
+                <div class="product-categories">
+                    <div>
+                        <h3>Update Quantity</h3>
+                        <p>{{ product['productstock']}}</a></p>
+                    </div>
+                </div>
+                <h2>Product Description</h2>
+                <p>{{ product['productdesc'] }}</p>
+            </div>
+        </div>
+        
+
+        
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

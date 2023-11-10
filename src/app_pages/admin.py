@@ -110,52 +110,102 @@ def get_best_selling_product() -> list:
 
 @app.route('/admin', methods=['GET', 'POST'])
 def dashboard(sales_revenue_month: str='10', year: int=2023):
-    revenue = get_total_sales_revenue()
-    best_selling_product = get_best_selling_product()
-    if request.method == 'GET':
-        revenue_month_year = get_total_sales_revenue_by_month_and_year(sales_revenue_month, year)
-        return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product, year=year)
-    elif request.method == 'POST':
-        month = request.form['month']
-        if len(month) < 2:
-            month = '0' + month
-        try:
-            year = int(request.form['year'])
-        except ValueError:
-            year = year
-        revenue_month_year = get_total_sales_revenue_by_month_and_year(month, year)
-        return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product, year=year)
+    if 'user_id' in session:
+        # Check if user is admin
+        user = read.select(
+            table='public.user',
+            columns=['usertype'],
+            where=[f'userid={session["user_id"]}']
+        )
+        user_type = user[0][0]
+        if user_type != 'admin':
+            session['error_message'] = "You are not authorized to visit this page!"
+            return redirect(url_for('homepage'))
+        else:
+            revenue = get_total_sales_revenue()
+            best_selling_product = get_best_selling_product()
+            if request.method == 'GET':
+                revenue_month_year = get_total_sales_revenue_by_month_and_year(sales_revenue_month, year)
+                return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product, year=year)
+            elif request.method == 'POST':
+                month = request.form['month']
+                if len(month) < 2:
+                    month = '0' + month
+                try:
+                    year = int(request.form['year'])
+                except ValueError:
+                    year = year
+                revenue_month_year = get_total_sales_revenue_by_month_and_year(month, year)
+                return render_template('admin_dashboard.html', revenue=revenue, revenue_month_year=revenue_month_year, best_selling_product=best_selling_product, year=year)
+    else:
+        session['error_message'] = "You must be logged in!"
+        return redirect(url_for('login'))
+    
 
 @app.route('/admin/inventory')
 def inventory(page_size: int=50):
-    page = request.args.get('page', default=1, type=int)
-    products = []
-    offset = (page - 1) * page_size
-    query = read.select(
-        'product',
-        limit=page_size,
-        offset=offset
-    )
+    if 'user_id' in session:
+        # Check if user is admin
+        user = read.select(
+            table='public.user',
+            columns=['usertype'],
+            where=[f'userid={session["user_id"]}'],
+        )
+        user_type = user[0][0]
+        if user_type != 'admin':
+            session['error_message'] = "You are not authorized to visit this page!"
+            return redirect(url_for('homepage'))
+        else:
+            page = request.args.get('page', default=1, type=int)
+            products = []
+            offset = (page - 1) * page_size
+            query = read.select(
+                'product',
+                limit=page_size,
+                offset=offset,
+                orderBy={'productid': 'ASC'}
+            )
 
-    query_count_all_products = read.select(
-        'product',
-        ['COUNT(*)']
-    )
+            query_count_all_products = read.select(
+                'product',
+                ['COUNT(*)']
+            )
 
-    total_pages = ceil(query_count_all_products[0][0] / page_size)
+            total_pages = ceil(query_count_all_products[0][0] / page_size)
 
-    for result in query:
-        product = {
-            'productid': result[0],
-            'productname': result[1],
-            'productdesc': result[2],
-            'productimg': result[3],
-            'productprice': result[4],
-            'productstock': result[5],
-            'supplierid': result[6],
-            'subcategoryid': result[7],
-            'productrating': result[8]
-        }
-        products.append(product)
+            for result in query:
+                product = {
+                    'productid': result[0],
+                    'productname': result[1],
+                    'productdesc': result[2],
+                    'productimg': result[3],
+                    'productprice': result[4],
+                    'productstock': result[5],
+                    'supplierid': result[6],
+                    'subcategoryid': result[7],
+                    'productrating': result[8]
+                }
+                products.append(product)
+            return render_template('admin_inventory.html', products=products, total_pages=total_pages, page=page)
+    else:
+        session['error_message'] = "You must be logged in!"
+        return redirect(url_for('login'))
 
-    return render_template('admin_inventory.html', products=products, total_pages=total_pages, page=page)
+@app.route('/update-stock', methods=['POST'])
+def update_inventory():
+    data = request.get_json()
+    product_id = int(data.get('product_id'))
+    stock_count = int(data.get('stock_count'))
+
+    try:
+        update_query = update.update(
+            table='product', 
+            colvalues={
+                'productstock': stock_count
+            },
+            where=[f"productid='{product_id}'"]
+        )
+    except Exception:
+        session["error_message"] = 'Update failed. Try again.'
+    
+    return 'OK', 200
