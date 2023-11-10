@@ -86,6 +86,7 @@ def get_product_details(product_id):
             where=[f'supplierid = {supplier_id}']
         )
         suppliername = supplier[0][1] if supplier else None
+        suppliercontact = supplier[0][2] if supplier else None
         
         product_dict = {
             'product_id': product[0],
@@ -100,6 +101,7 @@ def get_product_details(product_id):
             'category_name': categoryname,
             'supplier_id': supplier_id,
             'supplier_name': suppliername,
+            'supplier_contact': suppliercontact,
             'product_rating': "N/A" if product[8] == 0.00 else product[8]
         }
         return product_dict

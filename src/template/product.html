@@ -8,17 +8,21 @@
         </div>
     </header>
 </div>
-    
+
 <div class="container product-content">
     <div class="row">
         <div class="col-lg-8 col-md-12">
             <div class="product-info">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('category', category=product['category_id']) }}">{{ product['category_name'] }}</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('subcategory', subcategory=product['subcategory_id']) }}">{{ product['subcategory_name'] }}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ product['product_name'] }}</li>
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{{ url_for('category', category=product['category_id']) }}">{{
+                                product['category_name'] }}</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{{ url_for('subcategory', subcategory=product['subcategory_id']) }}">{{
+                                product['subcategory_name'] }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ product['product_name'] }}</li>
                     </ol>
                 </nav>
                 <h1>{{ product['product_name'] }}</h1>
@@ -27,19 +31,51 @@
                 <div class="product-categories mt-5">
                     <div>
                         <h3>Category</h3>
-                        <p><a href="{{ url_for('category', category=product['category_id']) }}">{{ product['category_name'] }}</a></p>
+                        <p><a href="{{ url_for('category', category=product['category_id']) }}">{{
+                                product['category_name'] }}</a></p>
                     </div>
                     <div>
                         <h3>Subcategory</h3>
-                        <p><a href="{{ url_for('subcategory', subcategory=product['subcategory_id']) }}">{{ product['subcategory_name'] }}</a></p>
+                        <p><a href="{{ url_for('subcategory', subcategory=product['subcategory_id']) }}">{{
+                                product['subcategory_name'] }}</a></p>
                     </div>
-                  
+
                 </div>
                 <div class="product-categories">
                     <div>
                         <h3>Supplier</h3>
-                        <p>{{ product['supplier_name'] }}</a></p>
+                        <a data-toggle="modal" data-target="#SupplierModal" href=""><p>{{ product['supplier_name'] }}</a></p></a>
                     </div>
+
+                    <!-- For triggering modal -->
+                    <script>
+                        $('#myModal').on('shown.bs.modal', function () {
+                            $('#myInput').trigger('focus')
+                        })
+
+                    </script>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SupplierModal" tabindex="-1" role="dialog"
+                        aria-labelledby="SupplierModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header ml-3 mr-3">
+                                    <h5 class="modal-title" id="SupplierModalLabel">{{ product['supplier_name'] }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body ml-3 mr-3">
+                                    Contact Number 📞 : <a href="tel:{{ product['supplier_contact'] }}">{{ product['supplier_contact'] }}</a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div>
                         <h3>Remaining Quantity</h3>
                         <p>{{ product['product_stock']}}</a></p>
@@ -50,23 +86,26 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-12 sticky">
-            <form id="product-form" class="form-inline product-action sticky" method="post" action="/add_to_cart" method="post">
-            <h2>Order Now</h2>
-            <div class="order-info">
-                <div>
-                    <h3>Rating</h3>
-                    <p>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        {{ product['product_rating'] }}
-                    </p>
-                </div>
-                <div>
-                    <h3>Price</h3>
+            <form id="product-form" class="form-inline product-action sticky" method="post" action="/add_to_cart"
+                method="post">
+                <h2>Order Now</h2>
+                <div class="order-info">
+                    <div>
+                        <h3>Rating</h3>
+                        <p>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            {{ product['product_rating'] }}
+                        </p>
+                    </div>
+                    <div>
+                        <h3>Price</h3>
                         <p><span>$</span>{{ product['product_price'] }}</p>
+                    </div>
                 </div>
-            </div>
                 <div>
-                    <label for="product_quantity"><h3>Quantity</h3></label>
+                    <label for="product_quantity">
+                        <h3>Quantity</h3>
+                    </label>
                     <input type="number" name="product_quantity" value="1" placeholder="1">
                 </div>
                 <input type="hidden" name="product_id" value="{{ product['product_id'] }}">
@@ -74,60 +113,62 @@
                 <input type="hidden" name="product_image" value="{{ product['product_image'] }}">
                 <input type="hidden" name="product_price" value="{{ product['product_price'] }}">
                 <input type="hidden" name="product_stock" value="{{ product['product_stock'] }}">
-            <div class="form-group mt-3">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to cart</button>
-            </div>
+                <div class="form-group mt-3">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to cart</button>
+                </div>
             </form>
         </div>
         <div class="col-lg-8 col-md-12" id="review">
             <div class="product-reviews">
                 <h2>Reviews</h2>
                 {% for review in user_reviews %}
-        <div class="product-review">
-            <div>
-                <h3>{{ review.name }}</h3>
-                <p>{{ review.rating }}
-                    {% for _ in range(review.rating) %}
-                    <i class="fa fa-star star-selected" aria-hidden="true"></i>
-                    {% endfor %}
-                </p>
-            </div>
-            <p>{{ review.review }}</p>
-            <p><small>Reviewed On: {{ review.timestamp.strftime('%d %B %Y, %H:%M:%S') }}</small></p>
-        </div>
-        {% endfor %}
+                <div class="product-review">
+                    <div>
+                        <h3>{{ review.name }}</h3>
+                        <p>{{ review.rating }}
+                            {% for _ in range(review.rating) %}
+                            <i class="fa fa-star star-selected" aria-hidden="true"></i>
+                            {% endfor %}
+                        </p>
+                    </div>
+                    <p>{{ review.review }}</p>
+                    <p><small>Reviewed On: {{ review.timestamp.strftime('%d %B %Y, %H:%M:%S') }}</small></p>
+                </div>
+                {% endfor %}
 
-        {% if user_reviews %}
-            <!-- Add pagination controls for reviews section -->
-            <div class="product-reviews-pagination mt-2">
-                <p>Review Page:</p>
-                <ul class="pagination">
-                    {% for p in range(1, total_pages + 1) %}
+                {% if user_reviews %}
+                <!-- Add pagination controls for reviews section -->
+                <div class="product-reviews-pagination mt-2">
+                    <p>Review Page:</p>
+                    <ul class="pagination">
+                        {% for p in range(1, total_pages + 1) %}
                         <li class="page-item{% if current_page == p %} active{% endif %}">
-                            <a class="page-link" href="{{ url_for('product', id=product['product_id'], page=p) }}#review">{{ p }}</a>
+                            <a class="page-link"
+                                href="{{ url_for('product', id=product['product_id'], page=p) }}#review">{{ p }}</a>
                         </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% else %}
-            <!-- Display a message if there are no reviews -->
-            <p>There are no reviews for this product yet.</p>
-        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% else %}
+                <!-- Display a message if there are no reviews -->
+                <p>There are no reviews for this product yet.</p>
+                {% endif %}
 
                 <div class="product-review-form ">
-                {% if 'user_id' not in session %}
+                    {% if 'user_id' not in session %}
                     <div class="alert alert-primary" role="alert">
                         You must <a href=" {{ url_for('login') }}">login</a> to leave a product review.
                     </div>
-                {% else %}
+                    {% else %}
                     <form id="review-form" class="form-inline" action="/review" method="post">
                         <div class="form-group">
                             <h3><label for="review">Leave a review here:</label></h3>
-                            <textarea name="review" class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+                            <textarea name="review" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                required></textarea>
                         </div>
                         <div class="form-group rating-group">
                             <h3><label for="review">Rating:</label></h3>
-                            <div class="rating-stars"> 
+                            <div class="rating-stars">
                                 <input id="star-1" type="radio" name="rating" value="1" class="rating-star"></input>
                                 <label for="star-1" title="1 stars">
                                     <i class="active fa fa-star" aria-hidden="true"></i>
@@ -144,7 +185,8 @@
                                 <label for="star-4" title="4 stars">
                                     <i class="active fa fa-star" aria-hidden="true"></i>
                                 </label>
-                                <input id="star-5" type="radio" name="rating" value="5" class="rating-star" checked></input>
+                                <input id="star-5" type="radio" name="rating" value="5" class="rating-star"
+                                    checked></input>
                                 <label for="star-5" title="5 star">
                                     <i class="active fa fa-star" aria-hidden="true"></i>
                                 </label>
@@ -153,7 +195,7 @@
                             <script>
                                 var stars = document.getElementsByClassName('rating-star');
                                 var prevValue = 5;
-                            
+
                                 for (i = 0; i < stars.length; i++) {
                                     console.log(stars[i].nextElementSibling);
                                     stars[i].addEventListener('click', function () {
@@ -167,7 +209,7 @@
                                         prevValue = value;
                                     });
                                 }
-                            
+
                                 // Trigger a click event on the 5th star when the page loads
                                 document.getElementById('star-5').click();
                             </script>
