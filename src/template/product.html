@@ -113,8 +113,13 @@
                 <input type="hidden" name="product_image" value="{{ product['product_image'] }}">
                 <input type="hidden" name="product_price" value="{{ product['product_price'] }}">
                 <input type="hidden" name="product_stock" value="{{ product['product_stock'] }}">
+                <!-- Inside your form -->
                 <div class="form-group mt-3">
+                    {% if product['product_stock'] == 0 %}
+                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" disabled>Sold Out</button>
+                    {% else %}
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add to cart</button>
+                    {% endif %}
                 </div>
             </form>
         </div>
