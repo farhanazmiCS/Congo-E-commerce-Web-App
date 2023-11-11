@@ -106,7 +106,6 @@
                         <td>{{ product.productprice }}</td>
                         <td>{{ product.productrating }}</td>
                         <td>{{ product.productstock }}</td>
-                        <td><a><button class="btn btn-danger">Delete Product</button></a></td>
                         <td><a><button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter-{{ product.productid }}">Edit Stock</button></a></td>
                       </tr>
                       <!-- Modal -->
@@ -120,9 +119,9 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    <h6>Current Stock</h6>
+                                    <h6>Current stock for this product</h6>
                                     <p class="stock">{{ product.productstock }}</p>
-                                    <h6>Update Stock Count</h6>
+                                    <h6>Update stock count for Product {{ product.productid }} </h6>
                                     <div class="container mt-4">
                                         <div class="input-group">
                                           <div class="input-group-prepend">
@@ -199,12 +198,10 @@
                     })
                     .then(response => {
                         if (response.ok) {
-                            // Handle a successful response here
-                        } else {
-                            // Handle an error response here
-                        }
+                            history.go(0);
+                        } 
                     })
-                    history.go(0);
+                    
                 }
 
 
