@@ -1,4 +1,4 @@
-from PostGresControllerV2 import initialise_crud
+from PostGresController.PostGresController import initialise_crud
 
 create, read, update, delete = initialise_crud()
 

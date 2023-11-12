@@ -1,5 +1,5 @@
 from flask import *
-from PostGresControllerV2.PostGresControllerV2 import initialise_crud
+from PostGresController.PostGresController import initialise_crud
 from mongodbcontrollerV2 import MongoDBController
 
 app = Flask(__name__, template_folder='template')
