@@ -116,7 +116,7 @@ def userDashboard():
 
     totalExpenditure = getTotalExpenditure(orderList)
 
-    totalQuantity = getTotalQuantity(sortedProductQuantityList)
+    totalQuantity = getTotalQuantity(getProductQuantity(orderList))
 
     maxTotal = mostExpensiveOrder(orderList)
 

@@ -78,14 +78,19 @@
         <div class="gradient-header-bg products-header">
             <header class="container">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h1>{{categoryName}}</h1>
-                    </div>
+                    
+                        <div class="col-sm-12">
+                            <h1>Admin Dashboard</h1>
+                        </div>
+                    
                 </div>
             </header>
         </div>
-        <div class="container text-center">
-          <form method="POST" action="/admin">
+        
+        <div class="container text-center admin-dashboard">
+          <div class="row">
+          <div class="col">
+          <form method="POST" action="/admin" id = "admin-dashboard-form" class="col-sm-12">
             <div style="padding-left: 40px">
               <p>Filter revenue by month and year.</p>
             </div>
@@ -115,8 +120,9 @@
             </div>
           </form>
         </div>
+        </div>
         
-        <div class="container text-center">
+        
             <div class="row">
               <div class="col">
                 <div class="card">
@@ -149,15 +155,21 @@
             <div class="row">
               <div class="col">
                 <div class="card">
-                  <div class="card-body">
+                  <div class="card-body card-main">
+                    <div class="card-col">
                     <p class="card-text">Best Selling Product of All Time</p>
-                    <p class="card-text">{{ best_selling_product[0].product_name }}</p>
-                    <img src="{{ best_selling_product[0].product_image }}" class="img-fluid"><br /><br/>
+                    <h4 class="card-text">{{ best_selling_product[0].product_name }}</h4>
+                    
                     <p class="card-text">Purchased {{ best_selling_product[0].totalQuantity }} times</p>
+                    </div>
+                    <div class="card-col">
+                    <img src="{{ best_selling_product[0].product_image }}" class="img-fluid">
+                  </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
     </body>
     <footer>
         <div class="row container">
