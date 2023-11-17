@@ -217,7 +217,7 @@ def update_product_info():
     product_name = data.get('product_name')
     product_desc = data.get('product_desc')
     product_price = float(data.get('product_price'))  # Extract product price from the request
-
+    
     try:
         # Update the product in the database
         update_query = update.update(
