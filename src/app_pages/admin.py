@@ -209,3 +209,29 @@ def update_inventory():
         session["error_message"] = 'Update failed. Try again.'
     
     return 'OK', 200
+
+@app.route('/update-product-info', methods=['POST'])
+def update_product_info():
+    data = request.get_json()
+    product_id = int(data.get('product_id'))
+    product_name = data.get('product_name')
+    product_desc = data.get('product_desc')
+    product_price = float(data.get('product_price'))  # Extract product price from the request
+
+    try:
+        # Update the product in the database
+        update_query = update.update(
+            table='product', 
+            colvalues={
+                'productname': product_name,
+                'productdesc': product_desc,
+                'productprice': product_price  # Include product price in the update
+            },
+            where=[f"productid='{product_id}'"]
+        )
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        # Log the exception and return an error response
+        print(f"Error updating product: {e}")
+        return jsonify({'status': 'error', 'message': 'Update failed'}), 500
+
