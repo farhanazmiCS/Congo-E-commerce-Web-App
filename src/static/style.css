@@ -415,6 +415,24 @@ footer .row {
     color:#111f2a;
 }
 
+.edit-product div div {
+    text-align: left;
+    display:flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.edit-product label ,.edit-product input ,.edit-product textarea{
+    flex-basis:100%;
+    width: 100%;
+}
+
+.edit-product textarea{
+    padding-bottom:5px;
+}
+
+
 #admin-dashboard-form {
     background:#fff;
     padding:30px 20px;
