@@ -1,7 +1,7 @@
 from __main__ import app
 from bson import ObjectId
 from flask import Flask, redirect, request, render_template, session, url_for ,jsonify, make_response
-from mongodbcontrollerV2 import MongoDBController
+from controller.mongodbController import MongoDBController
 import datetime
 import json
 

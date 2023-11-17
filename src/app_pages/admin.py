@@ -1,7 +1,7 @@
 from __main__ import app
 from flask import Flask, redirect, request, render_template, session, url_for,jsonify
-from ricefield import create, read, update, delete
-from mongodbcontrollerV2 import MongoDBController
+from congoDB import create, read, update, delete
+from controller.mongodbController import MongoDBController
 from math import ceil
 
 mongoController = MongoDBController()

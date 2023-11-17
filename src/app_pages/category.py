@@ -1,6 +1,6 @@
 import math
 from __main__ import app
-from ricefield import create, read, update, delete
+from congoDB import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
 
 def fetch_products_by_category(category_id, page):

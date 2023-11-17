@@ -1,7 +1,7 @@
 from __main__ import app
 from flask import Flask, redirect, request, render_template, session, url_for
-from ricefield import read, create, update, delete
-from mongodbcontrollerV2 import MongoDBController
+from congoDB import read, create, update, delete
+from controller.mongodbController import MongoDBController
 import numpy as np
 import plotly.express as px
 import pandas as pd

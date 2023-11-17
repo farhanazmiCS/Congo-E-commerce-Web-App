@@ -1,5 +1,5 @@
 from __main__ import app
-from ricefield import create, read, update, delete
+from congoDB import create, read, update, delete
 from flask import Flask, redirect, request, abort, render_template, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 

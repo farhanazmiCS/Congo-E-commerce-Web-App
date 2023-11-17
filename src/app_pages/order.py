@@ -1,8 +1,8 @@
 from __main__ import app
 from bson import ObjectId
-from ricefield import create, read, update, delete
+from congoDB import create, read, update, delete
 from flask import Flask, redirect, request, render_template, session, url_for
-from mongodbcontrollerV2 import MongoDBController
+from controller.mongodbController import MongoDBController
 from app_pages.cart import getCart, getProducts, getSubtotal
 from app_pages.orders import setOrderStatus
 from app_pages.cart import getCart, getProducts, getSubtotal, getProductDetails

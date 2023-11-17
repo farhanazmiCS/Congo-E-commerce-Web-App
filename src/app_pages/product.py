@@ -1,7 +1,7 @@
 from datetime import datetime
 import math
 from __main__ import app
-from ricefield import create, read, update, delete, mgdb
+from congoDB import create, read, update, delete, mgdb
 from flask import Flask, flash, redirect, request, render_template, session, url_for
 from .cart import getCart, getProducts, getProductDetails, removeProductFromCart, updateProductQuantity, saveSessionCarttoDB, updateProductInSessionCart
 

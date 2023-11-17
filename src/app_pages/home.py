@@ -1,6 +1,6 @@
 import random
 from __main__ import app
-from ricefield import create, read, update, delete, mgdb
+from congoDB import create, read, update, delete, mgdb
 from flask import Flask, redirect, request, render_template, session, url_for
 
 def get_random_image(category_id):

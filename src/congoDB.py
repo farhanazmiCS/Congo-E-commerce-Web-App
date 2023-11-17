@@ -1,6 +1,6 @@
 from flask import *
-from PostGresController.PostGresController import initialise_crud
-from mongodbcontrollerV2 import MongoDBController
+from controller.PostGresController import initialise_crud
+from controller.mongodbController import MongoDBController
 
 app = Flask(__name__, template_folder='template')
 app.secret_key = 'inf2003'  # Replace 'your_secret_key_here' with your actual secret key

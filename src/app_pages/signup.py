@@ -1,6 +1,6 @@
 from __main__ import app
-from ricefield import create, read, update, delete
-from mongodbcontrollerV2 import MongoDBController
+from congoDB import create, read, update, delete
+from controller.mongodbController import MongoDBController
 from flask import Flask, request, abort, render_template
 from werkzeug.security import generate_password_hash
 
