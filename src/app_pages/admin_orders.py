@@ -30,6 +30,18 @@ def get_all_orders(status_filter=None, skip=0, limit=ORDERS_PER_PAGE) -> list:
 
 @app.route('/admin/orders', methods=['GET'])
 def admin_orders():
+    if 'user_id' in session:
+        # Check if user is admin
+        user = read.select(
+        table='public.user',
+        columns=['usertype'],
+        where=[f'userid={session["user_id"]}'],
+        )
+        user_type = user[0][0]
+        if user_type != 'admin':
+            session['error_message'] = "You are not authorized to visit this page!"
+            return redirect(url_for('homepage'))
+
     page = request.args.get('page', 1, type=int)
     status_filter = request.args.get('status', None)
 

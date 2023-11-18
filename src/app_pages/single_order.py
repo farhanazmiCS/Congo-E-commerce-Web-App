@@ -15,11 +15,23 @@ def getSingleOrder(order_id):
 
 @app.route('/single_order', methods=["GET", "POST"])
 def singleOrder():
+    admin = False
     # Initialize an error message variable
     session.setdefault('error_message', [])
     if session.get('user_id') is None:
         session['error_message'] = "You must be logged in to view your cart"
         return redirect(url_for('login'))
+    
+    if 'user_id' in session:
+        # Check if user is admin
+        user = read.select(
+            table='public.user',
+            columns=['usertype'],
+            where=[f'userid={session["user_id"]}'],
+        )
+        user_type = user[0][0]
+        if user_type == 'admin':
+            admin = True
     
 
     if request.method == 'GET':
@@ -30,4 +42,4 @@ def singleOrder():
         products = getProducts(orderList[0])
         ordertotal = getSubtotal(products)
 
-    return render_template('single_order.html', products=products, ordertotal=ordertotal ,order_detail=order_detail)
+    return render_template('single_order.html', products=products, ordertotal=ordertotal ,order_detail=order_detail,admin = admin)

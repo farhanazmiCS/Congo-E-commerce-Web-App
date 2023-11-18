@@ -54,8 +54,16 @@
                     {% if order_detail[0]["status"]=='pending'%}
                     <a href="/cancel_order?order_id={{order_detail[0]['_id']}}" class="btn btn-primary">Cancel Order</a> 
                     {% endif %}
+                    {% if admin and order_detail[0]["status"]=='pending'%}
+                    <a href="/ship_order?order_id={{order_detail[0]['_id']}}" class="btn btn-primary">Ship Order</a> 
+                    {% endif %}
+                    {% if admin%}
+                    <a href="/admin/orders"
+                        class="btn btn-primary">Back to Admin Orders</a>
+                    {% else %}
                     <a href="/orders"
                         class="btn btn-primary">Back to Orders</a>
+                    {% endif %}
                 </div>
             </form>
 

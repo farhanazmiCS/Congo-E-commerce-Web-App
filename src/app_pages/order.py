@@ -109,3 +109,37 @@ def selectCancelOrder():
             session['error_message'] = "Order does not exist."
             return redirect(url_for('orders'))
     
+
+@app.route('/ship_order', methods=["GET", "POST"])
+def selectShipOrder():
+
+    if 'user_id' in session:
+        # Check if user is admin
+        user = read.select(
+            table='public.user',
+            columns=['usertype'],
+            where=[f'userid={session["user_id"]}'],
+        )
+        user_type = user[0][0]
+        if user_type != 'admin':
+            session['error_message'] = "You are not authorized to visit this page!"
+            return redirect(url_for('homepage'))
+     # Initialize an error message variable
+    session.setdefault('error_message', [])
+    if session.get('user_id') is None:
+        session['error_message'] = "You must be logged in to view your cart"
+        return redirect(url_for('login'))
+    session.setdefault('status_message', [])
+    if request.method == 'GET' and request.args.get('order_id'):
+        order_id= request.args.get('order_id')
+        order_status = list(mgdb.read('Orders',{ "_id": order_id }))[0]['status']
+        if order_status == 'pending':
+            setOrderStatus(order_id,'shipped')
+            session['status_message'] = "Order Shipped."    
+            return redirect(url_for('admin_orders'))
+        elif order_status == 'cancelled':
+            session['error_message'] = "Order has been cancelled."
+            return redirect(url_for('admin_orders'))
+        else:
+            session['error_message'] = "Order does not exist."
+            return redirect(url_for('admin_orders'))

@@ -62,7 +62,7 @@
                     {%endif%}
                 </div>
             </div>
-            <div id="pagination">
+            <div id="pagination" class="admin-orders-pagination">
                 {% if page > 1 %}
                 <a href="{{ url_for('admin_orders', page=page-1) }}" class="btn btn-primary">Previous</a>
                 {% endif %}

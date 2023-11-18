@@ -852,7 +852,17 @@ ol.breadcrumb{
     overflow: hidden;
 }
 
+.admin-orders-pagination {
+    margin:40px auto 0px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+}
+
+.admin-orders-pagination a{
+    margin:0 20px;
+}
 
 .dashboard-item tr{
     font-weight: 400;
