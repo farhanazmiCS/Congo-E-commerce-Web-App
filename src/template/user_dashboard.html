@@ -61,7 +61,7 @@
                         <tr>
                             <td><a href="/product?id={{sortedProductQuantityList[i][0]}}">{{sortedProductQuantityList[i][1][0]}}</a></td>
                             <td>{{sortedProductQuantityList[i][1][1]}}</td>
-                            <td>${{'%0.2f'|format(sortedProductQuantityList[i][1][2])}}</td>
+                            <td>${{'%0.2f'|format(sortedProductQuantityList[i][1][2]|float)}}</td>
                         </tr>
                         {% else%}
                         <tr>
