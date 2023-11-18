@@ -378,12 +378,16 @@ footer .row {
     padding-top: 50px;
 }
 
-.home-categories .row, .category-subcategory, .categories .row, .inventory .row{
+.home-categories .row, .category-subcategory, .categories .row, .inventory .row, .manage-category .row{
     background:#fff;
     padding: 30px 20px;
 }
 
 .inventory .row{
+    margin-bottom:60px;
+}
+
+.manage-category .row{
     margin-bottom:60px;
 }
 
@@ -415,7 +419,7 @@ footer .row {
     color:#111f2a;
 }
 
-.edit-product div div {
+.edit-product div div, .edit-category div div {
     text-align: left;
     display:flex;
     flex-wrap: wrap;
@@ -423,12 +427,13 @@ footer .row {
     padding-bottom: 20px;
 }
 
-.edit-product label ,.edit-product input ,.edit-product textarea{
+.edit-product label ,.edit-product input ,.edit-product textarea, .edit-product select, 
+.edit-category label ,.edit-category input ,.edit-category textarea, .edit-category select{
     flex-basis:100%;
     width: 100%;
 }
 
-.edit-product textarea{
+.edit-product textarea, .edit-category textarea{
     padding-bottom:5px;
 }
 
@@ -444,7 +449,7 @@ footer .row {
     font-weight: 700;
 }
 
-.categories,.inventory,.admin-dashboard{
+.categories,.inventory,.admin-dashboard, .manage-category{
     margin-top: -90px;
     margin-bottom: 60px
 }

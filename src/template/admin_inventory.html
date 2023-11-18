@@ -41,34 +41,37 @@
         </div>
         <nav class="navbar navbar-expand-sm container">
             <a class="navbar-brand" href="/"> <img src="{{url_for('static', filename='logo.png')}}" alt="Neco Arc"
-                    title="Congo.db logo" />
+                    title="Congo.db logo"/>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </button>  
             <div class="collapse navbar-collapse split-nav" id="navbarTogglerDemo01">
                 {% if 'user_id' in session %}
                 <ul class="navbar-nav ml-auto">
-                    <!-- Show the signup and login links if the user is not logged in -->
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/admin">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/inventory">Inventory</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ session['user_name'] }}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="userDropdown">
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/admin/orders"><i class="fa-solid"></i> Orders</a>
-                            <a class="dropdown-item" href="/logout"><i class="fa-solid fa-sign-out"></i> Logout</a>
-                        </div>
-                    </li>
-                </ul>
+                  <!-- Show the signup and login links if the user is not logged in -->
+                  <li class="nav-item active">
+                      <a class="nav-link" href="/admin">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/admin/inventory">Inventory</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/admin/category">Category</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/admin/orders">Orders</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ session['user_name'] }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout"><i class="fa-solid fa-sign-out"></i> Logout</a>
+                    </div>
+                </li>
+              </ul>
                 {% endif %}
             </div>
         </nav>

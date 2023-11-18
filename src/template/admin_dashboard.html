@@ -60,13 +60,18 @@
                       <li class="nav-item">
                           <a class="nav-link" href="/admin/inventory">Inventory</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/admin/category">Category</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/admin/orders">Orders</a>
+                      </li>
                       <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ session['user_name'] }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="userDropdown">
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/admin/orders"><i class="fa-solid"></i> Orders</a>
                             <a class="dropdown-item" href="/logout"><i class="fa-solid fa-sign-out"></i> Logout</a>
                         </div>
                     </li>
