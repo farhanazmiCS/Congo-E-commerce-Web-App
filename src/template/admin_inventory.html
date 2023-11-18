@@ -181,6 +181,18 @@
                                         <input type="number" id="price-{{ product.productid }}"
                                             value="{{ product.productprice }}" step="0.01">
                                     </div>
+
+                                    <div>
+                                        <label>Product Subcategory:</label>
+                                        <select id="subcategory-{{ product.productid }}">
+                                            {% for subcategory in subcategories %}
+                                            <option value="{{ subcategory.subcategoryid }}"
+                                                {% if subcategory.subcategoryid == product.subcategoryid %} selected {% endif %}>
+                                                {{ subcategory.subcategoryname }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -275,6 +287,7 @@
             var productName = document.getElementById('name-' + productId).value;
             var productDesc = document.getElementById('desc-' + productId).value;
             var productPrice = document.getElementById('price-' + productId).value;  // Retrieve the product price
+            var subcategoryId = document.getElementById('subcategory-' + productId).value; // Get the selected subcategory ID
 
             fetch('http://127.0.0.1:5000/update-product-info', {
                 method: 'POST',
@@ -285,7 +298,8 @@
                     product_id: productId,
                     product_name: productName,
                     product_desc: productDesc,
-                    product_price: productPrice  // Include product price in the request body
+                    product_price: productPrice,  // Include product price in the request body
+                    subcategory_id: subcategoryId // Include subcategory ID in the request body
                 })
             })
                 .then(response => {

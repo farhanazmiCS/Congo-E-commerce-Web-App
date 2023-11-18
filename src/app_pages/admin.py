@@ -186,7 +186,16 @@ def inventory(page_size: int=50):
                     'productrating': result[8]
                 }
                 products.append(product)
-            return render_template('admin_inventory.html', products=products, total_pages=total_pages, page=page)
+            
+            # Fetch subcategory data from the database
+            subcategory_query = read.select(
+                'subcategory',
+                columns=['subcategoryid', 'subcategoryname']
+            )
+
+            subcategories = [{'subcategoryid': subcategory[0], 'subcategoryname': subcategory[1]} for subcategory in subcategory_query]
+
+            return render_template('admin_inventory.html', products=products, total_pages=total_pages, page=page, subcategories=subcategories)
     else:
         session['error_message'] = "You must be logged in!"
         return redirect(url_for('login'))
@@ -217,6 +226,8 @@ def update_product_info():
     product_name = data.get('product_name')
     product_desc = data.get('product_desc')
     product_price = float(data.get('product_price'))  # Extract product price from the request
+    subcategory_id = int(data.get('subcategory_id'))  # Extract subcategory ID from the request
+
     
     try:
         # Update the product in the database
@@ -225,7 +236,8 @@ def update_product_info():
             colvalues={
                 'productname': product_name,
                 'productdesc': product_desc,
-                'productprice': product_price  # Include product price in the update
+                'productprice': product_price,  # Include product price in the update
+                'subcategoryid': subcategory_id  # Include subcategory ID in the update
             },
             where=[f"productid='{product_id}'"]
         )
