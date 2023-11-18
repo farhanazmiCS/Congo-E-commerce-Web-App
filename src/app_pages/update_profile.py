@@ -3,6 +3,7 @@ from congoDB import create, read, update, delete
 from controller.mongodbController import MongoDBController
 from flask import Flask, redirect, request, abort, render_template, session, url_for
 from werkzeug.security import generate_password_hash
+import re
 
 @app.route('/update-profile', methods=['GET', 'POST'])
 def update_profile():
@@ -29,7 +30,11 @@ def update_profile():
             where=[f'useremail = \'{email}\'']
         )
 
-        if user_exists:
+        # Validate email format
+        email_regex = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.com$'
+        if not re.match(email_regex, email):
+            error_message = "Invalid email format. Must end with .com"
+        elif user_exists:
             error_message = "Email already exists. Please choose another email."
         elif new_password and new_password != confirm_password:
             error_message = "Passwords do not match."

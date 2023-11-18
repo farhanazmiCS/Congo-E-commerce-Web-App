@@ -3,6 +3,7 @@ from congoDB import create, read, update, delete
 from controller.mongodbController import MongoDBController
 from flask import Flask, request, abort, render_template
 from werkzeug.security import generate_password_hash
+import re 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -19,7 +20,11 @@ def signup():
         # Check if the username or email already exists
         user_exists = read.select(table='public.user', where=[f"useremail = '{email}'"])
 
-        if user_exists:
+        # Validate email format
+        email_regex = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.com$'
+        if not re.match(email_regex, email):
+            error_message = "Invalid email format. Must end with .com"
+        elif user_exists:
             error_message = "Email already exists."
         elif password1 == password2:
             # Hash the password using scrypt
