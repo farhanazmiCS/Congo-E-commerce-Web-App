@@ -6,6 +6,11 @@ from werkzeug.security import generate_password_hash
 
 @app.route('/update-profile', methods=['GET', 'POST'])
 def update_profile():
+
+    if 'user_id' not in session:
+        session['error_message'] = "You must be logged in to update your profile!"
+        return redirect(url_for('login'))
+    
     user_id = session['user_id']  # Replace with the user's ID; you can get it from the user session
     
     update_success = None

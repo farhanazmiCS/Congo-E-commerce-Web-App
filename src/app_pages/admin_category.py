@@ -7,39 +7,48 @@ from math import ceil
 # Route to render the update categories and subcategories page
 @app.route('/admin/category', methods=['GET'])
 def admin_category():
-    categories = []
-    subcategories = []
 
-    query = read.select(
-        'category',
-        orderBy={'categoryid': 'ASC'}
-    )
+    if 'user_type' in session:
+        if session["user_type"] != 'admin':
+            session['error_message'] = "You are not authorized to visit this page!"
+            return redirect(url_for('homepage'))
 
-    for result in query:
-        category = {
-            'categoryid': result[0],
-            'categoryname': result[1],
-            'categorydesc': result[2]
-        }
-        categories.append(category)
+        categories = []
+        subcategories = []
 
-    query = read.select(
-        'subcategory',
-        orderBy={'subcategoryid': 'ASC'},
-        joins = [{'type': 'INNER', 'table': 'category', 'condition': 'subcategory.categoryid = category.categoryid'}]
-    )
+        query = read.select(
+            'category',
+            orderBy={'categoryid': 'ASC'}
+        )
 
-    for result in query:
-        subcategory = {
-            'subcategoryid': result[0],
-            'categoryid': result[1],
-            'subcategoryname': result[2],
-            'subcategorydesc': result[3],
-            'maincategoryname': result[5]
-        }
-        subcategories.append(subcategory)
+        for result in query:
+            category = {
+                'categoryid': result[0],
+                'categoryname': result[1],
+                'categorydesc': result[2]
+            }
+            categories.append(category)
 
-    return render_template('admin_categories.html', categories=categories, subcategories=subcategories)
+        query = read.select(
+            'subcategory',
+            orderBy={'subcategoryid': 'ASC'},
+            joins = [{'type': 'INNER', 'table': 'category', 'condition': 'subcategory.categoryid = category.categoryid'}]
+        )
+
+        for result in query:
+            subcategory = {
+                'subcategoryid': result[0],
+                'categoryid': result[1],
+                'subcategoryname': result[2],
+                'subcategorydesc': result[3],
+                'maincategoryname': result[5]
+            }
+            subcategories.append(subcategory)
+
+        return render_template('admin_categories.html', categories=categories, subcategories=subcategories)
+    else:
+        session['error_message'] = "You must be logged in!"
+        return redirect(url_for('login'))
 
 
 # Route to update a category

@@ -103,7 +103,7 @@ def userDashboard():
     session.setdefault('error_message', [])
     
     if session.get('user_id') is None:
-        session['error_message'] = "You must be logged in to view your cart"
+        session['error_message'] = "You must be logged in to view your dashboard!"
         return redirect(url_for('login'))
     
     orderList = getOrders()
