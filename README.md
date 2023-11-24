@@ -8,7 +8,7 @@ This project involves the creation and implementation of an E-commerce website. 
 - Review System: Allows users to leave reviews, enhancing the shopping experience and providing valuable feedback.
 
 ## Run the project
-This project is best run in Docker to ensure all dependencies are met. To run the project, simply foolow these steps:
+This project is best run in Docker to ensure all dependencies are met. To run the project, simply follow these steps:
 1. Install Docker and VSCode Dev Containers extension.
 2. Clone the repository.
 3. Open the project in VSCode.
