@@ -64,7 +64,7 @@ sum_pg = 0
 average_pg = 0
 sum_al = 0
 average_al = 0
-run = 200
+run = 50
 
 for _ in range(run):
     postgres_controller_time = time_postgrescontroller()
@@ -93,4 +93,3 @@ elif sum_al / run < sum_pg / run:
     print(f"\nAL is faster than PG")
 else:
     print(f"\nTied")
-
