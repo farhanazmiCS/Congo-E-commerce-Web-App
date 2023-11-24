@@ -18,3 +18,15 @@ This project is best run in Docker to ensure all dependencies are met. To run th
 python congoDB.py
 ```
 6. Open a browser and navigate to http://127.0.0.1:5000
+
+## Importing of Data to Database
+If running from scratch, ensure the dependencies are installed and configured (Python with libraries in requirements.txt installed, PostgreSQL and MongoDB backends configured).
+
+To create the base tables in the relational database and import the data from the Kaggle Amazon Dataset into the database, run the `createTables.py` file in the `src/init` folder. The consolidated Amazon product dataset is available in `Amazon-Products.csv`, and the fake company details are in `Fake_Company.csv`, which are located in the `src/init/data` folder.
+
+For the non-relational database (MongoDB), ensure that that `Cart`, `Orders` and `Reviews` collections are created.
+
+## Performance Test Scripts
+Performance test scripts used for this product are located in:
+- `src/performance_test/product_test.py` (Test the performance between querying product details via SQL, and via SQL + NoSQL)
+- `src/controller/PostGresControllerAnalysis.py` (Test the performance between our controller vs SQLAlchemy)
