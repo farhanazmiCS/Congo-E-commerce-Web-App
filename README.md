@@ -24,7 +24,7 @@ If running from scratch, ensure the dependencies are installed and configured (P
 
 To create the base tables in the relational database and import the data from the Kaggle Amazon Dataset into the database, run the `createTables.py` file in the `src/init` folder. The consolidated Amazon product dataset is available in `Amazon-Products.csv`, and the fake company details are in `Fake_Company.csv`, which are located in the `src/init/data` folder.
 
-For the non-relational database (MongoDB), ensure that that `Cart`, `Orders` and `Reviews` collections are created.
+For the non-relational database (MongoDB), ensure that `Cart`, `Orders` and `Reviews` collections are created.
 
 ## Performance Test Scripts
 Performance test scripts used for this product are located in:
